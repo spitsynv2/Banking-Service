@@ -11,10 +11,10 @@ VALUES
 -- Insert data into address table
 INSERT INTO banking_service.address (customer_id, type, street, city, country, postal_code)
 VALUES
-(1, 'Residence', 'al. Jana Pawła II', 'Warsaw', 'Poland', '12345'),
-(2, 'Residence', '456 Oak Ave', 'Warsaw', 'Poland', '67890'),
-(3, 'Сorespodence', '123 Maple St', 'Warsaw', 'Poland', '12345'),
-(4, 'Сorespodence', 'Okopowa 58/72', 'Warsaw', 'Poland', '67890');
+(1, 'RESIDENCE', 'al. Jana Pawła II', 'Warsaw', 'Poland', '12345'),
+(2, 'RESIDENCE', '456 Oak Ave', 'Warsaw', 'Poland', '67890'),
+(3, 'CORRESPONDENCE', '123 Maple St', 'Warsaw', 'Poland', '12345'),
+(4, 'CORRESPONDENCE', 'Okopowa 58/72', 'Warsaw', 'Poland', '67890');
 
 -- Insert data into customer_representatives table
 INSERT INTO banking_service.customer_representatives (company_id, first_name, last_name, position, email, phone_number, is_primary_contact)
@@ -51,52 +51,52 @@ VALUES
 -- Insert data into accounts table
 INSERT INTO banking_service.accounts (customer_id, account_type, balance, currency, opened_date, status)
 VALUES
-(1, 'savings', 1000.00, 'EUR', '2023-01-15', 'active'),
-(2, 'checking', 500.00, 'EUR', '2023-03-10', 'active'),
-(3, 'business', 20000.00, 'EUR', '2022-10-01', 'active'),
-(4, 'business', 50000.00, 'EUR', '2021-07-01', 'active');
+(1, 'SAVINGS', 1000.00, 'EUR', '2023-01-15', 'ACTIVE'),
+(2, 'CHECKING', 500.00, 'EUR', '2023-03-10', 'ACTIVE'),
+(3, 'BUSINESS', 20000.00, 'EUR', '2022-10-01', 'ACTIVE'),
+(4, 'BUSINESS', 50000.00, 'EUR', '2021-07-01', 'ACTIVE');
 
 -- Insert data into transactions table
 INSERT INTO banking_service.transactions (from_account_id, to_account_id, transaction_type, amount, transaction_date, description, status)
 VALUES
-(1, 2, 'transfer', 50.00, '2025-01-15', 'present', 'completed'),
-(1, 4, 'card payment', 150.00, '2025-01-15', NULL, 'pending');
+(1, 2, 'TRANSFER', 50.00, '2025-01-15', 'gift', 'COMPLETED'),
+(1, 4, 'CARD_PAYMENT', 150.00, '2025-01-15', NULL, 'PENDING');
 
 -- Insert data into cards table
 INSERT INTO banking_service.cards (account_id, card_number, card_type, expiry_date, cvv, is_active)
 VALUES
-(1, '1234567890123456', 'debit', '2026-01-31', '123', TRUE),
-(2, '2345678901234567', 'credit', '2027-05-31', '321', TRUE);
+(1, '1234567890123456', 'DEBIT_MASTERCARD', '2026-01-31', '123', TRUE),
+(2, '2345678901234567', 'CREDIT_VISA', '2027-05-31', '321', TRUE);
 
 -- Insert data into deposits table
 INSERT INTO `banking_service`.`deposits` (`account_id`, `deposit_type`, `amount`, `interest_rate`, `term_months`, `start_date`, `maturity_date`, `status`)
 VALUES
-(1, 'fixed', 5000.00, 2.0, 12, '2025-01-05', '2026-01-05', 'active'),
-(2, 'recurring', 1000.00, 1.5, 24, '2024-12-10', '2026-12-10', 'active');
+(1, 'FIXED', 5000.00, 2.0, 12, '2025-01-05', '2026-01-05', 'ACTIVE'),
+(2, 'RECURRING', 1000.00, 1.5, 24, '2024-12-10', '2026-12-10', 'ACTIVE');
 
 -- Insert data into loans table
 INSERT INTO `banking_service`.`loans` (`account_id`, `loan_type`, `amount`, `interest_rate`, `term_months`, `start_date`, `status`, `payment_date`)
 VALUES
-(3, 'business', 50000.00, 4.75, 60, '2024-10-15', 'closed', '2025-01-15'),
-(4, 'mortgage', 150000.00, 3.25, 240, '2023-05-20', 'active', '2025-03-20');
+(3, 'BUSINESS', 50000.00, 4.75, 60, '2024-10-15', 'CLOSED', '2025-01-15'),
+(4, 'MORTGAGE', 150000.00, 3.25, 240, '2023-05-20', 'ACTIVE', '2025-03-20');
 
 -- Insert data into service_requests table
 INSERT INTO `banking_service`.`service_requests` (`customer_id`, `employee_id`, `request_type`, `status`, `created_at`, `resolved_at`, `notes`)
 VALUES
-(1, 1, 'card replacement', 'open', '2025-01-20 10:00:00', NULL, 'Customer requested a card replacement due to damage'),
-(2, 2, 'loan inquiry', 'resolved', '2025-01-18 09:30:00', '2025-01-19 15:00:00', 'Customer inquired about loan options for a home purchase'),
-(3, 1, 'dispute', 'in progress', '2025-01-22 11:00:00', NULL, 'Customer disputes a transaction made on their account');
+(1, 1, 'CARD_REPLACEMENT', 'OPEN', '2025-01-20 10:00:00', NULL, 'Customer requested a card replacement due to damage'),
+(2, 2, 'LOAN_INQUIRY', 'RESOLVED', '2025-01-18 09:30:00', '2025-01-19 15:00:00', 'Customer inquired about loan options for a home purchase'),
+(3, 1, 'DISPUTE', 'IN_PROGRESS', '2025-01-22 11:00:00', NULL, 'Customer disputes a transaction made on their account');
 
 -- Insert data into appointments table
 INSERT INTO `banking_service`.`appointments` (`service_request_id`, `appointment_date`, `status`, `notes`)
 VALUES
-(1, '2025-01-25 14:00:00', 'scheduled', 'Appointment to process card replacement request'),
-(2, '2025-01-21 16:30:00', 'completed', 'Customer discussed loan options and received details on mortgage rates'),
-(3, '2025-01-24 11:30:00', 'canceled', 'Customer canceled the appointment for dispute resolution');
+(1, '2025-01-25 14:00:00', 'SCHEDULED', 'Appointment to process card replacement request'),
+(2, '2025-01-21 16:30:00', 'COMPLETED', 'Customer discussed loan options and received details on mortgage rates'),
+(3, '2025-01-24 11:30:00', 'CANCELED', 'Customer canceled the appointment for dispute resolution');
 
 -- Insert data into audit_logs table
 INSERT INTO `banking_service`.`audit_logs` (`customer_id`, `employee_id`, `action_type`, `action_description`, `date`)
 VALUES
-(1, NULL, 'login', 'Customer logged in to their account', '2025-01-20 08:45:00'),
-(1, 1, 'transaction', 'Employee processed a withdrawal for customer 1', '2025-01-20 10:15:00'),
-(2, 2, 'loan approval', 'Employee approved a loan for customer 2', '2025-01-19 17:00:00');
+(1, NULL, 'LOGIN', 'Customer logged in to their account', '2025-01-20 08:45:00'),
+(1, 1, 'TRANSACTION', 'Employee processed a withdrawal for customer 1', '2025-01-20 10:15:00'),
+(2, 2, 'LOAN_APPROVAL', 'Employee approved a loan for customer 2', '2025-01-19 17:00:00');

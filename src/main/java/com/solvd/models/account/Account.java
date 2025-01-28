@@ -13,7 +13,7 @@ import java.util.List;
 public class Account {
     private Long id;
     private AccountType accountType;
-    private double balance;
+    private Double balance;
     private String currency;
     private LocalDateTime openedDate;
     private AccountStatus accountStatus;
@@ -24,7 +24,7 @@ public class Account {
 
     public Account(){}
 
-    public Account(Long id, AccountType accountType, double balance, String currency, LocalDateTime openedDate, AccountStatus accountStatus) {
+    public Account(Long id, AccountType accountType, Double balance, String currency, LocalDateTime openedDate, AccountStatus accountStatus) {
         this.id = id;
         this.accountType = accountType;
         this.balance = balance;
@@ -33,7 +33,7 @@ public class Account {
         this.accountStatus = accountStatus;
     }
 
-    public Account(Long id, AccountType accountType, double balance, String currency, LocalDateTime openedDate,
+    public Account(Long id, AccountType accountType, Double balance, String currency, LocalDateTime openedDate,
                    AccountStatus accountStatus, List<Transaction> transactions, List<Loan> loans, List<Deposit> deposits, List<Card> cards) {
         this.id = id;
         this.accountType = accountType;
@@ -63,11 +63,11 @@ public class Account {
         this.accountType = accountType;
     }
 
-    public double getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 

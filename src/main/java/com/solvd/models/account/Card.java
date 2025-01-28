@@ -14,11 +14,11 @@ public class Card {
     private CardType cardType;
     private Date expiryDate;
     private String cvv;
-    private boolean isActive;
+    private Boolean isActive;
 
     public Card() {}
 
-    public Card(Long id, String cardNumber, CardType cardType, Date expiryDate, String cvv, boolean isActive) {
+    public Card(Long id, String cardNumber, CardType cardType, Date expiryDate, String cvv, Boolean isActive) {
         this.id = id;
         this.cardNumber = cardNumber;
         this.cardType = cardType;
@@ -67,11 +67,11 @@ public class Card {
         this.cvv = cvv;
     }
 
-    public boolean isActive() {
+    public Boolean isActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         isActive = active;
     }
 }

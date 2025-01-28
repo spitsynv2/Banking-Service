@@ -12,9 +12,9 @@ import java.util.Date;
 public class Deposit {
     private Long id;
     private DepositType depositType;
-    private double amount;
-    private double interestRate;
-    private int termMonths;
+    private Double amount;
+    private Double interestRate;
+    private Integer termMonths;
     private Date startDate;
     private Date maturityDate;
     private DepositStatus depositStatus;
@@ -22,7 +22,7 @@ public class Deposit {
     public Deposit() {
     }
 
-    public Deposit(Long id, DepositType depositType, double amount, double interestRate, int termMonths,
+    public Deposit(Long id, DepositType depositType, Double amount, Double interestRate, Integer termMonths,
                    Date startDate, Date maturityDate, DepositStatus depositStatus) {
         this.id = id;
         this.depositType = depositType;
@@ -50,27 +50,27 @@ public class Deposit {
         this.depositType = depositType;
     }
 
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
-    public double getInterestRate() {
+    public Double getInterestRate() {
         return interestRate;
     }
 
-    public void setInterestRate(double interestRate) {
+    public void setInterestRate(Double interestRate) {
         this.interestRate = interestRate;
     }
 
-    public int getTermMonths() {
+    public Integer getTermMonths() {
         return termMonths;
     }
 
-    public void setTermMonths(int termMonths) {
+    public void setTermMonths(Integer termMonths) {
         this.termMonths = termMonths;
     }
 

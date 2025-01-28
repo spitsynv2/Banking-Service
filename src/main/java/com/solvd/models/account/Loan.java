@@ -12,16 +12,16 @@ import java.util.Date;
 public class Loan {
     private Long id;
     private LoanType loanType;
-    private double amount;
-    private double interestRate;
-    private int termMonths;
+    private Double amount;
+    private Double interestRate;
+    private Integer termMonths;
     private Date startDate;
     private Date paymentDate;
     private LoanStatus loanStatus;
 
     public Loan() {}
 
-    public Loan(Long id, LoanType loanType, double amount, double interestRate, int termMonths, Date startDate, Date paymentDate, LoanStatus loanStatus) {
+    public Loan(Long id, LoanType loanType, Double amount, Double interestRate, Integer termMonths, Date startDate, Date paymentDate, LoanStatus loanStatus) {
         this.id = id;
         this.loanType = loanType;
         this.amount = amount;
@@ -48,27 +48,27 @@ public class Loan {
         this.loanType = loanType;
     }
 
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
-    public double getInterestRate() {
+    public Double getInterestRate() {
         return interestRate;
     }
 
-    public void setInterestRate(double interestRate) {
+    public void setInterestRate(Double interestRate) {
         this.interestRate = interestRate;
     }
 
-    public int getTermMonths() {
+    public Integer getTermMonths() {
         return termMonths;
     }
 
-    public void setTermMonths(int termMonths) {
+    public void setTermMonths(Integer termMonths) {
         this.termMonths = termMonths;
     }
 

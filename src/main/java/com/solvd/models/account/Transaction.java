@@ -14,7 +14,7 @@ public class Transaction {
     private Account fromAccount;
     private Account toAccount;
     private TransactionType transactionType;
-    private double amount;
+    private Double amount;
     private LocalDateTime transactionDate;
     private String description;
     private TransactionStatus transactionStatus;
@@ -23,7 +23,7 @@ public class Transaction {
     }
 
     public Transaction(Long id, Account fromAccount, Account toAccount, TransactionType transactionType,
-                       double amount, LocalDateTime transactionDate, String description, TransactionStatus transactionStatus) {
+                       Double amount, LocalDateTime transactionDate, String description, TransactionStatus transactionStatus) {
         this.id = id;
         this.fromAccount = fromAccount;
         this.toAccount = toAccount;
@@ -66,11 +66,11 @@ public class Transaction {
         this.transactionType = transactionType;
     }
 
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

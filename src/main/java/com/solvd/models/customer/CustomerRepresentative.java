@@ -11,11 +11,11 @@ public class CustomerRepresentative {
     private String position;
     private String email;
     private String phoneNumber;
-    private boolean isPrimaryContact;
+    private Boolean isPrimaryContact;
 
     public CustomerRepresentative() {}
 
-    public CustomerRepresentative(Long id, String firstName, String lastName, String position, String email, String phoneNumber, boolean isPrimaryContact) {
+    public CustomerRepresentative(Long id, String firstName, String lastName, String position, String email, String phoneNumber, Boolean isPrimaryContact) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -73,11 +73,11 @@ public class CustomerRepresentative {
         this.phoneNumber = phoneNumber;
     }
 
-    public boolean isPrimaryContact() {
+    public Boolean isPrimaryContact() {
         return isPrimaryContact;
     }
 
-    public void setPrimaryContact(boolean primaryContact) {
+    public void setPrimaryContact(Boolean primaryContact) {
         isPrimaryContact = primaryContact;
     }
 }
