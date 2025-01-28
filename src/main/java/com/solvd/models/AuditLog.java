@@ -19,8 +19,9 @@ public class AuditLog {
     public AuditLog() {
     }
 
-    public AuditLog(Long logId, LogActionType logActionType, String actionDescription, LocalDateTime date) {
+    public AuditLog(Long logId, Employee auditor, LogActionType logActionType, String actionDescription, LocalDateTime date) {
         this.logId = logId;
+        this.auditor = auditor;
         this.logActionType = logActionType;
         this.actionDescription = actionDescription;
         this.date = date;
@@ -32,6 +33,14 @@ public class AuditLog {
 
     public void setLogId(Long logId) {
         this.logId = logId;
+    }
+
+    public Employee getAuditor() {
+        return auditor;
+    }
+
+    public void setAuditor(Employee auditor) {
+        this.auditor = auditor;
     }
 
     public LogActionType getLogActionType() {
