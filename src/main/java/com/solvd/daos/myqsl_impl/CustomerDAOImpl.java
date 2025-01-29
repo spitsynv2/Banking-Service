@@ -51,7 +51,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         if (customer instanceof CompanyCustomer) {
             CompanyCustomer companyCustomer = (CompanyCustomer) customer;
             CustomerRepresentativeDAOImpl representativeDAO = new CustomerRepresentativeDAOImpl(connection);
-            List<CustomerRepresentative> representatives = representativeDAO.readAllByCompanyId(companyCustomer.getId());
+            List<CustomerRepresentative> representatives = representativeDAO.readAllByForeignKeyId(companyCustomer.getId());
             companyCustomer.setRepresentatives(representatives);
 
             log.info("CompanyCustomer: {} was successfully readById from database", companyCustomer);
@@ -88,7 +88,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         if (customer instanceof CompanyCustomer) {
             CompanyCustomer companyCustomer = (CompanyCustomer) customer;
             CustomerRepresentativeDAOImpl representativeDAO = new CustomerRepresentativeDAOImpl(connection);
-            List<CustomerRepresentative> representatives = representativeDAO.readAllByCompanyId(companyCustomer.getId());
+            List<CustomerRepresentative> representatives = representativeDAO.readAllByForeignKeyId(companyCustomer.getId());
             companyCustomer.setRepresentatives(representatives);
             log.info("CompanyCustomer: {} was successfully readByEmail from database", companyCustomer);
             return companyCustomer;
@@ -208,11 +208,11 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
     }
 
     @Override
-    public boolean checkEmailExists(String cardNumber) {
+    public boolean checkEmailExists(String email) {
         String sql = "SELECT COUNT(*) FROM " + getTableName() + " WHERE email = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setString(1, cardNumber);
+            statement.setString(1, email);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return resultSet.getInt(1) > 0;
@@ -226,9 +226,18 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
 
     @Override
     protected Customer mapResultSetToEntity(ResultSet rs) {
+        throw new UnsupportedOperationException("Method not implemented in CustomerDAOImpl, use mapToCompany() or mapToIndividual()");
+    }
+
+    @Override
+    public List<Customer> readAllByForeignKeyId(Long foreignKeyId) {
         throw new UnsupportedOperationException("Method not implemented in CustomerDAOImpl");
     }
 
+    @Override
+    protected String getForeignKeyColumnLabel() {
+        throw new UnsupportedOperationException("Method not implemented in CustomerDAOImpl");
+    }
 
     private CompanyCustomer mapToCompany(ResultSet rs) {
         CompanyCustomer companyCustomer = new CompanyCustomer();

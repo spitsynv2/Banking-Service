@@ -2,10 +2,7 @@ package com.solvd;
 
 import com.solvd.daos.myqsl_impl.AddressDAOImpl;
 import com.solvd.daos.myqsl_impl.CustomerDAOImpl;
-import com.solvd.daos.myqsl_impl.CustomerRepresentativeDAOImpl;
 import com.solvd.models.customer.CompanyCustomer;
-import com.solvd.models.customer.CustomerRepresentative;
-import com.solvd.models.customer.IndividualCustomer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,6 +31,11 @@ public class Runner
             throw new RuntimeException(e);
         }
 
+        CustomerDAOImpl customerDAO = new CustomerDAOImpl(connection);
+        AddressDAOImpl addressDAO = new AddressDAOImpl(connection);
+        CompanyCustomer customer2 = (CompanyCustomer) customerDAO.readById(3L);
+        log.info(customer2.getRepresentatives());
+        log.info(addressDAO.readAllByForeignKeyId(3L));
         /*
                 CustomerDAOImpl customerDAO = new CustomerDAOImpl(connection);
         CustomerRepresentativeDAOImpl customerRepresentativeDAO = new CustomerRepresentativeDAOImpl(connection);

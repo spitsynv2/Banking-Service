@@ -9,8 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Vadym Spitsyn
@@ -25,29 +23,8 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
     }
 
     @Override
-    public List<CustomerRepresentative> readAllByCompanyId(Long companyId) {
-        List<CustomerRepresentative> customerRepresentatives = new ArrayList<>();
-
-        String sql = "SELECT * FROM " + getTableName() + " WHERE company_id = ?";
-
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, companyId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    customerRepresentatives.add(mapResultSetToEntity(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        log.info("customerRepresentatives: {} were successfully readByCompanyId from database", customerRepresentatives);
-        return customerRepresentatives;
-    }
-
-    @Override
     public void createWithCompanyId(CustomerRepresentative representative,Long companyId) {
-        String sql = "INSERT INTO " + getTableName() + " (company_id, first_name, last_name, email, phone_number, position) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO " + getTableName() + " (company_id, first_name, last_name, email, phone_number, position, is_primary_contact) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, companyId);
             stmt.setString(2, representative.getFirstName());
@@ -55,6 +32,7 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
             stmt.setString(4, representative.getEmail());
             stmt.setString(5, representative.getPhoneNumber());
             stmt.setString(6, representative.getPosition());
+            stmt.setInt(7, representative.isPrimaryContact() ? 1 : 0);
             stmt.executeUpdate();
             log.info("CustomerRepresentative was inserted/created successfully.");
         } catch (SQLException e) {
@@ -69,14 +47,15 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
 
     @Override
     public void update(CustomerRepresentative representative) {
-        String sql = "UPDATE " + getTableName() + " SET first_name = ?, last_name = ?, email = ?, phone_number = ?, position = ? WHERE Id = ?";
+        String sql = "UPDATE " + getTableName() + " SET first_name = ?, last_name = ?, email = ?, phone_number = ?, position = ?, is_primary_contact = ? WHERE Id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, representative.getFirstName());
             stmt.setString(2, representative.getLastName());
             stmt.setString(3, representative.getEmail());
             stmt.setString(4, representative.getPhoneNumber());
             stmt.setString(5, representative.getPosition());
-            stmt.setLong(6, representative.getId());
+            stmt.setInt(6, representative.isPrimaryContact() ? 1 : 0);
+            stmt.setLong(7, representative.getId());
             stmt.executeUpdate();
             log.info("CustomerRepresentative was updated successfully.");
         } catch (SQLException e) {
@@ -128,6 +107,11 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
             throw new RuntimeException(e);
         }
         return false;
+    }
+
+    @Override
+    protected String getForeignKeyColumnLabel(){
+        return "company_id";
     }
 
     @Override

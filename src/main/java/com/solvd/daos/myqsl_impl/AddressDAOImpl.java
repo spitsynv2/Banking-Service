@@ -10,8 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Vadym Spitsyn
@@ -23,27 +21,6 @@ public class AddressDAOImpl extends MYSQLImpl<Address,Long> implements IAddressD
 
     public AddressDAOImpl(Connection connection) {
         super(connection);
-    }
-
-    @Override
-    public List<Address> readAllByCustomerId(Long customerId) {
-        List<Address> addresses = new ArrayList<>();
-
-        String sql = "SELECT * FROM " + getTableName() + " WHERE customer_id = ?";
-
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, customerId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    addresses.add(mapResultSetToEntity(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        log.info("Addresses: {} were successfully readByCustomerId from database", addresses);
-        return addresses;
     }
 
     @Override
@@ -93,6 +70,11 @@ public class AddressDAOImpl extends MYSQLImpl<Address,Long> implements IAddressD
     @Override
     protected String getTableName() {
         return "addresses";
+    }
+
+    @Override
+    protected String getForeignKeyColumnLabel() {
+        return "customer_id";
     }
 
     @Override

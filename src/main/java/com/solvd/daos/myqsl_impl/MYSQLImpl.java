@@ -1,7 +1,6 @@
 package com.solvd.daos.myqsl_impl;
 
 import com.solvd.daos.IDAO;
-import com.solvd.models.customer.Address;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,13 +36,13 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
         return entity;
     }
 
-    public List<T> readAllByIdentifier(Long identifier, String columnLabel) {
+    public List<T> readAllByForeignKeyId(Long foreignKeyId) {
         List<T> tList = new ArrayList<>();
 
-        String sql = "SELECT * FROM " + getTableName() + " WHERE " + columnLabel + " = ?";
+        String sql = "SELECT * FROM " + getTableName() + " WHERE " + getForeignKeyColumnLabel() + " = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, identifier);
+            stmt.setLong(1, foreignKeyId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     tList.add(mapResultSetToEntity(rs));
@@ -53,7 +52,7 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
             throw new RuntimeException(e);
         }
 
-        log.info("Addresses: {} were successfully readByCustomerId from database", tList);
+        log.info("Items: {} were successfully readAllByIdentifier from database table {}", tList, getTableName());
         return tList;
     }
 
@@ -80,6 +79,8 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
     public abstract void delete(T entity);
 
     protected abstract String getTableName();
+
+    protected abstract String getForeignKeyColumnLabel();
 
     protected abstract T mapResultSetToEntity(ResultSet rs) throws SQLException;
 }

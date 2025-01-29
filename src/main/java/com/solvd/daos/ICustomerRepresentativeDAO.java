@@ -9,7 +9,6 @@ import java.util.List;
  * @created 2025-01-29
  */
 public interface ICustomerRepresentativeDAO extends IDAO<CustomerRepresentative, Long> {
-    List<CustomerRepresentative> readAllByCompanyId(Long companyId);
     void createWithCompanyId(CustomerRepresentative representative,Long companyId);
     boolean checkEmailExists(String email);
 }
