@@ -48,4 +48,20 @@ public class IndividualCustomer extends Customer {
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
+
+    @Override
+    public String toString() {
+        return "IndividualCustomer{" +
+                "dateOfBirth=" + dateOfBirth +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", auditLogs=" + auditLogs +
+                ", serviceRequests=" + serviceRequests +
+                ", accounts=" + accounts +
+                ", addresses=" + addresses +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }

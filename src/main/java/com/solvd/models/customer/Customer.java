@@ -87,4 +87,17 @@ public abstract class Customer {
     public void setAuditLogs(List<AuditLog> auditLogs) {
         this.auditLogs = auditLogs;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", addresses=" + addresses +
+                ", accounts=" + accounts +
+                ", serviceRequests=" + serviceRequests +
+                ", auditLogs=" + auditLogs +
+                '}';
+    }
 }

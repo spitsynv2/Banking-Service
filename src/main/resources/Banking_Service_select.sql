@@ -1,6 +1,6 @@
 SELECT *
 FROM banking_service.customers
-LEFT JOIN banking_service.address ON customers.Id = address.customer_id
+LEFT JOIN banking_service.addresses ON customers.Id = addresses.customer_id
 LEFT JOIN banking_service.customer_representatives ON customers.Id = customer_representatives.company_id
 LEFT JOIN banking_service.accounts ON customers.Id = accounts.customer_id
 LEFT JOIN banking_service.transactions ON accounts.Id = transactions.from_account_id OR accounts.Id = transactions.to_account_id

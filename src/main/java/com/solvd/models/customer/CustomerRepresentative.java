@@ -80,4 +80,17 @@ public class CustomerRepresentative {
     public void setPrimaryContact(Boolean primaryContact) {
         isPrimaryContact = primaryContact;
     }
+
+    @Override
+    public String toString() {
+        return "CustomerRepresentative{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", position='" + position + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", isPrimaryContact=" + isPrimaryContact +
+                '}';
+    }
 }

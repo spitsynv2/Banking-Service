@@ -9,7 +9,7 @@ VALUES
 ('company', NULL, NULL, 'FinanceInc', 'FI987654', NULL, '2021-06-18', 'Finance', 'support@financeinc.com', '5566778899');
 
 -- Insert data into address table
-INSERT INTO banking_service.address (customer_id, type, street, city, country, postal_code)
+INSERT INTO banking_service.addresses (customer_id, type, street, city, country, postal_code)
 VALUES
 (1, 'RESIDENCE', 'al. Jana Pawła II', 'Warsaw', 'Poland', '12345'),
 (2, 'RESIDENCE', '456 Oak Ave', 'Warsaw', 'Poland', '67890'),
