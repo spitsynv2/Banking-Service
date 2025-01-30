@@ -97,4 +97,18 @@ public class Transaction {
     public void setTransactionStatus(TransactionStatus transactionStatus) {
         this.transactionStatus = transactionStatus;
     }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                ", fromAccountId=" + fromAccountId +
+                ", toAccountId=" + toAccountId +
+                ", transactionType=" + transactionType +
+                ", amount=" + amount +
+                ", transactionDate=" + transactionDate +
+                ", description='" + description + '\'' +
+                ", transactionStatus=" + transactionStatus +
+                '}';
+    }
 }

@@ -13,6 +13,9 @@ import java.sql.*;
  * @author Vadym Spitsyn
  * @created 2025-01-30
  */
+
+//TODO rework get to get also data when it in to_account_id column
+
 public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements ITransactionDAO {
 
     private static final Logger log = LogManager.getLogger(TransactionDAOImpl.class);
@@ -85,7 +88,7 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
         try {
             transaction.setId(rs.getLong("Id"));
             transaction.setFromAccountId(rs.getLong("from_account_id"));
-            transaction.setFromAccountId(rs.getLong("to_account_id"));
+            transaction.setToAccountId(rs.getLong("to_account_id"));
             transaction.setAmount(rs.getDouble("amount"));
             transaction.setTransactionDate(rs.getTimestamp("transaction_date").toLocalDateTime());
             transaction.setDescription(rs.getString("description"));

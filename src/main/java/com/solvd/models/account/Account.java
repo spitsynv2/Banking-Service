@@ -126,4 +126,20 @@ public class Account {
     public void setCards(List<Card> cards) {
         this.cards = cards;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", accountType=" + accountType +
+                ", balance=" + balance +
+                ", currency='" + currency + '\'' +
+                ", openedDate=" + openedDate +
+                ", accountStatus=" + accountStatus +
+                ", transactions=" + transactions +
+                ", loans=" + loans +
+                ", deposits=" + deposits +
+                ", cards=" + cards +
+                '}';
+    }
 }

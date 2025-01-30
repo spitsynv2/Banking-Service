@@ -97,4 +97,18 @@ public class Deposit {
     public void setDepositStatus(DepositStatus depositStatus) {
         this.depositStatus = depositStatus;
     }
+
+    @Override
+    public String toString() {
+        return "Deposit{" +
+                "id=" + id +
+                ", depositType=" + depositType +
+                ", amount=" + amount +
+                ", interestRate=" + interestRate +
+                ", termMonths=" + termMonths +
+                ", startDate=" + startDate +
+                ", maturityDate=" + maturityDate +
+                ", depositStatus=" + depositStatus +
+                '}';
+    }
 }

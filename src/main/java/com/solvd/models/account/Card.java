@@ -74,4 +74,16 @@ public class Card {
     public void setActive(Boolean active) {
         isActive = active;
     }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "id=" + id +
+                ", cardNumber='" + cardNumber + '\'' +
+                ", cardType=" + cardType +
+                ", expiryDate=" + expiryDate +
+                ", cvv='" + cvv + '\'' +
+                ", isActive=" + isActive +
+                '}';
+    }
 }
