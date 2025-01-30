@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
  */
 public class Transaction {
     private Long id;
-    private Account fromAccount;
-    private Account toAccount;
+    private Long fromAccountId;
+    private Long toAccountId;
     private TransactionType transactionType;
     private Double amount;
     private LocalDateTime transactionDate;
@@ -22,11 +22,11 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(Long id, Account fromAccount, Account toAccount, TransactionType transactionType,
+    public Transaction(Long id, Long fromAccountId, Long toAccountId, TransactionType transactionType,
                        Double amount, LocalDateTime transactionDate, String description, TransactionStatus transactionStatus) {
         this.id = id;
-        this.fromAccount = fromAccount;
-        this.toAccount = toAccount;
+        this.fromAccountId = fromAccountId;
+        this.toAccountId = toAccountId;
         this.transactionType = transactionType;
         this.amount = amount;
         this.transactionDate = transactionDate;
@@ -42,20 +42,20 @@ public class Transaction {
         this.id = id;
     }
 
-    public Account getFromAccount() {
-        return fromAccount;
+    public Long getFromAccountId() {
+        return fromAccountId;
     }
 
-    public void setFromAccount(Account fromAccount) {
-        this.fromAccount = fromAccount;
+    public void setFromAccountId(Long fromAccountId) {
+        this.fromAccountId = fromAccountId;
     }
 
-    public Account getToAccount() {
-        return toAccount;
+    public Long getToAccountId() {
+        return toAccountId;
     }
 
-    public void setToAccount(Account toAccount) {
-        this.toAccount = toAccount;
+    public void setToAccountId(Long toAccountId) {
+        this.toAccountId = toAccountId;
     }
 
     public TransactionType getTransactionType() {
