@@ -2,7 +2,6 @@ package com.solvd.daos;
 
 import com.solvd.models.customer.CustomerRepresentative;
 
-import java.util.List;
 
 /**
  * @author Vadym Spitsyn

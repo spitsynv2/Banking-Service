@@ -42,7 +42,7 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
 
     @Override
     public void create(Transaction entity) {
-        throw new UnsupportedOperationException("Method not implemented in TransactionDAOImpl");
+        throw new UnsupportedOperationException("Method not implemented in TransactionDAOImpl, Use --- createWithAccountId");
     }
 
     @Override
@@ -66,7 +66,7 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
 
     @Override
     public void delete(Transaction entity) {
-        throw new UnsupportedOperationException("Method not implemented in TransactionDAOImpl");
+        throw new UnsupportedOperationException("Method not implemented in TransactionDAOImpl, Use --- deleteById(ID id)");
     }
 
     @Override

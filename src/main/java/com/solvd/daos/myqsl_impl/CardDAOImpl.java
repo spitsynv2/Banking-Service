@@ -42,7 +42,7 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
 
     @Override
     public void create(Card entity) {
-        throw new UnsupportedOperationException("Method not implemented in CardDAOImpl");
+        throw new UnsupportedOperationException("Method not implemented in CardDAOImpl, Use --- createWithAccountId");
     }
 
     @Override
@@ -64,7 +64,7 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
 
     @Override
     public void delete(Card entity) {
-        throw new UnsupportedOperationException("Method not implemented in CardDAOImpl");
+        throw new UnsupportedOperationException("Method not implemented in CardDAOImpl, Use --- deleteById(ID id)");
     }
 
     @Override
