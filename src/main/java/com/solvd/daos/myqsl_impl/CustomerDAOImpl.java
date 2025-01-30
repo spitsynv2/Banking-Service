@@ -229,14 +229,22 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         throw new UnsupportedOperationException("Method not implemented in CustomerDAOImpl, use mapToCompany() or mapToIndividual()");
     }
 
+    /**
+     * This method is not supported in this subclass.
+     * @throws UnsupportedOperationException if called.
+     */
     @Override
     public List<Customer> readAllByForeignKeyId(Long foreignKeyId) {
-        throw new UnsupportedOperationException("Method not implemented in CustomerDAOImpl");
+        throw new UnsupportedOperationException("Method not supported in CustomerDAOImpl");
     }
 
+    /**
+     * This method is not supported in this subclass.
+     * @throws UnsupportedOperationException if called.
+     */
     @Override
     protected String getForeignKeyColumnLabel() {
-        throw new UnsupportedOperationException("Method not implemented in CustomerDAOImpl");
+        throw new UnsupportedOperationException("Method not supported in CustomerDAOImpl");
     }
 
     private CompanyCustomer mapToCompany(ResultSet rs) {
