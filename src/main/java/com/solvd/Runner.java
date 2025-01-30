@@ -53,7 +53,7 @@ public class Runner
         //log.info(depositDAO.readAllByForeignKeyId(1L));
         //log.info(cardDAO.readAllByForeignKeyId(1L));
 
-        Customer customer = CustomerAccountService.getCustomerFromDataBase(1L);
+        Customer customer = CustomerAccountService.getCustomerFromDataBase(4L);
         log.info(customer);
 
     }

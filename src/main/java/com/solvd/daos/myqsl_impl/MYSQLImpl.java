@@ -52,7 +52,12 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
             throw new RuntimeException(e);
         }
 
-        log.info("Items: {} were successfully readAllByIdentifier from database table {}", tList, getTableName());
+        if (!tList.isEmpty()) {
+            log.info("{}List: {} were successfully readAllByIdentifier from database table {}",
+                    tList.getFirst().getClass().getSimpleName(), tList, getTableName());
+        } else {
+            log.info("No records found in database table {}", getTableName());
+        }
         return tList;
     }
 

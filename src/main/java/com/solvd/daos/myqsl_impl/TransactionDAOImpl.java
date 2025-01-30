@@ -8,6 +8,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Vadym Spitsyn
@@ -24,12 +26,33 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
         super(connection);
     }
 
+    public List<Transaction> readAllByForeignKeyId(Long foreignKeyId) {
+        List<Transaction> transactionList = new ArrayList<>();
+
+        String sql = "SELECT * FROM " + getTableName() + " WHERE from_account_id = ? OR to_account_id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setLong(1, foreignKeyId);
+            stmt.setLong(2, foreignKeyId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    transactionList.add(mapResultSetToEntity(rs));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        log.info("Items: {} were successfully readAllByIdentifier from database table {}", transactionList, getTableName());
+        return transactionList;
+    }
+
     @Override
     public void createWithAccountId(Transaction transaction, Long accountId) {
         String sql = "INSERT INTO " + getTableName() + " (from_account_id, to_account_id, transaction_type, amount, transaction_date, description, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, accountId);
-            //stmt.setLong(1,transaction.getFromAccountId());
+            //stmt.setLong(1, accountId);
+            stmt.setLong(1,transaction.getFromAccountId());
             stmt.setLong(2, transaction.getToAccountId());
             stmt.setString(3,transaction.getTransactionType().toString().toUpperCase());
             stmt.setDouble(4,transaction.getAmount());
