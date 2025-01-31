@@ -11,7 +11,7 @@ public class Runner
 
     public static void main(String[] args )
     {
-        Customer customer = CustomerAccountService.getCustomerFromDataBase(4L);
+        Customer customer = CustomerAccountService.getCustomerFromDataBase(1L);
         log.info(customer);
     }
 }
