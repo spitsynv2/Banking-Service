@@ -37,6 +37,4 @@ build/
 ### Mac OS ###
 .DS_Store
 
-*.env
-**/*.env
 src/main/resources/sql_resources/database_config.env
