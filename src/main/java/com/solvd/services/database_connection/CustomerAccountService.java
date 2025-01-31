@@ -1,12 +1,13 @@
-package com.solvd.services;
+package com.solvd.services.database_connection;
 
 import com.solvd.daos.myqsl_impl.*;
 import com.solvd.models.account.Account;
 import com.solvd.models.customer.Customer;
+import com.solvd.services.MyConnectionPool;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -14,6 +15,8 @@ import java.util.List;
  * @created 2025-01-30
  */
 public class CustomerAccountService {
+
+    private static final Logger log = LogManager.getLogger(CustomerAccountService.class);
 
     public static Customer getCustomerFromDataBase(Long customerId){
         Customer customer;
@@ -24,8 +27,9 @@ public class CustomerAccountService {
         Connection connection;
 
         try {
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
-        } catch (SQLException e) {
+            connection = MyConnectionPool.getConnection();
+            log.info("Connection received from connection pool");
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
@@ -48,6 +52,9 @@ public class CustomerAccountService {
             customerAccount.setCards(cardDAO.readAllByForeignKeyId(customerAccount.getId()));
         }
         customer.setAccounts(customerAccounts);
+        MyConnectionPool.releaseConnection(connection);
+        log.info("Connection released to connection pool");
+        MyConnectionPool.closeAllConnections();
 
         return customer;
     }

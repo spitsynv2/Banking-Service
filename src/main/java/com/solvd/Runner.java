@@ -1,17 +1,9 @@
 package com.solvd;
 
-import com.solvd.daos.myqsl_impl.*;
-import com.solvd.models.account.Transaction;
-import com.solvd.models.customer.CompanyCustomer;
 import com.solvd.models.customer.Customer;
-import com.solvd.models.customer.CustomerRepresentative;
-import com.solvd.services.CustomerAccountService;
+import com.solvd.services.database_connection.CustomerAccountService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 public class Runner
 {
