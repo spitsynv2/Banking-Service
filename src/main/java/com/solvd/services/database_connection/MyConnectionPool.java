@@ -1,4 +1,4 @@
-package com.solvd.services;
+package com.solvd.services.database_connection;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.apache.logging.log4j.LogManager;

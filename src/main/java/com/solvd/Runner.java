@@ -1,7 +1,7 @@
 package com.solvd;
 
 import com.solvd.models.customer.Customer;
-import com.solvd.services.database_connection.CustomerAccountService;
+import com.solvd.services.CustomerAccountService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

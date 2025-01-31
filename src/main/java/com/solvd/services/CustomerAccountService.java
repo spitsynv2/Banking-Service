@@ -1,9 +1,9 @@
-package com.solvd.services.database_connection;
+package com.solvd.services;
 
 import com.solvd.daos.myqsl_impl.*;
 import com.solvd.models.account.Account;
 import com.solvd.models.customer.Customer;
-import com.solvd.services.MyConnectionPool;
+import com.solvd.services.database_connection.MyConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,10 +20,6 @@ public class CustomerAccountService {
 
     public static Customer getCustomerFromDataBase(Long customerId){
         Customer customer;
-
-        String URL = "jdbc:mysql://localhost:3306/banking_service";
-        String USER = "root";
-        String PASSWORD = "root";
         Connection connection;
 
         try {
