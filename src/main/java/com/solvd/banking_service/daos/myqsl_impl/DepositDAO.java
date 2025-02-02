@@ -45,7 +45,7 @@ public class DepositDAO extends MYSQLImpl<Deposit,Long> implements IDepositDAO {
 
     @Override
     public void create(Deposit entity) {
-        throw new UnsupportedOperationException("Method not implemented in DepositDAO, Use --- createWithAccountId");
+        log.error("Method not implemented in DepositDAO, Use --- createWithAccountId");
     }
 
     @Override
@@ -69,7 +69,7 @@ public class DepositDAO extends MYSQLImpl<Deposit,Long> implements IDepositDAO {
 
     @Override
     public void delete(Deposit entity) {
-        throw new UnsupportedOperationException("Method not implemented in DepositDAO, Use --- deleteById(ID id)");
+        log.error("Method not implemented in DepositDAO, Use --- deleteById(ID id)");
     }
 
     @Override

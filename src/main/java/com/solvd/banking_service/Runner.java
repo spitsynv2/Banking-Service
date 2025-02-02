@@ -15,5 +15,11 @@ public class Runner
         Customer customer = CustomerAccountService.getCustomerFromDataBase(1L);
         log.info(customer);
         MyConnectionPool.closeAllConnections();
+
+        //TODO REWORK SQL Strings to constants,
+        //TODO Finish All DAOS and SERVICES
+        //TODO Finish SQL statements in resources
+        //TODO XML FILE
+        //TODO JAXB MARSHAL UNMARSHAL
     }
 }

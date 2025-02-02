@@ -16,8 +16,6 @@ import java.util.List;
  * @created 2025-01-30
  */
 
-//TODO rework get to get also data when it in to_account_id column
-
 public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements ITransactionDAO {
 
     private static final Logger log = LogManager.getLogger(TransactionDAOImpl.class);
@@ -69,7 +67,7 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
 
     @Override
     public void create(Transaction entity) {
-        throw new UnsupportedOperationException("Method not implemented in TransactionDAOImpl, Use --- createWithAccountId");
+        log.error("Method not implemented in TransactionDAOImpl, Use --- createWithAccountId");
     }
 
     @Override
@@ -93,7 +91,8 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
 
     @Override
     public void delete(Transaction entity) {
-        throw new UnsupportedOperationException("Method not implemented in TransactionDAOImpl, Use --- deleteById(ID id)");
+        log.error("Method not implemented in TransactionDAOImpl, Use --- deleteById(ID id)");
+        
     }
 
     @Override

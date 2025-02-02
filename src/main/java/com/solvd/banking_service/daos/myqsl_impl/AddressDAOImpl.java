@@ -42,7 +42,7 @@ public class AddressDAOImpl extends MYSQLImpl<Address,Long> implements IAddressD
 
     @Override
     public void create(Address entity) {
-        throw new UnsupportedOperationException("Method not implemented in AddressDAOImpl, Use --- createWithCustomerId");
+        log.error("Method not implemented in AddressDAOImpl, Use --- createWithCustomerId");
     }
 
     @Override
@@ -64,7 +64,7 @@ public class AddressDAOImpl extends MYSQLImpl<Address,Long> implements IAddressD
 
     @Override
     public void delete(Address entity) {
-        throw new UnsupportedOperationException("Method not implemented in AddressDAOImpl, Use --- deleteById(ID id)");
+        log.error("Method not implemented in AddressDAOImpl, Use --- deleteById(ID id)");
     }
 
     @Override

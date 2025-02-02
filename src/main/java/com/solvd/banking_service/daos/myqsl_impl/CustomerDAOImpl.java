@@ -230,7 +230,8 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
 
     @Override
     protected Customer mapResultSetToEntity(ResultSet rs) {
-        throw new UnsupportedOperationException("Method not implemented in CustomerDAOImpl, use mapToCompany() or mapToIndividual()");
+        log.error("Method mapResultSetToEntity is not implemented in CustomerDAOImpl, use mapToCompany() or mapToIndividual()");
+        return null;
     }
 
     /**
@@ -239,7 +240,8 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
      */
     @Override
     public List<Customer> readAllByForeignKeyId(Long foreignKeyId) {
-        throw new UnsupportedOperationException("Method not supported in CustomerDAOImpl");
+        log.error("Method readAllByForeignKeyId is not supported in CustomerDAOImpl");
+        return null;
     }
 
     /**
@@ -248,7 +250,8 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
      */
     @Override
     protected String getForeignKeyColumnLabel() {
-        throw new UnsupportedOperationException("Method not supported in CustomerDAOImpl");
+        log.error("Method getForeignKeyColumnLabel() is not supported in CustomerDAOImpl");
+        return null;
     }
 
     private CompanyCustomer mapToCompany(ResultSet rs) {

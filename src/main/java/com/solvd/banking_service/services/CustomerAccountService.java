@@ -2,6 +2,7 @@ package com.solvd.banking_service.services;
 
 import com.solvd.banking_service.daos.myqsl_impl.*;
 import com.solvd.banking_service.models.account.Account;
+import com.solvd.banking_service.models.account.Card;
 import com.solvd.banking_service.models.customer.Customer;
 import com.solvd.banking_service.services.database_connection.MyConnectionPool;
 import org.apache.logging.log4j.LogManager;
@@ -48,6 +49,9 @@ public class CustomerAccountService {
             customerAccount.setCards(cardDAO.readAllByForeignKeyId(customerAccount.getId()));
         }
         customer.setAccounts(customerAccounts);
+
+        cardDAO.delete(new Card());
+
         MyConnectionPool.releaseConnection(connection);
         log.info("Connection released to connection pool");
 

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration>
+<Configuration status="WARN">
     <Properties>
-        <Property name="layout" value="%d [%t] %p %c - %m%n"/>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %highlight{%p}{
+            FATAL=bg_red, ERROR=red, WARN=yellow, INFO=blue, DEBUG=green, TRACE=cyan} [%c{1}] - %m%n</Property>
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="${layout}"/>
+            <PatternLayout pattern="${LOG_PATTERN}" disableAnsi="false"/>
         </Console>
-        <File name="LogFile" filename="app.log">
-            <PatternLayout pattern="${layout}"/>
+        <File name="LogFile" fileName="app.log">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
         </File>
     </Appenders>
     <Loggers>
