@@ -30,7 +30,8 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
                 entity = mapResultSetToEntity(rs);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
+            return null;
         }
         log.info("Entity: {} was successfully read from database", entity);
         return entity;
@@ -49,7 +50,8 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
+            return null;
         }
 
         if (!tList.isEmpty()) {
@@ -69,7 +71,7 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
             stmt.setObject(1, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
         log.info("Entity with id: {} was deleted from database table: {}", id, getTableName());
     }

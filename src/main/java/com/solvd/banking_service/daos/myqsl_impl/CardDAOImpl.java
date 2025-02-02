@@ -36,7 +36,7 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
             stmt.executeUpdate();
             log.info("Address was created/inserted successfully.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
     }
 
@@ -58,7 +58,7 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
             stmt.executeUpdate();
             log.info("Address was updated successfully.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
     }
 
@@ -79,7 +79,7 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
         return false;
     }
@@ -107,7 +107,8 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
             CardType cardType = CardType.valueOf(rs.getString("card_type").toUpperCase());
             card.setCardType(cardType);
         } catch (IllegalArgumentException | SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
+            return null;
         }
         return card;
     }

@@ -36,7 +36,7 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
             stmt.executeUpdate();
             log.info("CustomerRepresentative was inserted/created successfully.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
     }
 
@@ -59,7 +59,7 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
             stmt.executeUpdate();
             log.info("CustomerRepresentative was updated successfully.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
     }
 
@@ -71,7 +71,7 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
             stmt.executeUpdate();
             log.info("CustomerRepresentative was deleted from database.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
     }
 
@@ -87,7 +87,8 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
             customerRepresentative.setPhoneNumber(rs.getString("phone_number"));
             customerRepresentative.setPrimaryContact(rs.getBoolean("is_primary_contact"));
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
+            return null;
         }
         return customerRepresentative;
     }
@@ -104,7 +105,8 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
+            return false;
         }
         return false;
     }

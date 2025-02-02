@@ -50,7 +50,6 @@ public class CustomerAccountService {
         customer.setAccounts(customerAccounts);
         MyConnectionPool.releaseConnection(connection);
         log.info("Connection released to connection pool");
-        MyConnectionPool.closeAllConnections();
 
         return customer;
     }

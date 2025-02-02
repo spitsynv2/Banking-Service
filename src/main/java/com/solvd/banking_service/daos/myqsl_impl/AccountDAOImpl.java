@@ -34,7 +34,7 @@ public class AccountDAOImpl extends MYSQLImpl<Account,Long> implements IAccountD
             stmt.executeUpdate();
             log.info("Account was created/inserted successfully.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
     }
 
@@ -56,7 +56,7 @@ public class AccountDAOImpl extends MYSQLImpl<Account,Long> implements IAccountD
             stmt.executeUpdate();
             log.info("Account was updated successfully.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
     }
 
@@ -89,7 +89,8 @@ public class AccountDAOImpl extends MYSQLImpl<Account,Long> implements IAccountD
             account.setAccountType(accountType);
             account.setAccountStatus(accountStatus);
         } catch (IllegalArgumentException | SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
+            return null;
         }
         return account;
     }

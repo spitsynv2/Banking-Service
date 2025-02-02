@@ -39,7 +39,7 @@ public class DepositDAO extends MYSQLImpl<Deposit,Long> implements IDepositDAO {
             stmt.executeUpdate();
             log.info("Deposit was created/inserted successfully.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
     }
 
@@ -63,7 +63,7 @@ public class DepositDAO extends MYSQLImpl<Deposit,Long> implements IDepositDAO {
             stmt.executeUpdate();
             log.info("Deposit was updated successfully.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
     }
 
@@ -98,7 +98,8 @@ public class DepositDAO extends MYSQLImpl<Deposit,Long> implements IDepositDAO {
             deposit.setDepositType(depositType);
             deposit.setDepositStatus(depositStatus);
         } catch (IllegalArgumentException | SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
+            return null;
         }
         return deposit;
     }

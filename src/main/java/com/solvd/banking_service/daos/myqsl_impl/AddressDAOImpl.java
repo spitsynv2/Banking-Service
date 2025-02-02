@@ -36,7 +36,7 @@ public class AddressDAOImpl extends MYSQLImpl<Address,Long> implements IAddressD
             stmt.executeUpdate();
             log.info("Address was created/inserted successfully.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
     }
 
@@ -58,7 +58,7 @@ public class AddressDAOImpl extends MYSQLImpl<Address,Long> implements IAddressD
             stmt.executeUpdate();
             log.info("Address was updated successfully.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
     }
 
@@ -90,7 +90,8 @@ public class AddressDAOImpl extends MYSQLImpl<Address,Long> implements IAddressD
             AddressType addressType = AddressType.valueOf(rs.getString("type").toUpperCase());
             address.setAddressType(addressType);
         } catch (IllegalArgumentException | SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
+            return null;
         }
         return address;
     }

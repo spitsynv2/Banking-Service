@@ -39,7 +39,7 @@ public class LoanDAOImpl extends MYSQLImpl<Loan,Long> implements ILoanDAO {
             stmt.executeUpdate();
             log.info("Loan was created/inserted successfully.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
     }
 
@@ -63,7 +63,7 @@ public class LoanDAOImpl extends MYSQLImpl<Loan,Long> implements ILoanDAO {
             stmt.executeUpdate();
             log.info("Loan was updated successfully.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
     }
 
@@ -98,7 +98,8 @@ public class LoanDAOImpl extends MYSQLImpl<Loan,Long> implements ILoanDAO {
             loan.setLoanType(loanType);
             loan.setLoanStatus(loanStatus);
         } catch (IllegalArgumentException | SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
+            return null;
         }
         return loan;
     }

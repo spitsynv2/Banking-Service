@@ -45,7 +45,8 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+                        log.error(e);
+            return null;
         }
 
         if (customer instanceof CompanyCustomer) {
@@ -82,7 +83,8 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+                        log.error(e);
+            return null;
         }
 
         if (customer instanceof CompanyCustomer) {
@@ -132,7 +134,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
             stmt.executeUpdate();
             log.info("Customer was successfully created/inserted to database");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
     }
 
@@ -169,7 +171,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
             stmt.executeUpdate();
             log.info("Customer was successfully updated in database");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
     }
 
@@ -181,7 +183,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
             stmt.executeUpdate();
             log.info("Customer was successfully deleted from database");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
     }
 
@@ -202,7 +204,8 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
+            return false;
         }
         return false;
     }
@@ -219,7 +222,8 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
+            return false;
         }
         return false;
     }
@@ -258,7 +262,8 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
             companyCustomer.setIndustry(rs.getString("industry"));
             companyCustomer.setRegistrationDate(rs.getDate("registration_date"));
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
+            return null;
         }
 
         return companyCustomer;
@@ -274,7 +279,8 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
             individualCustomer.setLastName(rs.getString("last_name"));
             individualCustomer.setDateOfBirth(rs.getDate("date_of_birth"));
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
+            return null;
         }
 
         return individualCustomer;

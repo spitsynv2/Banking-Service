@@ -40,7 +40,8 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
+            return null;
         }
 
         log.info("Items: {} were successfully readAllByIdentifier from database table {}", transactionList, getTableName());
@@ -62,7 +63,7 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
             stmt.executeUpdate();
             log.info("Transaction was created/inserted successfully.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
     }
 
@@ -86,7 +87,7 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
             stmt.executeUpdate();
             log.info("Transaction was Updated successfully.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
         }
     }
 
@@ -121,7 +122,8 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
             transaction.setTransactionType(transactionType);
             transaction.setTransactionStatus(transactionStatus);
         } catch (IllegalArgumentException | SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e);
+            return null;
         }
 
         return transaction;
