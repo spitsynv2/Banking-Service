@@ -33,10 +33,8 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
     @Override
     public void createWithEmployeeId(Branch branch, Long employeeId) {
         Connection connection = null;
-
         try {
             connection = MyConnectionPool.getConnection();
-            
             try (PreparedStatement stmt = connection.prepareStatement(INSERT_BRANCH_WITH_EMPLOYEE_ID)) {
                 stmt.setLong(1, employeeId);
                 stmt.setString(2, branch.getBranchName());
@@ -52,19 +50,15 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
         } finally {
             if (connection != null) {
                 MyConnectionPool.releaseConnection(connection);
-                
             }
         }
-
     }
 
     @Override
     public void create(Branch branch) {
         Connection connection = null;
-
         try {
             connection = MyConnectionPool.getConnection();
-            
             try (PreparedStatement stmt = connection.prepareStatement(INSERT_BRANCH)) {
                 stmt.setString(1, branch.getBranchName());
                 stmt.setString(2, branch.getLocation());
@@ -79,7 +73,6 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
         } finally {
             if (connection != null) {
                 MyConnectionPool.releaseConnection(connection);
-                
             }
         }
     }
@@ -87,10 +80,8 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
     @Override
     public void update(Branch branch) {
         Connection connection = null;
-
         try {
             connection = MyConnectionPool.getConnection();
-            
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE_BRANCH)) {
                 stmt.setString(1, branch.getBranchName());
                 stmt.setString(2, branch.getLocation());
@@ -106,7 +97,6 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
         } finally {
             if (connection != null) {
                 MyConnectionPool.releaseConnection(connection);
-                
             }
         }
     }

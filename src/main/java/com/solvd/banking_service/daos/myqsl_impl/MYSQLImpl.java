@@ -26,7 +26,6 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
 
         try {
             connection = MyConnectionPool.getConnection();
-            
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setObject(1, id);
                 try (ResultSet rs = stmt.executeQuery()) {
@@ -36,13 +35,12 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
                     }
                 }
             }
-        } catch (SQLException | InterruptedException e) {
+        }catch (SQLException | InterruptedException e) {
             log.error("Error in reading by id: {}, from table: {}", id, getTableName(), e);
             return null;
-        } finally {
+        }finally {
             if (connection != null) {
                 MyConnectionPool.releaseConnection(connection);
-                
             }
         }
 
@@ -57,7 +55,6 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
 
         try {
             connection = MyConnectionPool.getConnection();
-            
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setLong(1, foreignKeyId);
                 try (ResultSet rs = stmt.executeQuery()) {
@@ -67,20 +64,19 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
                     }
                 }
             }
-        } catch (SQLException | InterruptedException e) {
+        }catch (SQLException | InterruptedException e) {
             log.error("Error in reading All by foreignKeyId: {}, from table: {}, from column: {}", foreignKeyId, getTableName(), getForeignKeyColumnLabel(), e);
             return null;
-        } finally {
+        }finally {
             if (connection != null) {
                 MyConnectionPool.releaseConnection(connection);
-                
             }
         }
 
         if (!tList.isEmpty()) {
             log.info("{}List: {} were successfully readAllByIdentifier from database table: {}",
                     tList.getFirst().getClass().getSimpleName(), tList, getTableName());
-        } else {
+        }else {
             log.info("No records found in database table: {}", getTableName());
         }
         return tList;
@@ -93,17 +89,15 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
 
         try {
             connection = MyConnectionPool.getConnection();
-            
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setObject(1, id);
                 stmt.executeUpdate();
             }
         }catch (SQLException | InterruptedException e) {
             log.error("Error in deleting by id {}, from table: {}",id,getTableName(), e);
-        } finally {
+        }finally {
             if (connection != null) {
                 MyConnectionPool.releaseConnection(connection);
-                
             }
         }
         log.info("Entity with id: {} was deleted from database table: {}", id, getTableName());

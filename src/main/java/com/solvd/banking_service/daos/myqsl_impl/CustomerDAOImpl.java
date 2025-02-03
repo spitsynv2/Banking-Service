@@ -32,7 +32,6 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
 
         try {
             connection = MyConnectionPool.getConnection();
-            
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setLong(1, id);
                 try (ResultSet rs = stmt.executeQuery()) {
@@ -53,7 +52,6 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         } finally {
             if (connection != null) {
                 MyConnectionPool.releaseConnection(connection);
-                
             }
         }
 
@@ -80,7 +78,6 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
 
         try {
             connection = MyConnectionPool.getConnection();
-            
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setString(1, email);
                 try (ResultSet rs = stmt.executeQuery()) {
@@ -134,7 +131,6 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
 
         try {
             connection = MyConnectionPool.getConnection();
-            
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 if (customer instanceof IndividualCustomer) {
                     IndividualCustomer individualCustomer = (IndividualCustomer) customer;
@@ -162,7 +158,6 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         } finally {
             if (connection != null) {
                 MyConnectionPool.releaseConnection(connection);
-                
             }
         }
     }
@@ -182,7 +177,6 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
 
         try {
             connection = MyConnectionPool.getConnection();
-            
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 if (customer instanceof IndividualCustomer) {
                     IndividualCustomer individualCustomer = (IndividualCustomer) customer;
@@ -210,7 +204,6 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         } finally {
             if (connection != null) {
                 MyConnectionPool.releaseConnection(connection);
-                
             }
         }
     }
@@ -222,7 +215,6 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
 
         try {
             connection = MyConnectionPool.getConnection();
-            
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setLong(1, customer.getId());
                 stmt.executeUpdate();
@@ -233,7 +225,6 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         } finally {
             if (connection != null) {
                 MyConnectionPool.releaseConnection(connection);
-                
             }
         }
     }
@@ -250,9 +241,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
 
         try {
             connection = MyConnectionPool.getConnection();
-            
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
-
                 statement.setString(1, taxId);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
@@ -266,7 +255,6 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         } finally {
             if (connection != null) {
                 MyConnectionPool.releaseConnection(connection);
-                
             }
         }
 
@@ -280,9 +268,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
 
         try {
             connection = MyConnectionPool.getConnection();
-            
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
-
                 statement.setString(1, email);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
