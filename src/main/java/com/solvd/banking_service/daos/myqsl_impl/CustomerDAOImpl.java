@@ -5,13 +5,11 @@ import com.solvd.banking_service.models.customer.CompanyCustomer;
 import com.solvd.banking_service.models.customer.Customer;
 import com.solvd.banking_service.models.customer.CustomerRepresentative;
 import com.solvd.banking_service.models.customer.IndividualCustomer;
+import com.solvd.banking_service.services.database_connection.MyConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 /**
@@ -28,25 +26,35 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
 
     @Override
     public Customer readById(Long id) {
+        Connection connection = null;
         Customer customer = null;
         String sql = "SELECT * FROM " + getTableName()+ " WHERE id = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    String type = rs.getString("customer_type");
+        try {
+            connection = MyConnectionPool.getConnection();
+            
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setLong(1, id);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        String type = rs.getString("customer_type");
 
-                    if ("individual".equalsIgnoreCase(type)) {
-                        customer = mapToIndividual(rs);
-                    } else if ("company".equalsIgnoreCase(type)) {
-                        customer = mapToCompany(rs);
+                        if ("individual".equalsIgnoreCase(type)) {
+                            customer = mapToIndividual(rs);
+                        } else if ("company".equalsIgnoreCase(type)) {
+                            customer = mapToCompany(rs);
+                        }
                     }
                 }
             }
-        } catch (SQLException e) {
-                        log.error(e);
+        } catch (SQLException | InterruptedException e) {
+            log.error(e);
             return null;
+        } finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+                
+            }
         }
 
         if (customer instanceof CompanyCustomer) {
@@ -66,25 +74,34 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
 
     @Override
     public Customer readByEmail(String email) {
+        Connection connection = null;
         Customer customer = null;
-        String sql = "SELECT * FROM " + getTableName()+ " WHERE email = ?";
+        String sql = "SELECT * FROM " + getTableName() + " WHERE email = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, email);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    String type = rs.getString("type");
+        try {
+            connection = MyConnectionPool.getConnection();
+            
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, email);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        String type = rs.getString("customer_type");
 
-                    if ("individual".equalsIgnoreCase(type)) {
-                        customer = mapToIndividual(rs);
-                    } else if ("company".equalsIgnoreCase(type)) {
-                        customer = mapToCompany(rs);
+                        if ("individual".equalsIgnoreCase(type)) {
+                            customer = mapToIndividual(rs);
+                        } else if ("company".equalsIgnoreCase(type)) {
+                            customer = mapToCompany(rs);
+                        }
                     }
                 }
             }
-        } catch (SQLException e) {
-                        log.error(e);
+        } catch (SQLException | InterruptedException e) {
+            log.error(e);
             return null;
+        } finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
         }
 
         if (customer instanceof CompanyCustomer) {
@@ -92,6 +109,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
             CustomerRepresentativeDAOImpl representativeDAO = new CustomerRepresentativeDAOImpl(connection);
             List<CustomerRepresentative> representatives = representativeDAO.readAllByForeignKeyId(companyCustomer.getId());
             companyCustomer.setRepresentatives(representatives);
+
             log.info("CompanyCustomer: {} was successfully readByEmail from database", companyCustomer);
             return companyCustomer;
         }else {
@@ -103,87 +121,120 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
 
     @Override
     public void create(Customer customer) {
+        Connection connection = null;
         String sql;
         if (customer instanceof IndividualCustomer) {
             sql = "INSERT INTO " + getTableName() + " (customer_type, first_name, last_name, email, phone_number, date_of_birth) VALUES (?, ?, ?, ?, ?, ?)";
         } else if (customer instanceof CompanyCustomer) {
             sql = "INSERT INTO " + getTableName() + " (customer_type, company_name, tax_id, email, phone_number, industry, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
         } else {
-            throw new IllegalArgumentException("Unsupported customer type");
+            log.error("Unsupported customer type");
+            return;
         }
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            if (customer instanceof IndividualCustomer) {
-                IndividualCustomer individualCustomer = (IndividualCustomer) customer;
-                stmt.setString(1, "INDIVIDUAL");
-                stmt.setString(2, individualCustomer.getFirstName());
-                stmt.setString(3, individualCustomer.getLastName());
-                stmt.setString(4, individualCustomer.getEmail());
-                stmt.setString(5, individualCustomer.getPhoneNumber());
-                stmt.setDate(6, new java.sql.Date(individualCustomer.getDateOfBirth().getTime()));
-            } else {
-                CompanyCustomer companyCustomer = (CompanyCustomer) customer;
-                stmt.setString(1, "COMPANY");
-                stmt.setString(2, companyCustomer.getCompanyName());
-                stmt.setString(3, companyCustomer.getTaxId());
-                stmt.setString(4, companyCustomer.getEmail());
-                stmt.setString(5, companyCustomer.getPhoneNumber());
-                stmt.setString(6, companyCustomer.getIndustry());
-                stmt.setDate(7, new java.sql.Date(companyCustomer.getRegistrationDate().getTime()));
+        try {
+            connection = MyConnectionPool.getConnection();
+            
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                if (customer instanceof IndividualCustomer) {
+                    IndividualCustomer individualCustomer = (IndividualCustomer) customer;
+                    stmt.setString(1, "INDIVIDUAL");
+                    stmt.setString(2, individualCustomer.getFirstName());
+                    stmt.setString(3, individualCustomer.getLastName());
+                    stmt.setString(4, individualCustomer.getEmail());
+                    stmt.setString(5, individualCustomer.getPhoneNumber());
+                    stmt.setDate(6, new Date(individualCustomer.getDateOfBirth().getTime()));
+                } else {
+                    CompanyCustomer companyCustomer = (CompanyCustomer) customer;
+                    stmt.setString(1, "COMPANY");
+                    stmt.setString(2, companyCustomer.getCompanyName());
+                    stmt.setString(3, companyCustomer.getTaxId());
+                    stmt.setString(4, companyCustomer.getEmail());
+                    stmt.setString(5, companyCustomer.getPhoneNumber());
+                    stmt.setString(6, companyCustomer.getIndustry());
+                    stmt.setDate(7, new Date(companyCustomer.getRegistrationDate().getTime()));
+                }
+                stmt.executeUpdate();
+                log.info("Customer was successfully created/inserted to database");
             }
-            stmt.executeUpdate();
-            log.info("Customer was successfully created/inserted to database");
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             log.error(e);
+        } finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+                
+            }
         }
     }
 
     @Override
     public void update(Customer customer) {
+        Connection connection = null;
         String sql;
         if (customer instanceof IndividualCustomer) {
             sql = "UPDATE " + getTableName() + " SET first_name = ?, last_name = ?, email = ?, phone_number = ?, date_of_birth = ? WHERE id = ?";
         } else if (customer instanceof CompanyCustomer) {
             sql = "UPDATE " + getTableName() + " SET company_name = ?, tax_id = ?, email = ?, phone_number = ?, industry = ?, registration_date = ? WHERE id = ?";
         } else {
-            throw new IllegalArgumentException("Unsupported customer type");
+            log.error("Unsupported customer type");
+            return;
         }
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            if (customer instanceof IndividualCustomer) {
-                IndividualCustomer individualCustomer = (IndividualCustomer) customer;
-                stmt.setString(1, individualCustomer.getFirstName());
-                stmt.setString(2, individualCustomer.getLastName());
-                stmt.setString(3, individualCustomer.getEmail());
-                stmt.setString(4, individualCustomer.getPhoneNumber());
-                stmt.setDate(5, new java.sql.Date(individualCustomer.getDateOfBirth().getTime()));
-                stmt.setLong(6, individualCustomer.getId());
-            } else {
-                CompanyCustomer companyCustomer = (CompanyCustomer) customer;
-                stmt.setString(1, companyCustomer.getCompanyName());
-                stmt.setString(2, companyCustomer.getTaxId());
-                stmt.setString(3, companyCustomer.getEmail());
-                stmt.setString(4, companyCustomer.getPhoneNumber());
-                stmt.setString(5, companyCustomer.getIndustry());
-                stmt.setDate(6, new java.sql.Date(companyCustomer.getRegistrationDate().getTime()));
-                stmt.setLong(7, companyCustomer.getId());
+        try {
+            connection = MyConnectionPool.getConnection();
+            
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                if (customer instanceof IndividualCustomer) {
+                    IndividualCustomer individualCustomer = (IndividualCustomer) customer;
+                    stmt.setString(1, individualCustomer.getFirstName());
+                    stmt.setString(2, individualCustomer.getLastName());
+                    stmt.setString(3, individualCustomer.getEmail());
+                    stmt.setString(4, individualCustomer.getPhoneNumber());
+                    stmt.setDate(5, new Date(individualCustomer.getDateOfBirth().getTime()));
+                    stmt.setLong(6, individualCustomer.getId());
+                } else {
+                    CompanyCustomer companyCustomer = (CompanyCustomer) customer;
+                    stmt.setString(1, companyCustomer.getCompanyName());
+                    stmt.setString(2, companyCustomer.getTaxId());
+                    stmt.setString(3, companyCustomer.getEmail());
+                    stmt.setString(4, companyCustomer.getPhoneNumber());
+                    stmt.setString(5, companyCustomer.getIndustry());
+                    stmt.setDate(6, new Date(companyCustomer.getRegistrationDate().getTime()));
+                    stmt.setLong(7, companyCustomer.getId());
+                }
+                stmt.executeUpdate();
+                log.info("Customer was successfully updated in database");
             }
-            stmt.executeUpdate();
-            log.info("Customer was successfully updated in database");
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             log.error(e);
+        } finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+                
+            }
         }
     }
 
     @Override
     public void delete(Customer customer) {
+        Connection connection = null;
         String sql = "DELETE FROM " + getTableName() + " WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, customer.getId());
-            stmt.executeUpdate();
-            log.info("Customer was successfully deleted from database");
-        } catch (SQLException e) {
+
+        try {
+            connection = MyConnectionPool.getConnection();
+            
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setLong(1, customer.getId());
+                stmt.executeUpdate();
+                log.info("Customer was successfully deleted from database");
+            }
+        } catch (SQLException | InterruptedException e) {
             log.error(e);
+        } finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+                
+            }
         }
     }
 
@@ -194,37 +245,61 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
 
     @Override
     public boolean checkTaxIdExists(String taxId){
+        Connection connection = null;
         String sql = "SELECT COUNT(*) FROM " + getTableName() + " WHERE tax_id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setString(1, taxId);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return resultSet.getInt(1) > 0;
+        try {
+            connection = MyConnectionPool.getConnection();
+            
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
+                statement.setString(1, taxId);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getInt(1) > 0;
+                    }
                 }
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             log.error(e);
             return false;
+        } finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+                
+            }
         }
+
         return false;
     }
 
     @Override
     public boolean checkEmailExists(String email) {
+        Connection connection = null;
         String sql = "SELECT COUNT(*) FROM " + getTableName() + " WHERE email = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setString(1, email);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return resultSet.getInt(1) > 0;
+        try {
+            connection = MyConnectionPool.getConnection();
+            
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
+                statement.setString(1, email);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getInt(1) > 0;
+                    }
                 }
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             log.error(e);
             return false;
+        } finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+                
+            }
         }
+
         return false;
     }
 
@@ -235,7 +310,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
     }
 
     /**
-     * This method is not supported in this subclass.
+     * This Method is not supported in this subclass.
      * @throws UnsupportedOperationException if called.
      */
     @Override
@@ -245,7 +320,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
     }
 
     /**
-     * This method is not supported in this subclass.
+     * This Method is not supported in this subclass.
      * @throws UnsupportedOperationException if called.
      */
     @Override

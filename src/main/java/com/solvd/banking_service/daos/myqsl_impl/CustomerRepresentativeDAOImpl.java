@@ -42,7 +42,7 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
 
     @Override
     public void create(CustomerRepresentative entity) {
-        log.error("Method not implemented in CustomerRepresentativeDAOImpl, Use --- createWithCompanyId");
+        log.error("Method is not implemented in CustomerRepresentativeDAOImpl, Use ---> createWithCompanyId");
     }
 
     @Override

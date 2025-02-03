@@ -21,14 +21,7 @@ public class CustomerAccountService {
 
     public static Customer getCustomerFromDataBase(Long customerId){
         Customer customer;
-        Connection connection;
-
-        try {
-            connection = MyConnectionPool.getConnection();
-            log.info("Connection received from connection pool");
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        Connection connection = null;
 
         CustomerDAOImpl customerDAO = new CustomerDAOImpl(connection);
         AddressDAOImpl addressDAO = new AddressDAOImpl(connection);
@@ -51,9 +44,6 @@ public class CustomerAccountService {
         customer.setAccounts(customerAccounts);
 
         cardDAO.delete(new Card());
-
-        MyConnectionPool.releaseConnection(connection);
-        log.info("Connection released to connection pool");
 
         return customer;
     }

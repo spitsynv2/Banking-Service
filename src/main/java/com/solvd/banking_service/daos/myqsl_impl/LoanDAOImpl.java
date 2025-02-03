@@ -45,7 +45,7 @@ public class LoanDAOImpl extends MYSQLImpl<Loan,Long> implements ILoanDAO {
 
     @Override
     public void create(Loan entity) {
-        log.error("Method not implemented in LoanDAOImpl, Use --- createWithAccountId");
+        log.error("Method is not implemented in LoanDAOImpl, Use ---> createWithAccountId");
     }
 
     @Override
@@ -69,7 +69,7 @@ public class LoanDAOImpl extends MYSQLImpl<Loan,Long> implements ILoanDAO {
 
     @Override
     public void delete(Loan entity) {
-        log.error("Method not implemented in LoanDAOImpl, Use --- deleteById(ID id)");
+        log.error("Method is not implemented in LoanDAOImpl, Use ---> deleteById(ID id)");
     }
 
     @Override

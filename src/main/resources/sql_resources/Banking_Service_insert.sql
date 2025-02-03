@@ -24,21 +24,22 @@ VALUES
 (4, 'Charlie', 'Davis', 'Manager', 'charlie.davis@financeinc.com', '7897897890', 1),
 (4, 'Diana', 'Miller', 'Accountant', 'diana.miller@financeinc.com', '9879879870', 0);
 
--- Insert data into branches table
-INSERT INTO banking_service.branches (branch_name, location, phone_number, open_date)
-VALUES
-('Central Branch', '123 Main St, Warsaw', '1230001234', '2010-05-15'),
-('West Branch', '456 West St, Warsaw', '4560004567', '2012-07-20'),
-('East Branch', '789 East Ave, Warsaw', '7890007891', '2015-09-10'),
-('South Branch', '321 South Blvd, Warsaw', '3210003212', '2018-11-25');
-
 -- Insert data into employees table
-INSERT INTO banking_service.employees (branch_id, first_name, last_name, email, phone_number, job_title, hire_date)
+INSERT INTO banking_service.employees (first_name, last_name, email, phone_number, job_title, hire_date)
 VALUES
-(1, 'Emma', 'Johnson', 'emma.johnson@bank.com', '5551112222', 'Manager', '2010-06-01'),
-(2, 'Liam', 'Anderson', 'liam.anderson@bank.com', '5553334444', 'Loan Officer', '2012-08-01'),
-(3, 'Olivia', 'Martinez', 'olivia.martinez@bank.com', '5555556666', 'Teller', '2015-10-01'),
-(4, 'Noah', 'Wilson', 'noah.wilson@bank.com', '5557778888', 'Financial Advisor', '2018-12-01');
+('Emma', 'Johnson', 'emma.johnson@bank.com', '5551112222', 'Manager', '2010-06-01'),
+('Liam', 'Anderson', 'liam.anderson@bank.com', '5553334444', 'Loan Officer', '2012-08-01'),
+('Olivia', 'Martinez', 'olivia.martinez@bank.com', '5555556666', 'Teller', '2015-10-01'),
+('Noah', 'Wilson', 'noah.wilson@bank.com', '5557778888', 'Financial Advisor', '2018-12-01');
+
+-- Insert data into branches table
+INSERT INTO banking_service.branches (employee_id, branch_name, location, phone_number, open_date)
+VALUES
+(1, 'Central Branch', '123 Main St, Warsaw', '1230001234', '2010-05-15'),
+(2, 'West Branch', '456 West St, Warsaw', '4560004567', '2012-07-20'),
+(3, 'East Branch', '789 East Ave, Warsaw', '7890007891', '2015-09-10'),
+(4, 'South Branch', '321 South Blvd, Warsaw', '3210003212', '2018-11-25'),
+(1, 'South Branch', '321 South Blvd, Warsaw', '3210003212', '2018-11-25');
 
 -- Insert data into employee_roles table
 INSERT INTO banking_service.employee_roles (employee_id, role_name, responsibilities)

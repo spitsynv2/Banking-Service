@@ -4,6 +4,7 @@ import com.solvd.banking_service.daos.ITransactionDAO;
 import com.solvd.banking_service.models.account.Transaction;
 import com.solvd.banking_service.models.account.enums.transaction_enums.TransactionStatus;
 import com.solvd.banking_service.models.account.enums.transaction_enums.TransactionType;
+import com.solvd.banking_service.services.database_connection.MyConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,24 +26,32 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
     }
 
     public List<Transaction> readAllByForeignKeyId(Long foreignKeyId) {
+        Connection connection = null;
         List<Transaction> transactionList = new ArrayList<>();
 
         String sql = "SELECT * FROM " + getTableName() + " WHERE from_account_id = ? OR to_account_id = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, foreignKeyId);
-            stmt.setLong(2, foreignKeyId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    transactionList.add(mapResultSetToEntity(rs));
+        try {
+            connection = MyConnectionPool.getConnection();
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setLong(1, foreignKeyId);
+                stmt.setLong(2, foreignKeyId);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        transactionList.add(mapResultSetToEntity(rs));
+                    }
                 }
             }
-        } catch (SQLException e) {
+        }catch (SQLException | InterruptedException e) {
             log.error(e);
             return null;
+        }finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
         }
 
-        log.info("Items: {} were successfully readAllByIdentifier from database table {}", transactionList, getTableName());
+        log.info("TransactionList: {} were successfully readAllByIdentifier from database table: {}", transactionList, getTableName());
         return transactionList;
     }
 
@@ -67,7 +76,7 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
 
     @Override
     public void create(Transaction entity) {
-        log.error("Method not implemented in TransactionDAOImpl, Use --- createWithAccountId");
+        log.error("Method is not implemented in TransactionDAOImpl, Use ---> createWithAccountId");
     }
 
     @Override
@@ -91,8 +100,7 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
 
     @Override
     public void delete(Transaction entity) {
-        log.error("Method not implemented in TransactionDAOImpl, Use --- deleteById(ID id)");
-        
+        log.error("Method is not implemented in TransactionDAOImpl, Use ---> deleteById(ID id)");
     }
 
     @Override
