@@ -21,15 +21,14 @@ public class CustomerAccountService {
 
     public static Customer getCustomerFromDataBase(Long customerId){
         Customer customer;
-        Connection connection = null;
 
-        CustomerDAOImpl customerDAO = new CustomerDAOImpl(connection);
-        AddressDAOImpl addressDAO = new AddressDAOImpl(connection);
-        AccountDAOImpl accountDAO = new AccountDAOImpl(connection);
-        TransactionDAOImpl transactionDAO = new TransactionDAOImpl(connection);
-        LoanDAOImpl loanDAO = new LoanDAOImpl(connection);
-        DepositDAO depositDAO = new DepositDAO(connection);
-        CardDAOImpl cardDAO = new CardDAOImpl(connection);
+        CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+        AddressDAOImpl addressDAO = new AddressDAOImpl();
+        AccountDAOImpl accountDAO = new AccountDAOImpl();
+        TransactionDAOImpl transactionDAO = new TransactionDAOImpl();
+        LoanDAOImpl loanDAO = new LoanDAOImpl();
+        DepositDAO depositDAO = new DepositDAO();
+        CardDAOImpl cardDAO = new CardDAOImpl();
 
         customer = customerDAO.readById(customerId);
         customer.setAddresses(addressDAO.readAllByForeignKeyId(customerId));
@@ -42,8 +41,6 @@ public class CustomerAccountService {
             customerAccount.setCards(cardDAO.readAllByForeignKeyId(customerAccount.getId()));
         }
         customer.setAccounts(customerAccounts);
-
-        cardDAO.delete(new Card());
 
         return customer;
     }

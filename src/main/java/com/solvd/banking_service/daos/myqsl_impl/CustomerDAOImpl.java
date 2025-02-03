@@ -20,19 +20,29 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
 
     private static final Logger log = LogManager.getLogger(CustomerDAOImpl.class);
 
-    public CustomerDAOImpl(Connection connection) {
-        super(connection);
-    }
+    private static final String READ_BY_ID = "SELECT * FROM " + "customers" + " WHERE id = ?";
+    private static final String READ_BY_EMAIL = "SELECT * FROM " + "customers" + " WHERE email = ?";
+    private static final String DELETE = "DELETE FROM " + "customers" + " WHERE id = ?";
+    private static final String CREATE_INDIVIDUAL_CUSTOMER = "INSERT INTO " + "customers" + " (customer_type, " +
+            "first_name, last_name, email, phone_number, date_of_birth) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String CREATE_COMPANY_CUSTOMER = "INSERT INTO " + "customers" + " (customer_type, " +
+            "company_name, tax_id, email, phone_number, industry, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_INDIVIDUAL_CUSTOMER = "UPDATE " + "customers"+ " SET first_name = ?, last_name = ?, " +
+            "email = ?, phone_number = ?, date_of_birth = ? WHERE id = ?";
+    private static final String UPDATE_COMPANY_CUSTOMER = "UPDATE " + "customers" + " SET company_name = ?, tax_id = ?, " +
+            "email = ?, phone_number = ?, industry = ?, registration_date = ? WHERE id = ?";
+    private static final String CHECK_TAX_ID_EXISTS = "SELECT COUNT(*) FROM " + "customers" + " WHERE tax_id = ?";
+    private static final String CHECK_EMAIL_EXISTS = "SELECT COUNT(*) FROM " + "customers" + " WHERE email = ?";
+
 
     @Override
     public Customer readById(Long id) {
         Connection connection = null;
         Customer customer = null;
-        String sql = "SELECT * FROM " + getTableName()+ " WHERE id = ?";
 
         try {
             connection = MyConnectionPool.getConnection();
-            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            try (PreparedStatement stmt = connection.prepareStatement(READ_BY_ID)) {
                 stmt.setLong(1, id);
                 try (ResultSet rs = stmt.executeQuery()) {
                     if (rs.next()) {
@@ -57,7 +67,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
 
         if (customer instanceof CompanyCustomer) {
             CompanyCustomer companyCustomer = (CompanyCustomer) customer;
-            CustomerRepresentativeDAOImpl representativeDAO = new CustomerRepresentativeDAOImpl(connection);
+            CustomerRepresentativeDAOImpl representativeDAO = new CustomerRepresentativeDAOImpl();
             List<CustomerRepresentative> representatives = representativeDAO.readAllByForeignKeyId(companyCustomer.getId());
             companyCustomer.setRepresentatives(representatives);
 
@@ -74,11 +84,10 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
     public Customer readByEmail(String email) {
         Connection connection = null;
         Customer customer = null;
-        String sql = "SELECT * FROM " + getTableName() + " WHERE email = ?";
 
         try {
             connection = MyConnectionPool.getConnection();
-            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            try (PreparedStatement stmt = connection.prepareStatement(READ_BY_EMAIL)) {
                 stmt.setString(1, email);
                 try (ResultSet rs = stmt.executeQuery()) {
                     if (rs.next()) {
@@ -103,7 +112,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
 
         if (customer instanceof CompanyCustomer) {
             CompanyCustomer companyCustomer = (CompanyCustomer) customer;
-            CustomerRepresentativeDAOImpl representativeDAO = new CustomerRepresentativeDAOImpl(connection);
+            CustomerRepresentativeDAOImpl representativeDAO = new CustomerRepresentativeDAOImpl();
             List<CustomerRepresentative> representatives = representativeDAO.readAllByForeignKeyId(companyCustomer.getId());
             companyCustomer.setRepresentatives(representatives);
 
@@ -121,11 +130,11 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         Connection connection = null;
         String sql;
         if (customer instanceof IndividualCustomer) {
-            sql = "INSERT INTO " + getTableName() + " (customer_type, first_name, last_name, email, phone_number, date_of_birth) VALUES (?, ?, ?, ?, ?, ?)";
+            sql = CREATE_INDIVIDUAL_CUSTOMER;
         } else if (customer instanceof CompanyCustomer) {
-            sql = "INSERT INTO " + getTableName() + " (customer_type, company_name, tax_id, email, phone_number, industry, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            sql = CREATE_COMPANY_CUSTOMER;
         } else {
-            log.error("Unsupported customer type");
+            log.error("Unsupported customer type while create");
             return;
         }
 
@@ -167,11 +176,11 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         Connection connection = null;
         String sql;
         if (customer instanceof IndividualCustomer) {
-            sql = "UPDATE " + getTableName() + " SET first_name = ?, last_name = ?, email = ?, phone_number = ?, date_of_birth = ? WHERE id = ?";
+            sql = UPDATE_INDIVIDUAL_CUSTOMER;
         } else if (customer instanceof CompanyCustomer) {
-            sql = "UPDATE " + getTableName() + " SET company_name = ?, tax_id = ?, email = ?, phone_number = ?, industry = ?, registration_date = ? WHERE id = ?";
+            sql = UPDATE_COMPANY_CUSTOMER;
         } else {
-            log.error("Unsupported customer type");
+            log.error("Unsupported customer type while update");
             return;
         }
 
@@ -211,11 +220,10 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
     @Override
     public void delete(Customer customer) {
         Connection connection = null;
-        String sql = "DELETE FROM " + getTableName() + " WHERE id = ?";
 
         try {
             connection = MyConnectionPool.getConnection();
-            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            try (PreparedStatement stmt = connection.prepareStatement(DELETE)) {
                 stmt.setLong(1, customer.getId());
                 stmt.executeUpdate();
                 log.info("Customer was successfully deleted from database");
@@ -237,11 +245,10 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
     @Override
     public boolean checkTaxIdExists(String taxId){
         Connection connection = null;
-        String sql = "SELECT COUNT(*) FROM " + getTableName() + " WHERE tax_id = ?";
 
         try {
             connection = MyConnectionPool.getConnection();
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            try (PreparedStatement statement = connection.prepareStatement(CHECK_TAX_ID_EXISTS)) {
                 statement.setString(1, taxId);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
@@ -264,11 +271,10 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
     @Override
     public boolean checkEmailExists(String email) {
         Connection connection = null;
-        String sql = "SELECT COUNT(*) FROM " + getTableName() + " WHERE email = ?";
 
         try {
             connection = MyConnectionPool.getConnection();
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            try (PreparedStatement statement = connection.prepareStatement(CHECK_EMAIL_EXISTS)) {
                 statement.setString(1, email);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
@@ -282,7 +288,6 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         } finally {
             if (connection != null) {
                 MyConnectionPool.releaseConnection(connection);
-                
             }
         }
 
@@ -295,20 +300,12 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         return null;
     }
 
-    /**
-     * This Method is not supported in this subclass.
-     * @throws UnsupportedOperationException if called.
-     */
     @Override
     public List<Customer> readAllByForeignKeyId(Long foreignKeyId) {
         log.error("Method readAllByForeignKeyId is not supported in CustomerDAOImpl");
         return null;
     }
 
-    /**
-     * This Method is not supported in this subclass.
-     * @throws UnsupportedOperationException if called.
-     */
     @Override
     protected String getForeignKeyColumnLabel() {
         log.error("Method getForeignKeyColumnLabel() is not supported in CustomerDAOImpl");

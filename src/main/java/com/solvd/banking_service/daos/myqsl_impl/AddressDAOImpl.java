@@ -3,6 +3,7 @@ package com.solvd.banking_service.daos.myqsl_impl;
 import com.solvd.banking_service.daos.IAddressDAO;
 import com.solvd.banking_service.models.customer.Address;
 import com.solvd.banking_service.models.customer.enums.AddressType;
+import com.solvd.banking_service.services.database_connection.MyConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,24 +20,32 @@ public class AddressDAOImpl extends MYSQLImpl<Address,Long> implements IAddressD
 
     private static final Logger log = LogManager.getLogger(AddressDAOImpl.class);
 
-    public AddressDAOImpl(Connection connection) {
-        super(connection);
-    }
+    private static final String CREATE_WITH_CUSTOMER_ID =
+            "INSERT INTO " + "addresses" + " (customer_id, type, street, city, country, postal_code) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE =
+            "UPDATE " + "addresses" + " SET type = ?, street = ?, city = ?, country = ?, postal_code = ? WHERE Id = ?";
 
     @Override
     public void createWithCustomerId(Address address, Long customerId) {
-        String sql = "INSERT INTO " + getTableName() + " (customer_id, type, street, city, country, postal_code) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, customerId);
-            stmt.setString(2, address.getAddressType().toString().toUpperCase());
-            stmt.setString(3, address.getStreet());
-            stmt.setString(4, address.getCity());
-            stmt.setString(5, address.getCountry());
-            stmt.setString(6, address.getPostalCode());
-            stmt.executeUpdate();
-            log.info("Address was created/inserted successfully.");
-        } catch (SQLException e) {
+        Connection connection = null;
+        try {
+            connection = MyConnectionPool.getConnection();
+            try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_CUSTOMER_ID)) {
+                stmt.setLong(1, customerId);
+                stmt.setString(2, address.getAddressType().toString().toUpperCase());
+                stmt.setString(3, address.getStreet());
+                stmt.setString(4, address.getCity());
+                stmt.setString(5, address.getCountry());
+                stmt.setString(6, address.getPostalCode());
+                stmt.executeUpdate();
+                log.info("Address was created/inserted successfully.");
+            }
+        }catch (SQLException | InterruptedException e) {
             log.error(e);
+        }finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
         }
     }
 
@@ -47,18 +56,25 @@ public class AddressDAOImpl extends MYSQLImpl<Address,Long> implements IAddressD
 
     @Override
     public void update(Address address) {
-        String sql = "UPDATE " + getTableName() + " SET type = ?, street = ?, city = ?, country = ?, postal_code = ? WHERE Id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, address.getAddressType().toString().toUpperCase());
-            stmt.setString(2, address.getStreet());
-            stmt.setString(3, address.getCity());
-            stmt.setString(4, address.getCountry());
-            stmt.setString(5, address.getPostalCode());
-            stmt.setLong(6, address.getId());
-            stmt.executeUpdate();
-            log.info("Address was updated successfully.");
-        } catch (SQLException e) {
+        Connection connection = null;
+        try {
+            connection = MyConnectionPool.getConnection();
+            try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
+                stmt.setString(1, address.getAddressType().toString().toUpperCase());
+                stmt.setString(2, address.getStreet());
+                stmt.setString(3, address.getCity());
+                stmt.setString(4, address.getCountry());
+                stmt.setString(5, address.getPostalCode());
+                stmt.setLong(6, address.getId());
+                stmt.executeUpdate();
+                log.info("Address was updated successfully.");
+            }
+        }catch (SQLException | InterruptedException e) {
             log.error(e);
+        }finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
         }
     }
 
@@ -95,5 +111,4 @@ public class AddressDAOImpl extends MYSQLImpl<Address,Long> implements IAddressD
         }
         return address;
     }
-
 }

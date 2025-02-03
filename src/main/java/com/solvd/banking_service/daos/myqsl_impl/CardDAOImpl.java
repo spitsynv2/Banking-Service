@@ -3,6 +3,7 @@ package com.solvd.banking_service.daos.myqsl_impl;
 import com.solvd.banking_service.daos.ICardDAO;
 import com.solvd.banking_service.models.account.Card;
 import com.solvd.banking_service.models.account.enums.CardType;
+import com.solvd.banking_service.services.database_connection.MyConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,24 +20,34 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
 
     private static final Logger log = LogManager.getLogger(CardDAOImpl.class);
 
-    public CardDAOImpl(Connection connection) {
-        super(connection);
-    }
+    private static final String CREATE_WITH_ACCOUNT_ID =
+            "INSERT INTO " + "cards"+ " (account_id, card_number, card_type, expiry_date, cvv, is_active) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE =
+            "UPDATE " + "cards" + " SET card_number = ?, card_type = ?, expiry_date = ?, cvv = ?, is_active = ? WHERE Id = ?";
+    private static final String CHECK_CARD_NUMBER_EXISTS =
+            "SELECT COUNT(*) FROM " + "cards" + " WHERE card_number = ?";
 
     @Override
     public void createWithAccountId(Card card, Long accountId) {
-        String sql = "INSERT INTO " + getTableName() + " (account_id, card_number, card_type, expiry_date, cvv, is_active) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, accountId);
-            stmt.setString(2, card.getCardNumber());
-            stmt.setString(3, card.getCardType().toString().toUpperCase());
-            stmt.setDate(4, new java.sql.Date(card.getExpiryDate().getTime()));
-            stmt.setString(5, card.getCvv());
-            stmt.setInt(6, card.isActive() ? 1 : 0);
-            stmt.executeUpdate();
-            log.info("Address was created/inserted successfully.");
-        } catch (SQLException e) {
+        Connection connection = null;
+        try {
+            connection = MyConnectionPool.getConnection();
+            try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_ACCOUNT_ID)) {
+                stmt.setLong(1, accountId);
+                stmt.setString(2, card.getCardNumber());
+                stmt.setString(3, card.getCardType().toString().toUpperCase());
+                stmt.setDate(4, new java.sql.Date(card.getExpiryDate().getTime()));
+                stmt.setString(5, card.getCvv());
+                stmt.setInt(6, card.isActive() ? 1 : 0);
+                stmt.executeUpdate();
+                log.info("Card was created/inserted successfully.");
+            }
+        }catch (SQLException | InterruptedException e) {
             log.error(e);
+        }finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
         }
     }
 
@@ -47,18 +58,25 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
 
     @Override
     public void update(Card card) {
-        String sql = "UPDATE " + getTableName() + " SET card_number = ?, card_type = ?, expiry_date = ?, cvv = ?, is_active = ? WHERE Id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, card.getCardNumber());
-            stmt.setString(2, card.getCardType().toString().toUpperCase());
-            stmt.setDate(3, new java.sql.Date(card.getExpiryDate().getTime()));
-            stmt.setString(4, card.getCvv());
-            stmt.setInt(5, card.isActive() ? 1 : 0);
-            stmt.setLong(6,card.getId());
-            stmt.executeUpdate();
-            log.info("Address was updated successfully.");
-        } catch (SQLException e) {
+        Connection connection = null;
+        try {
+            connection = MyConnectionPool.getConnection();
+            try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
+                stmt.setString(1, card.getCardNumber());
+                stmt.setString(2, card.getCardType().toString().toUpperCase());
+                stmt.setDate(3, new java.sql.Date(card.getExpiryDate().getTime()));
+                stmt.setString(4, card.getCvv());
+                stmt.setInt(5, card.isActive() ? 1 : 0);
+                stmt.setLong(6,card.getId());
+                stmt.executeUpdate();
+                log.info("Card was updated successfully.");
+            }
+        }catch (SQLException | InterruptedException e) {
             log.error(e);
+        }finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
         }
     }
 
@@ -69,17 +87,23 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
 
     @Override
     public boolean checkCardNumberExists(String cardNumber) {
-        String sql = "SELECT COUNT(*) FROM " + getTableName() + " WHERE card_number = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setString(1, cardNumber);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return resultSet.getInt(1) > 0;
+        Connection connection = null;
+        try {
+            connection = MyConnectionPool.getConnection();
+            try (PreparedStatement statement = connection.prepareStatement(CHECK_CARD_NUMBER_EXISTS)) {
+                statement.setString(1, cardNumber);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getInt(1) > 0;
+                    }
                 }
             }
-        } catch (SQLException e) {
+        }catch (SQLException | InterruptedException e) {
             log.error(e);
+        }finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
         }
         return false;
     }

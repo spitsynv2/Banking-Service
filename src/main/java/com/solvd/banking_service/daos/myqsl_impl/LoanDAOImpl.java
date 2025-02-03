@@ -4,6 +4,7 @@ import com.solvd.banking_service.daos.ILoanDAO;
 import com.solvd.banking_service.models.account.Loan;
 import com.solvd.banking_service.models.account.enums.loan_enums.LoanStatus;
 import com.solvd.banking_service.models.account.enums.loan_enums.LoanType;
+import com.solvd.banking_service.services.database_connection.MyConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,27 +20,36 @@ import java.sql.SQLException;
 public class LoanDAOImpl extends MYSQLImpl<Loan,Long> implements ILoanDAO {
 
     private static final Logger log = LogManager.getLogger(LoanDAOImpl.class);
-
-    public LoanDAOImpl(Connection connection) {
-        super(connection);
-    }
+    private static final String CREATE_WITH_ACCOUNT_ID =
+            "INSERT INTO " + "loans" + " (account_id, loan_type, amount, interest_rate, " +
+                    "term_months, start_date, payment_date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE =
+            "UPDATE " + "loans" + " SET loan_type = ?, amount = ?, interest_rate = ?, " +
+                    "term_months = ?, start_date = ?, payment_date = ?, status = ? WHERE Id = ?";
 
     @Override
     public void createWithAccountId(Loan loan, Long accountId) {
-        String sql = "INSERT INTO " + getTableName() + " (account_id, loan_type, amount, interest_rate, term_months, start_date, payment_date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, accountId);
-            stmt.setString(2,loan.getLoanType().toString().toUpperCase());
-            stmt.setDouble(3,loan.getAmount());
-            stmt.setDouble(4, loan.getInterestRate());
-            stmt.setInt(5, loan.getTermMonths());
-            stmt.setDate(6, new java.sql.Date(loan.getStartDate().getTime()));
-            stmt.setDate(7, new java.sql.Date(loan.getPaymentDate().getTime()));
-            stmt.setString(8, loan.getLoanStatus().toString().toUpperCase());
-            stmt.executeUpdate();
-            log.info("Loan was created/inserted successfully.");
-        } catch (SQLException e) {
+        Connection connection = null;
+        try {
+            connection = MyConnectionPool.getConnection();
+            try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_ACCOUNT_ID)) {
+                stmt.setLong(1, accountId);
+                stmt.setString(2,loan.getLoanType().toString().toUpperCase());
+                stmt.setDouble(3,loan.getAmount());
+                stmt.setDouble(4, loan.getInterestRate());
+                stmt.setInt(5, loan.getTermMonths());
+                stmt.setDate(6, new java.sql.Date(loan.getStartDate().getTime()));
+                stmt.setDate(7, new java.sql.Date(loan.getPaymentDate().getTime()));
+                stmt.setString(8, loan.getLoanStatus().toString().toUpperCase());
+                stmt.executeUpdate();
+                log.info("Loan was created/inserted successfully.");
+            }
+        }catch (SQLException | InterruptedException e) {
             log.error(e);
+        }finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
         }
     }
 
@@ -50,20 +60,27 @@ public class LoanDAOImpl extends MYSQLImpl<Loan,Long> implements ILoanDAO {
 
     @Override
     public void update(Loan loan) {
-        String sql = "UPDATE " + getTableName() + " SET loan_type = ?, amount = ?, interest_rate = ?, term_months = ?, start_date = ?, payment_date = ?, status = ? WHERE Id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1,loan.getLoanType().toString().toUpperCase());
-            stmt.setDouble(2,loan.getAmount());
-            stmt.setDouble(3, loan.getInterestRate());
-            stmt.setInt(4, loan.getTermMonths());
-            stmt.setDate(5, new java.sql.Date(loan.getStartDate().getTime()));
-            stmt.setDate(6, new java.sql.Date(loan.getPaymentDate().getTime()));
-            stmt.setString(7, loan.getLoanStatus().toString().toUpperCase());
-            stmt.setLong(8, loan.getId());
-            stmt.executeUpdate();
-            log.info("Loan was updated successfully.");
-        } catch (SQLException e) {
+        Connection connection = null;
+        try {
+            connection = MyConnectionPool.getConnection();
+            try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
+                stmt.setString(1,loan.getLoanType().toString().toUpperCase());
+                stmt.setDouble(2,loan.getAmount());
+                stmt.setDouble(3, loan.getInterestRate());
+                stmt.setInt(4, loan.getTermMonths());
+                stmt.setDate(5, new java.sql.Date(loan.getStartDate().getTime()));
+                stmt.setDate(6, new java.sql.Date(loan.getPaymentDate().getTime()));
+                stmt.setString(7, loan.getLoanStatus().toString().toUpperCase());
+                stmt.setLong(8, loan.getId());
+                stmt.executeUpdate();
+                log.info("Loan was updated successfully.");
+            }
+        }catch (SQLException | InterruptedException e) {
             log.error(e);
+        }finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
         }
     }
 

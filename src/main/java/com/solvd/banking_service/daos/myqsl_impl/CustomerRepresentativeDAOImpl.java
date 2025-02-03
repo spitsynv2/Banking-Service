@@ -2,6 +2,7 @@ package com.solvd.banking_service.daos.myqsl_impl;
 
 import com.solvd.banking_service.daos.ICustomerRepresentativeDAO;
 import com.solvd.banking_service.models.customer.CustomerRepresentative;
+import com.solvd.banking_service.services.database_connection.MyConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,25 +19,37 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
 
     private static final Logger log = LogManager.getLogger(CustomerRepresentativeDAOImpl.class);
 
-    public CustomerRepresentativeDAOImpl(Connection connection) {
-        super(connection);
-    }
+    private static final String CREATE_WITH_COMPANY_ID =
+            "INSERT INTO " + "customer_representatives" + " (company_id, first_name, last_name, email, phone_number, " +
+                    "position, is_primary_contact) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE = "UPDATE " + "customer_representatives" + " SET first_name = ?, last_name = ?, " +
+            "email = ?, phone_number = ?, position = ?, is_primary_contact = ? WHERE Id = ?";
+    private static final String DELETE = "DELETE FROM " + "customer_representatives" + " WHERE Id = ?";
+    private static final String CHECK_EMAIL_EXISTS  = "SELECT COUNT(*) FROM " + "customer_representatives" + " WHERE email = ?";
+
 
     @Override
     public void createWithCompanyId(CustomerRepresentative representative,Long companyId) {
-        String sql = "INSERT INTO " + getTableName() + " (company_id, first_name, last_name, email, phone_number, position, is_primary_contact) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, companyId);
-            stmt.setString(2, representative.getFirstName());
-            stmt.setString(3, representative.getLastName());
-            stmt.setString(4, representative.getEmail());
-            stmt.setString(5, representative.getPhoneNumber());
-            stmt.setString(6, representative.getPosition());
-            stmt.setInt(7, representative.isPrimaryContact() ? 1 : 0);
-            stmt.executeUpdate();
-            log.info("CustomerRepresentative was inserted/created successfully.");
-        } catch (SQLException e) {
+        Connection connection = null;
+        try {
+            connection = MyConnectionPool.getConnection();
+            try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_COMPANY_ID)) {
+                stmt.setLong(1, companyId);
+                stmt.setString(2, representative.getFirstName());
+                stmt.setString(3, representative.getLastName());
+                stmt.setString(4, representative.getEmail());
+                stmt.setString(5, representative.getPhoneNumber());
+                stmt.setString(6, representative.getPosition());
+                stmt.setInt(7, representative.isPrimaryContact() ? 1 : 0);
+                stmt.executeUpdate();
+                log.info("CustomerRepresentative was inserted/created successfully.");
+            }
+        }catch (SQLException | InterruptedException e) {
             log.error(e);
+        }finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
         }
     }
 
@@ -47,32 +60,70 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
 
     @Override
     public void update(CustomerRepresentative representative) {
-        String sql = "UPDATE " + getTableName() + " SET first_name = ?, last_name = ?, email = ?, phone_number = ?, position = ?, is_primary_contact = ? WHERE Id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, representative.getFirstName());
-            stmt.setString(2, representative.getLastName());
-            stmt.setString(3, representative.getEmail());
-            stmt.setString(4, representative.getPhoneNumber());
-            stmt.setString(5, representative.getPosition());
-            stmt.setInt(6, representative.isPrimaryContact() ? 1 : 0);
-            stmt.setLong(7, representative.getId());
-            stmt.executeUpdate();
-            log.info("CustomerRepresentative was updated successfully.");
-        } catch (SQLException e) {
+        Connection connection = null;
+        try {
+            connection = MyConnectionPool.getConnection();
+            try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
+                stmt.setString(1, representative.getFirstName());
+                stmt.setString(2, representative.getLastName());
+                stmt.setString(3, representative.getEmail());
+                stmt.setString(4, representative.getPhoneNumber());
+                stmt.setString(5, representative.getPosition());
+                stmt.setInt(6, representative.isPrimaryContact() ? 1 : 0);
+                stmt.setLong(7, representative.getId());
+                stmt.executeUpdate();
+                log.info("CustomerRepresentative was updated successfully.");
+            }
+        }catch (SQLException | InterruptedException e) {
             log.error(e);
+        }finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
         }
     }
 
     @Override
     public void delete(CustomerRepresentative customerRepresentative) {
-        String sql = "DELETE FROM " + getTableName() + " WHERE Id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, customerRepresentative.getId());
-            stmt.executeUpdate();
-            log.info("CustomerRepresentative was deleted from database.");
-        } catch (SQLException e) {
+        Connection connection = null;
+        try {
+            connection = MyConnectionPool.getConnection();
+            try (PreparedStatement stmt = connection.prepareStatement(DELETE)) {
+                stmt.setLong(1, customerRepresentative.getId());
+                stmt.executeUpdate();
+                log.info("CustomerRepresentative was deleted from database.");
+            }
+        }catch (SQLException | InterruptedException e) {
             log.error(e);
+        }finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
         }
+    }
+
+    @Override
+    public boolean checkEmailExists(String cardNumber) {
+        Connection connection = null;
+        try {
+            connection = MyConnectionPool.getConnection();
+            try (PreparedStatement statement = connection.prepareStatement(CHECK_EMAIL_EXISTS)) {
+                statement.setString(1, cardNumber);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getInt(1) > 0;
+                    }
+                }
+            }
+        }catch (SQLException | InterruptedException e) {
+            log.error(e);
+            return false;
+        }finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
+        }
+        return false;
     }
 
     @Override
@@ -91,24 +142,6 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
             return null;
         }
         return customerRepresentative;
-    }
-
-    @Override
-    public boolean checkEmailExists(String cardNumber) {
-        String sql = "SELECT COUNT(*) FROM " + getTableName() + " WHERE email = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setString(1, cardNumber);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return resultSet.getInt(1) > 0;
-                }
-            }
-        } catch (SQLException e) {
-            log.error(e);
-            return false;
-        }
-        return false;
     }
 
     @Override

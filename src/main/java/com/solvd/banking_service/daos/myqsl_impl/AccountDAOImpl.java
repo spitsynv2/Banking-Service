@@ -4,6 +4,7 @@ import com.solvd.banking_service.daos.IAccountDAO;
 import com.solvd.banking_service.models.account.Account;
 import com.solvd.banking_service.models.account.enums.account_enums.AccountStatus;
 import com.solvd.banking_service.models.account.enums.account_enums.AccountType;
+import com.solvd.banking_service.services.database_connection.MyConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,24 +18,32 @@ public class AccountDAOImpl extends MYSQLImpl<Account,Long> implements IAccountD
 
     private static final Logger log = LogManager.getLogger(AccountDAOImpl.class);
 
-    public AccountDAOImpl(Connection connection) {
-        super(connection);
-    }
+    private static final String CREATE_WITH_CUSTOMER_ID =
+            "INSERT INTO " + "accounts" + " (customer_id, account_type, balance, currency, opened_date, status) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE =
+            "UPDATE " + "accounts" + " SET account_type = ?, balance = ?, currency = ?, opened_date = ?, status = ? WHERE Id = ?";
 
     @Override
     public void createWithCustomerId(Account account, Long customerId) {
-        String sql = "INSERT INTO " + getTableName() + " (customer_id, account_type, balance, currency, opened_date, status) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, customerId);
-            stmt.setString(2, account.getAccountType().toString().toUpperCase());
-            stmt.setDouble(3, account.getBalance());
-            stmt.setString(4, account.getCurrency());
-            stmt.setTimestamp(5, Timestamp.valueOf(account.getOpenedDate()));
-            stmt.setString(6, account.getAccountStatus().toString().toUpperCase());
-            stmt.executeUpdate();
-            log.info("Account was created/inserted successfully.");
-        } catch (SQLException e) {
+        Connection connection = null;
+        try {
+            connection = MyConnectionPool.getConnection();
+            try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_CUSTOMER_ID)) {
+                stmt.setLong(1, customerId);
+                stmt.setString(2, account.getAccountType().toString().toUpperCase());
+                stmt.setDouble(3, account.getBalance());
+                stmt.setString(4, account.getCurrency());
+                stmt.setTimestamp(5, Timestamp.valueOf(account.getOpenedDate()));
+                stmt.setString(6, account.getAccountStatus().toString().toUpperCase());
+                stmt.executeUpdate();
+                log.info("Account was created/inserted successfully.");
+            }
+        }catch (SQLException | InterruptedException e) {
             log.error(e);
+        }finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
         }
     }
 
@@ -45,18 +54,25 @@ public class AccountDAOImpl extends MYSQLImpl<Account,Long> implements IAccountD
 
     @Override
     public void update(Account account) {
-        String sql = "UPDATE " + getTableName() + " SET account_type = ?, balance = ?, currency = ?, opened_date = ?, status = ? WHERE Id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, account.getAccountType().toString().toUpperCase());
-            stmt.setDouble(2, account.getBalance());
-            stmt.setString(3, account.getCurrency());
-            stmt.setTimestamp(4, Timestamp.valueOf(account.getOpenedDate()));
-            stmt.setString(5, account.getAccountStatus().toString().toUpperCase());
-            stmt.setLong(6, account.getId());
-            stmt.executeUpdate();
-            log.info("Account was updated successfully.");
-        } catch (SQLException e) {
+        Connection connection = null;
+        try {
+            connection = MyConnectionPool.getConnection();
+            try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
+                stmt.setString(1, account.getAccountType().toString().toUpperCase());
+                stmt.setDouble(2, account.getBalance());
+                stmt.setString(3, account.getCurrency());
+                stmt.setTimestamp(4, Timestamp.valueOf(account.getOpenedDate()));
+                stmt.setString(5, account.getAccountStatus().toString().toUpperCase());
+                stmt.setLong(6, account.getId());
+                stmt.executeUpdate();
+                log.info("Account was updated successfully.");
+            }
+        }catch (SQLException | InterruptedException e) {
             log.error(e);
+        }finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
         }
     }
 

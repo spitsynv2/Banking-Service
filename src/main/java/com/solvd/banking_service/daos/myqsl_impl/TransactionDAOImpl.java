@@ -21,19 +21,23 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
 
     private static final Logger log = LogManager.getLogger(TransactionDAOImpl.class);
 
-    public TransactionDAOImpl(Connection connection) {
-        super(connection);
-    }
+    private static final String READ_ALL_BY_FOREIGN_KEY_ID =
+            "SELECT * FROM " + "transactions" + " WHERE from_account_id = ? OR to_account_id = ?";
+    private static final String CREATE_WITH_ACCOUNT_ID =
+            "INSERT INTO " + "transactions" + " (from_account_id, to_account_id, transaction_type, amount, " +
+                    "transaction_date, description, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE =
+            "UPDATE " + "transactions" + " SET from_account_id = ?, to_account_id = ?, transaction_type = ?, " +
+                    "amount = ?, transaction_date = ?, description = ?, status = ? WHERE Id = ?";
+
 
     public List<Transaction> readAllByForeignKeyId(Long foreignKeyId) {
         Connection connection = null;
         List<Transaction> transactionList = new ArrayList<>();
 
-        String sql = "SELECT * FROM " + getTableName() + " WHERE from_account_id = ? OR to_account_id = ?";
-
         try {
             connection = MyConnectionPool.getConnection();
-            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            try (PreparedStatement stmt = connection.prepareStatement(READ_ALL_BY_FOREIGN_KEY_ID)) {
                 stmt.setLong(1, foreignKeyId);
                 stmt.setLong(2, foreignKeyId);
                 try (ResultSet rs = stmt.executeQuery()) {
@@ -57,20 +61,27 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
 
     @Override
     public void createWithAccountId(Transaction transaction, Long accountId) {
-        String sql = "INSERT INTO " + getTableName() + " (from_account_id, to_account_id, transaction_type, amount, transaction_date, description, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            //stmt.setLong(1, accountId);
-            stmt.setLong(1,transaction.getFromAccountId());
-            stmt.setLong(2, transaction.getToAccountId());
-            stmt.setString(3,transaction.getTransactionType().toString().toUpperCase());
-            stmt.setDouble(4,transaction.getAmount());
-            stmt.setTimestamp(5, Timestamp.valueOf(transaction.getTransactionDate()));
-            stmt.setString(6,transaction.getDescription());
-            stmt.setString(7,transaction.getTransactionStatus().toString().toUpperCase());
-            stmt.executeUpdate();
-            log.info("Transaction was created/inserted successfully.");
-        } catch (SQLException e) {
+        Connection connection = null;
+        try {
+            connection = MyConnectionPool.getConnection();
+            try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_ACCOUNT_ID)) {
+                //stmt.setLong(1, accountId);
+                stmt.setLong(1,transaction.getFromAccountId());
+                stmt.setLong(2, transaction.getToAccountId());
+                stmt.setString(3,transaction.getTransactionType().toString().toUpperCase());
+                stmt.setDouble(4,transaction.getAmount());
+                stmt.setTimestamp(5, Timestamp.valueOf(transaction.getTransactionDate()));
+                stmt.setString(6,transaction.getDescription());
+                stmt.setString(7,transaction.getTransactionStatus().toString().toUpperCase());
+                stmt.executeUpdate();
+                log.info("Transaction was created/inserted successfully.");
+            }
+        }catch (SQLException | InterruptedException e) {
             log.error(e);
+        }finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
         }
     }
 
@@ -81,20 +92,27 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
 
     @Override
     public void update(Transaction transaction) {
-        String sql = "UPDATE " + getTableName() + " SET from_account_id = ?, to_account_id = ?, transaction_type = ?, amount = ?, transaction_date = ?, description = ?, status = ? WHERE Id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, transaction.getFromAccountId());
-            stmt.setLong(2, transaction.getToAccountId());
-            stmt.setString(3,transaction.getTransactionType().toString().toUpperCase());
-            stmt.setDouble(4,transaction.getAmount());
-            stmt.setTimestamp(5, Timestamp.valueOf(transaction.getTransactionDate()));
-            stmt.setString(6,transaction.getDescription());
-            stmt.setString(7,transaction.getTransactionStatus().toString().toUpperCase());
-            stmt.setLong(8,transaction.getId());
-            stmt.executeUpdate();
-            log.info("Transaction was Updated successfully.");
-        } catch (SQLException e) {
+        Connection connection = null;
+        try {
+            connection = MyConnectionPool.getConnection();
+            try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
+                stmt.setLong(1, transaction.getFromAccountId());
+                stmt.setLong(2, transaction.getToAccountId());
+                stmt.setString(3,transaction.getTransactionType().toString().toUpperCase());
+                stmt.setDouble(4,transaction.getAmount());
+                stmt.setTimestamp(5, Timestamp.valueOf(transaction.getTransactionDate()));
+                stmt.setString(6,transaction.getDescription());
+                stmt.setString(7,transaction.getTransactionStatus().toString().toUpperCase());
+                stmt.setLong(8,transaction.getId());
+                stmt.executeUpdate();
+                log.info("Transaction was Updated successfully.");
+            }
+        }catch (SQLException | InterruptedException e) {
             log.error(e);
+        }finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
         }
     }
 

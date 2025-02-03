@@ -12,21 +12,16 @@ import java.util.List;
 public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
 
     private static final Logger log = LogManager.getLogger(MYSQLImpl.class);
-    protected Connection connection;
-
-    public MYSQLImpl(Connection connection) {
-        this.connection = connection;
-    }
 
     @Override
     public T readById(ID id) {
         Connection connection = null;
         T entity = null;
-        String sql = "SELECT * FROM " + getTableName() + " WHERE id = ?";
+        String READ_BY_ID = "SELECT * FROM " + getTableName() + " WHERE id = ?";
 
         try {
             connection = MyConnectionPool.getConnection();
-            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            try (PreparedStatement stmt = connection.prepareStatement(READ_BY_ID)) {
                 stmt.setObject(1, id);
                 try (ResultSet rs = stmt.executeQuery()) {
 
@@ -51,11 +46,11 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
     public List<T> readAllByForeignKeyId(Long foreignKeyId) {
         Connection connection = null;
         List<T> tList = new ArrayList<>();
-        String sql = "SELECT * FROM " + getTableName() + " WHERE " + getForeignKeyColumnLabel() + " = ?";
+        String READ_ALL_BY_FOREIGN_KEY_ID = "SELECT * FROM " + getTableName() + " WHERE " + getForeignKeyColumnLabel() + " = ?";
 
         try {
             connection = MyConnectionPool.getConnection();
-            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            try (PreparedStatement stmt = connection.prepareStatement(READ_ALL_BY_FOREIGN_KEY_ID)) {
                 stmt.setLong(1, foreignKeyId);
                 try (ResultSet rs = stmt.executeQuery()) {
 
@@ -85,11 +80,11 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
     @Override
     public void deleteById(ID id){
         Connection connection = null;
-        String sql = "DELETE FROM "+ getTableName() + " WHERE id = ?";
+        String DELETE_BY_ID = "DELETE FROM "+ getTableName() + " WHERE id = ?";
 
         try {
             connection = MyConnectionPool.getConnection();
-            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            try (PreparedStatement stmt = connection.prepareStatement(DELETE_BY_ID)) {
                 stmt.setObject(1, id);
                 stmt.executeUpdate();
             }

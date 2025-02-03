@@ -19,23 +19,19 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
 
     private static final Logger log = LogManager.getLogger(BranchDAOImpl.class);
 
-    private static final String INSERT_BRANCH =
+    private static final String INSERT=
             "INSERT INTO branches (branch_name, location, phone_number, open_date) VALUES (?, ?, ?, ?)";
-    private static final String INSERT_BRANCH_WITH_EMPLOYEE_ID =
+    private static final String CREATE_WITH_EMPLOYEE_ID =
             "INSERT INTO branches (employee_id, branch_name, location, phone_number, open_date) VALUES (?, ?, ?, ?, ?)";
-    private static final String UPDATE_BRANCH =
+    private static final String UPDATE=
             "UPDATE branches SET branch_name = ?, location = ?, phone_number = ?, open_date = ? WHERE id = ?";
-
-    public BranchDAOImpl(Connection connection) {
-        super(connection);
-    }
 
     @Override
     public void createWithEmployeeId(Branch branch, Long employeeId) {
         Connection connection = null;
         try {
             connection = MyConnectionPool.getConnection();
-            try (PreparedStatement stmt = connection.prepareStatement(INSERT_BRANCH_WITH_EMPLOYEE_ID)) {
+            try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_EMPLOYEE_ID)) {
                 stmt.setLong(1, employeeId);
                 stmt.setString(2, branch.getBranchName());
                 stmt.setString(3, branch.getLocation());
@@ -59,7 +55,7 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
         Connection connection = null;
         try {
             connection = MyConnectionPool.getConnection();
-            try (PreparedStatement stmt = connection.prepareStatement(INSERT_BRANCH)) {
+            try (PreparedStatement stmt = connection.prepareStatement(INSERT)) {
                 stmt.setString(1, branch.getBranchName());
                 stmt.setString(2, branch.getLocation());
                 stmt.setString(3, branch.getPhoneNumber());
@@ -82,7 +78,7 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
         Connection connection = null;
         try {
             connection = MyConnectionPool.getConnection();
-            try (PreparedStatement stmt = connection.prepareStatement(UPDATE_BRANCH)) {
+            try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
                 stmt.setString(1, branch.getBranchName());
                 stmt.setString(2, branch.getLocation());
                 stmt.setString(3, branch.getPhoneNumber());
