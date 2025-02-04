@@ -3,7 +3,7 @@ package com.solvd.banking_service.daos.myqsl_impl;
 import com.solvd.banking_service.daos.IAuditLogDAO;
 import com.solvd.banking_service.models.AuditLog;
 import com.solvd.banking_service.models.enums.LogActionType;
-import com.solvd.banking_service.services.database_connection.MyConnectionPool;
+import com.solvd.banking_service.daos.myqsl_impl.database_connection.MyConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,6 +18,36 @@ public class AuditLogDAOImpl extends MYSQLImpl<AuditLog,Long> implements IAuditL
     private static final Logger log = LogManager.getLogger(AuditLogDAOImpl.class);
     private static final String CREATE_WITH_CUSTOMER_ID =
             "INSERT INTO " + "audit_logs" + " (customer_id, employee_id, action_type, action_description, date) VALUES (?, ?, ?, ?, ?)";
+
+    @Override
+    public AuditLog readById(Long id) {
+        Connection connection = null;
+        AuditLog entity = null;
+        String READ_BY_ID = "SELECT * FROM " + getTableName() + " WHERE log_id = ?";
+
+        try {
+            connection = MyConnectionPool.getConnection();
+            try (PreparedStatement stmt = connection.prepareStatement(READ_BY_ID)) {
+                stmt.setObject(1, id);
+                try (ResultSet rs = stmt.executeQuery()) {
+
+                    if (rs.next()) {
+                        entity = mapResultSetToEntity(rs);
+                    }
+                }
+            }
+        }catch (SQLException | InterruptedException e) {
+            log.error("Error in reading by id: {}, from table: {}", id, getTableName(), e);
+            return null;
+        }finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
+        }
+
+        log.info("AuditLog: {} was successfully read from database", entity);
+        return entity;
+    }
 
     @Override
     public void createWithCustomerId(AuditLog auditLog, Long customerId) {

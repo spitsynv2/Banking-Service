@@ -1,4 +1,4 @@
-package com.solvd.banking_service.services.database_connection;
+package com.solvd.banking_service.daos.myqsl_impl.database_connection;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.apache.logging.log4j.LogManager;

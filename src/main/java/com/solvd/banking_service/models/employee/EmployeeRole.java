@@ -41,4 +41,13 @@ public class EmployeeRole {
     public void setResponsibilities(String responsibilities) {
         this.responsibilities = responsibilities;
     }
+
+    @Override
+    public String toString() {
+        return "EmployeeRole{" +
+                "id=" + id +
+                ", roleName='" + roleName + '\'' +
+                ", responsibilities='" + responsibilities + '\'' +
+                '}';
+    }
 }

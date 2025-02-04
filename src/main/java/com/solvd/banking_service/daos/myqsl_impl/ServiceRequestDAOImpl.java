@@ -4,7 +4,7 @@ import com.solvd.banking_service.daos.IServiceRequestDAO;
 import com.solvd.banking_service.models.ServiceRequest;
 import com.solvd.banking_service.models.enums.service_request_enums.ServiceRequestStatus;
 import com.solvd.banking_service.models.enums.service_request_enums.ServiceRequestType;
-import com.solvd.banking_service.services.database_connection.MyConnectionPool;
+import com.solvd.banking_service.daos.myqsl_impl.database_connection.MyConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

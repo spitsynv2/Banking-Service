@@ -100,11 +100,11 @@ public class Employee {
         this.hireDate = hireDate;
     }
 
-    public List<Branch> getBranch() {
+    public List<Branch> getBranches() {
         return branches;
     }
 
-    public void setBranch(List<Branch> branches) {
+    public void setBranches(List<Branch> branches) {
         this.branches = branches;
     }
 
@@ -114,5 +114,20 @@ public class Employee {
 
     public void setRoles(List<EmployeeRole> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", jobTitle='" + jobTitle + '\'' +
+                ", hireDate=" + hireDate +
+                ", branches=" + branches +
+                ", roles=" + roles +
+                '}';
     }
 }

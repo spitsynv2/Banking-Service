@@ -62,4 +62,15 @@ public class Branch {
     public void setOpenDate(Date openDate) {
         this.openDate = openDate;
     }
+
+    @Override
+    public String toString() {
+        return "Branch{" +
+                "id=" + id +
+                ", branchName='" + branchName + '\'' +
+                ", location='" + location + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", openDate=" + openDate +
+                '}';
+    }
 }

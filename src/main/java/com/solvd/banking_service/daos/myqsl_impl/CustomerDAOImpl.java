@@ -5,7 +5,7 @@ import com.solvd.banking_service.models.customer.CompanyCustomer;
 import com.solvd.banking_service.models.customer.Customer;
 import com.solvd.banking_service.models.customer.CustomerRepresentative;
 import com.solvd.banking_service.models.customer.IndividualCustomer;
-import com.solvd.banking_service.services.database_connection.MyConnectionPool;
+import com.solvd.banking_service.daos.myqsl_impl.database_connection.MyConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

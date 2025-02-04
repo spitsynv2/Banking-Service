@@ -4,7 +4,7 @@ import com.solvd.banking_service.daos.IDepositDAO;
 import com.solvd.banking_service.models.account.Deposit;
 import com.solvd.banking_service.models.account.enums.deposit_enums.DepositStatus;
 import com.solvd.banking_service.models.account.enums.deposit_enums.DepositType;
-import com.solvd.banking_service.services.database_connection.MyConnectionPool;
+import com.solvd.banking_service.daos.myqsl_impl.database_connection.MyConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,9 +17,9 @@ import java.sql.SQLException;
  * @author Vadym Spitsyn
  * @created 2025-01-30
  */
-public class DepositDAO extends MYSQLImpl<Deposit,Long> implements IDepositDAO {
+public class DepositDAOImpl extends MYSQLImpl<Deposit,Long> implements IDepositDAO {
 
-    private static final Logger log = LogManager.getLogger(DepositDAO.class);
+    private static final Logger log = LogManager.getLogger(DepositDAOImpl.class);
 
     private static final String CREATE_WITH_ACCOUNT_ID ="INSERT INTO " + "deposits" + " (account_id, deposit_type, " +
             "amount, interest_rate, term_months, start_date, maturity_date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";

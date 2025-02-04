@@ -2,7 +2,7 @@ package com.solvd.banking_service.daos.myqsl_impl;
 
 import com.solvd.banking_service.daos.IBranchDAO;
 import com.solvd.banking_service.models.employee.Branch;
-import com.solvd.banking_service.services.database_connection.MyConnectionPool;
+import com.solvd.banking_service.daos.myqsl_impl.database_connection.MyConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

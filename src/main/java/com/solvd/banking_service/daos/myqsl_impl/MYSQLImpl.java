@@ -1,7 +1,7 @@
 package com.solvd.banking_service.daos.myqsl_impl;
 
 import com.solvd.banking_service.daos.IDAO;
-import com.solvd.banking_service.services.database_connection.MyConnectionPool;
+import com.solvd.banking_service.daos.myqsl_impl.database_connection.MyConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -43,7 +43,8 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
         return entity;
     }
 
-    public List<T> readAllByForeignKeyId(Long foreignKeyId) {
+    @Override
+    public List<T> readAllByForeignKeyId(ID foreignKeyId) {
         Connection connection = null;
         List<T> tList = new ArrayList<>();
         String READ_ALL_BY_FOREIGN_KEY_ID = "SELECT * FROM " + getTableName() + " WHERE " + getForeignKeyColumnLabel() + " = ?";
@@ -51,7 +52,7 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
         try {
             connection = MyConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(READ_ALL_BY_FOREIGN_KEY_ID)) {
-                stmt.setLong(1, foreignKeyId);
+                stmt.setObject(1, foreignKeyId);
                 try (ResultSet rs = stmt.executeQuery()) {
 
                     while (rs.next()) {

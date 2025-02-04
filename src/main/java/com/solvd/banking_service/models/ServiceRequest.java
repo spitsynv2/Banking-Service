@@ -94,4 +94,19 @@ public class ServiceRequest {
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
+
+    @Override
+    public String toString() {
+        return "ServiceRequest{" +
+                "id=" + id +
+                ", employeeId=" + employeeId +
+                ", customerId=" + customerId +
+                ", serviceRequestType=" + serviceRequestType +
+                ", serviceRequestStatus=" + serviceRequestStatus +
+                ", createdAt=" + createdAt +
+                ", resolvedAt=" + resolvedAt +
+                ", notes='" + notes + '\'' +
+                ", appointments=" + appointments +
+                '}';
+    }
 }

@@ -4,7 +4,7 @@ import com.solvd.banking_service.daos.ITransactionDAO;
 import com.solvd.banking_service.models.account.Transaction;
 import com.solvd.banking_service.models.account.enums.transaction_enums.TransactionStatus;
 import com.solvd.banking_service.models.account.enums.transaction_enums.TransactionType;
-import com.solvd.banking_service.services.database_connection.MyConnectionPool;
+import com.solvd.banking_service.daos.myqsl_impl.database_connection.MyConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -55,7 +55,12 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
             }
         }
 
-        log.info("TransactionList: {} were successfully readAllByIdentifier from database table: {}", transactionList, getTableName());
+        if (!transactionList.isEmpty()) {
+            log.info("{}List: {} were successfully readAllByIdentifier from database table: {}",
+                    transactionList.getFirst().getClass().getSimpleName(), transactionList, getTableName());
+        }else {
+            log.info("No records found in database table: {}", getTableName());
+        }
         return transactionList;
     }
 

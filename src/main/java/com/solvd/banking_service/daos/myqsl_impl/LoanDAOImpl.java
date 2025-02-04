@@ -4,7 +4,7 @@ import com.solvd.banking_service.daos.ILoanDAO;
 import com.solvd.banking_service.models.account.Loan;
 import com.solvd.banking_service.models.account.enums.loan_enums.LoanStatus;
 import com.solvd.banking_service.models.account.enums.loan_enums.LoanType;
-import com.solvd.banking_service.services.database_connection.MyConnectionPool;
+import com.solvd.banking_service.daos.myqsl_impl.database_connection.MyConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
