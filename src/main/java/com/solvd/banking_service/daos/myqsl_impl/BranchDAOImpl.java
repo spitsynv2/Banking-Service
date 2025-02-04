@@ -2,7 +2,7 @@ package com.solvd.banking_service.daos.myqsl_impl;
 
 import com.solvd.banking_service.daos.IBranchDAO;
 import com.solvd.banking_service.models.employee.Branch;
-import com.solvd.banking_service.daos.myqsl_impl.database_connection.MyConnectionPool;
+import com.solvd.banking_service.utils.database_connection.MySQLConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,7 +32,7 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
     public void createWithEmployeeId(Branch branch, Long employeeId) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_EMPLOYEE_ID)) {
                 stmt.setLong(1, employeeId);
                 stmt.setString(2, branch.getBranchName());
@@ -47,7 +47,7 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
             log.error("Error inserting branch {}, with employee_id {}", branch, employeeId, e);
         } finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }
@@ -56,7 +56,7 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
     public void updateWithEmployeeId(Branch branch, Long employeeId) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE_WITH_EMPLOYEE_ID)) {
                 stmt.setLong(1,employeeId);
                 stmt.setString(2, branch.getBranchName());
@@ -72,7 +72,7 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
             log.error("Error updating branch WithEmployeeId {}", branch, e);
         } finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }
@@ -81,7 +81,7 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
     public void create(Branch branch) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(INSERT)) {
                 stmt.setString(1, branch.getBranchName());
                 stmt.setString(2, branch.getLocation());
@@ -95,7 +95,7 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
             log.error("Error inserting branch {}", branch, e);
         } finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }
@@ -104,7 +104,7 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
     public void update(Branch branch) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
                 stmt.setString(1, branch.getBranchName());
                 stmt.setString(2, branch.getLocation());
@@ -119,7 +119,7 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
             log.error("Error updating branch {}", branch, e);
         } finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }

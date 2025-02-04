@@ -4,7 +4,7 @@ import com.solvd.banking_service.daos.IServiceRequestDAO;
 import com.solvd.banking_service.models.ServiceRequest;
 import com.solvd.banking_service.models.enums.service_request_enums.ServiceRequestStatus;
 import com.solvd.banking_service.models.enums.service_request_enums.ServiceRequestType;
-import com.solvd.banking_service.daos.myqsl_impl.database_connection.MyConnectionPool;
+import com.solvd.banking_service.utils.database_connection.MySQLConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,7 +27,7 @@ public class ServiceRequestDAOImpl extends MYSQLImpl<ServiceRequest,Long> implem
     public void createWithCustomerId(ServiceRequest serviceRequest, Long customerId) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_CUSTOMER_ID)) {
                 stmt.setLong(1, customerId);
                 stmt.setLong(2,serviceRequest.getEmployeeId());
@@ -44,7 +44,7 @@ public class ServiceRequestDAOImpl extends MYSQLImpl<ServiceRequest,Long> implem
             log.error(e);
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }
@@ -58,7 +58,7 @@ public class ServiceRequestDAOImpl extends MYSQLImpl<ServiceRequest,Long> implem
     public void update(ServiceRequest serviceRequest) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
                 stmt.setString(1,serviceRequest.getServiceRequestType().toString().toUpperCase());
                 stmt.setString(2,serviceRequest.getServiceRequestStatus().toString().toUpperCase());
@@ -73,7 +73,7 @@ public class ServiceRequestDAOImpl extends MYSQLImpl<ServiceRequest,Long> implem
             log.error(e);
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }

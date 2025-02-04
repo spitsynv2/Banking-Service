@@ -5,7 +5,7 @@ import com.solvd.banking_service.models.customer.CompanyCustomer;
 import com.solvd.banking_service.models.customer.Customer;
 import com.solvd.banking_service.models.customer.CustomerRepresentative;
 import com.solvd.banking_service.models.customer.IndividualCustomer;
-import com.solvd.banking_service.daos.myqsl_impl.database_connection.MyConnectionPool;
+import com.solvd.banking_service.utils.database_connection.MySQLConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,7 +41,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         Customer customer = null;
 
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(READ_BY_ID)) {
                 stmt.setLong(1, id);
                 try (ResultSet rs = stmt.executeQuery()) {
@@ -61,7 +61,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
             return null;
         } finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
 
@@ -86,7 +86,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         Customer customer = null;
 
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(READ_BY_EMAIL)) {
                 stmt.setString(1, email);
                 try (ResultSet rs = stmt.executeQuery()) {
@@ -106,7 +106,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
             return null;
         } finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
 
@@ -139,7 +139,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         }
 
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 if (customer instanceof IndividualCustomer) {
                     IndividualCustomer individualCustomer = (IndividualCustomer) customer;
@@ -166,7 +166,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
             log.error(e);
         } finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }
@@ -185,7 +185,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         }
 
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 if (customer instanceof IndividualCustomer) {
                     IndividualCustomer individualCustomer = (IndividualCustomer) customer;
@@ -212,7 +212,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
             log.error(e);
         } finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }
@@ -222,7 +222,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         Connection connection = null;
 
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(DELETE)) {
                 stmt.setLong(1, customer.getId());
                 stmt.executeUpdate();
@@ -232,7 +232,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
             log.error(e);
         } finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }
@@ -247,7 +247,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         Connection connection = null;
 
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement statement = connection.prepareStatement(CHECK_TAX_ID_EXISTS)) {
                 statement.setString(1, taxId);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -261,7 +261,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
             return false;
         } finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
 
@@ -273,7 +273,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
         Connection connection = null;
 
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement statement = connection.prepareStatement(CHECK_EMAIL_EXISTS)) {
                 statement.setString(1, email);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -287,7 +287,7 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
             return false;
         } finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
 

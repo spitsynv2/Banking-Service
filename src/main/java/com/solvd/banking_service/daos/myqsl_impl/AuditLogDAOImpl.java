@@ -3,7 +3,7 @@ package com.solvd.banking_service.daos.myqsl_impl;
 import com.solvd.banking_service.daos.IAuditLogDAO;
 import com.solvd.banking_service.models.AuditLog;
 import com.solvd.banking_service.models.enums.LogActionType;
-import com.solvd.banking_service.daos.myqsl_impl.database_connection.MyConnectionPool;
+import com.solvd.banking_service.utils.database_connection.MySQLConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,7 +26,7 @@ public class AuditLogDAOImpl extends MYSQLImpl<AuditLog,Long> implements IAuditL
         String READ_BY_ID = "SELECT * FROM " + getTableName() + " WHERE log_id = ?";
 
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(READ_BY_ID)) {
                 stmt.setObject(1, id);
                 try (ResultSet rs = stmt.executeQuery()) {
@@ -41,7 +41,7 @@ public class AuditLogDAOImpl extends MYSQLImpl<AuditLog,Long> implements IAuditL
             return null;
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
 
@@ -53,7 +53,7 @@ public class AuditLogDAOImpl extends MYSQLImpl<AuditLog,Long> implements IAuditL
     public void createWithCustomerId(AuditLog auditLog, Long customerId) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_CUSTOMER_ID)) {
                 stmt.setLong(1,customerId);
                 stmt.setLong(2,auditLog.getAuditorId());
@@ -68,7 +68,7 @@ public class AuditLogDAOImpl extends MYSQLImpl<AuditLog,Long> implements IAuditL
             log.error(e);
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }

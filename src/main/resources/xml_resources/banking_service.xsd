@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="transaction">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+                <xs:element name="fromAccountId" type="xs:long"/>
+                <xs:element name="toAccountId" type="xs:long"/>
+                <xs:element name="transactionType" type="xs:string"/>
+                <xs:element name="amount" type="xs:double"/>
+                <xs:element name="transactionDate" type="xs:dateTime"/>
+                <xs:element name="description" type="xs:string"/>
+                <xs:element name="transactionStatus" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:element name="loan">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+                <xs:element name="loanType" type="xs:string"/>
+                <xs:element name="amount" type="xs:double"/>
+                <xs:element name="interestRate" type="xs:double"/>
+                <xs:element name="termMonths" type="xs:int"/>
+                <xs:element name="startDate" type="xs:date"/>
+                <xs:element name="paymentDate" type="xs:date"/>
+                <xs:element name="loanStatus" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:element name="deposit">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+                <xs:element name="depositType" type="xs:string"/>
+                <xs:element name="amount" type="xs:double"/>
+                <xs:element name="interestRate" type="xs:double"/>
+                <xs:element name="termMonths" type="xs:int"/>
+                <xs:element name="startDate" type="xs:date"/>
+                <xs:element name="maturityDate" type="xs:date"/>
+                <xs:element name="depositStatus" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:element name="card">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+                <xs:element name="cardNumber" type="xs:string"/>
+                <xs:element name="cardType" type="xs:string"/>
+                <xs:element name="expiryDate" type="xs:date"/>
+                <xs:element name="cvv" type="xs:string"/>
+                <xs:element name="isActive" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:element name="appointment">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+                <xs:element name="appointmentDate" type="xs:dateTime"/>
+                <xs:element name="appointmentStatus" type="xs:string"/>
+                <xs:element name="notes" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:element name="banking_service">
+        <xs:complexType>
+            <xs:sequence>
+
+                <xs:element name="transactions">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="transaction" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="loans">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="loan" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="deposits">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="deposit" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="cards">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="card" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="appointments">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="appointment" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

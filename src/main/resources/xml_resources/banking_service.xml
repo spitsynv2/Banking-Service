@@ -1,0 +1,64 @@
+<banking_service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:noNamespaceSchemaLocation="banking_service.xsd">
+
+    <transactions>
+        <transaction>
+            <id>1</id>
+            <fromAccountId>1</fromAccountId>
+            <toAccountId>2</toAccountId>
+            <transactionType>TRANSFER</transactionType>
+            <amount>1000.00</amount>
+            <transactionDate>2025-02-04T10:30:00</transactionDate>
+            <description>Transfer to friend</description>
+            <transactionStatus>COMPLETED</transactionStatus>
+        </transaction>
+    </transactions>
+
+    <loans>
+        <loan>
+            <id>1</id>
+            <loanType>MORTGAGE</loanType>
+            <amount>25000.00</amount>
+            <interestRate>3.5</interestRate>
+            <termMonths>36</termMonths>
+            <startDate>2025-01-01</startDate>
+            <paymentDate>2025-02-01</paymentDate>
+            <loanStatus>ACTIVE</loanStatus>
+        </loan>
+    </loans>
+
+    <deposits>
+        <deposit>
+            <id>1</id>
+            <depositType>FIXED</depositType>
+            <amount>50000.00</amount>
+            <interestRate>2.0</interestRate>
+            <termMonths>24</termMonths>
+            <startDate>2025-02-01</startDate>
+            <maturityDate>2027-02-01</maturityDate>
+            <depositStatus>ACTIVE</depositStatus>
+        </deposit>
+    </deposits>
+
+    <cards>
+        <card>
+            <id>1</id>
+            <cardNumber>555666612233</cardNumber>
+            <cardType>CREDIT_MASTERCARD</cardType>
+            <expiryDate>2026-12-31</expiryDate>
+            <cvv>123</cvv>
+            <isActive>true</isActive>
+        </card>
+    </cards>
+
+    <appointments>
+        <appointment>
+            <id>1</id>
+            <appointmentDate>2025-02-10T15:00:00</appointmentDate>
+            <appointmentStatus>SCHEDULED</appointmentStatus>
+            <notes>Meeting to discuss mortgage options</notes>
+        </appointment>
+    </appointments>
+
+</banking_service>
+

@@ -2,28 +2,51 @@ package com.solvd.banking_service.models.account;
 
 import com.solvd.banking_service.models.account.enums.deposit_enums.DepositStatus;
 import com.solvd.banking_service.models.account.enums.deposit_enums.DepositType;
+import com.solvd.banking_service.utils.LocalDateAdapter;
 
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
  * @author Vadym Spitsyn
  * @created 2025-01-27
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Deposit {
+
+    @XmlElement
     private Long id;
+
+    @XmlElement
     private DepositType depositType;
+
+    @XmlElement
     private Double amount;
+
+    @XmlElement
     private Double interestRate;
+
+    @XmlElement
     private Integer termMonths;
-    private Date startDate;
-    private Date maturityDate;
+
+    @XmlElement
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    private LocalDate startDate;
+
+    @XmlElement
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    private LocalDate maturityDate;
+
+    @XmlElement
     private DepositStatus depositStatus;
 
-    public Deposit() {
-    }
+    public Deposit() {}
 
     public Deposit(Long id, DepositType depositType, Double amount, Double interestRate, Integer termMonths,
-                   Date startDate, Date maturityDate, DepositStatus depositStatus) {
+                   LocalDate startDate, LocalDate maturityDate, DepositStatus depositStatus) {
         this.id = id;
         this.depositType = depositType;
         this.amount = amount;
@@ -37,7 +60,6 @@ public class Deposit {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -45,7 +67,6 @@ public class Deposit {
     public DepositType getDepositType() {
         return depositType;
     }
-
     public void setDepositType(DepositType depositType) {
         this.depositType = depositType;
     }
@@ -53,7 +74,6 @@ public class Deposit {
     public Double getAmount() {
         return amount;
     }
-
     public void setAmount(Double amount) {
         this.amount = amount;
     }
@@ -61,7 +81,6 @@ public class Deposit {
     public Double getInterestRate() {
         return interestRate;
     }
-
     public void setInterestRate(Double interestRate) {
         this.interestRate = interestRate;
     }
@@ -69,31 +88,27 @@ public class Deposit {
     public Integer getTermMonths() {
         return termMonths;
     }
-
     public void setTermMonths(Integer termMonths) {
         this.termMonths = termMonths;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
-
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getMaturityDate() {
+    public LocalDate getMaturityDate() {
         return maturityDate;
     }
-
-    public void setMaturityDate(Date maturityDate) {
+    public void setMaturityDate(LocalDate maturityDate) {
         this.maturityDate = maturityDate;
     }
 
     public DepositStatus getDepositStatus() {
         return depositStatus;
     }
-
     public void setDepositStatus(DepositStatus depositStatus) {
         this.depositStatus = depositStatus;
     }

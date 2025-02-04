@@ -3,7 +3,7 @@ package com.solvd.banking_service.daos.myqsl_impl;
 import com.solvd.banking_service.daos.IAddressDAO;
 import com.solvd.banking_service.models.customer.Address;
 import com.solvd.banking_service.models.customer.enums.AddressType;
-import com.solvd.banking_service.daos.myqsl_impl.database_connection.MyConnectionPool;
+import com.solvd.banking_service.utils.database_connection.MySQLConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,7 +29,7 @@ public class AddressDAOImpl extends MYSQLImpl<Address,Long> implements IAddressD
     public void createWithCustomerId(Address address, Long customerId) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_CUSTOMER_ID)) {
                 stmt.setLong(1, customerId);
                 stmt.setString(2, address.getAddressType().toString().toUpperCase());
@@ -44,7 +44,7 @@ public class AddressDAOImpl extends MYSQLImpl<Address,Long> implements IAddressD
             log.error(e);
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }
@@ -58,7 +58,7 @@ public class AddressDAOImpl extends MYSQLImpl<Address,Long> implements IAddressD
     public void update(Address address) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
                 stmt.setString(1, address.getAddressType().toString().toUpperCase());
                 stmt.setString(2, address.getStreet());
@@ -73,7 +73,7 @@ public class AddressDAOImpl extends MYSQLImpl<Address,Long> implements IAddressD
             log.error(e);
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }

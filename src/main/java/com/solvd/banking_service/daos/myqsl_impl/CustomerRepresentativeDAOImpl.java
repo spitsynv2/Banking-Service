@@ -2,7 +2,7 @@ package com.solvd.banking_service.daos.myqsl_impl;
 
 import com.solvd.banking_service.daos.ICustomerRepresentativeDAO;
 import com.solvd.banking_service.models.customer.CustomerRepresentative;
-import com.solvd.banking_service.daos.myqsl_impl.database_connection.MyConnectionPool;
+import com.solvd.banking_service.utils.database_connection.MySQLConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,7 +32,7 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
     public void createWithCompanyId(CustomerRepresentative representative,Long companyId) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_COMPANY_ID)) {
                 stmt.setLong(1, companyId);
                 stmt.setString(2, representative.getFirstName());
@@ -48,7 +48,7 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
             log.error(e);
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }
@@ -62,7 +62,7 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
     public void update(CustomerRepresentative representative) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
                 stmt.setString(1, representative.getFirstName());
                 stmt.setString(2, representative.getLastName());
@@ -78,7 +78,7 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
             log.error(e);
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }
@@ -87,7 +87,7 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
     public void delete(CustomerRepresentative customerRepresentative) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(DELETE)) {
                 stmt.setLong(1, customerRepresentative.getId());
                 stmt.executeUpdate();
@@ -97,7 +97,7 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
             log.error(e);
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }
@@ -106,7 +106,7 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
     public boolean checkEmailExists(String cardNumber) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement statement = connection.prepareStatement(CHECK_EMAIL_EXISTS)) {
                 statement.setString(1, cardNumber);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -120,7 +120,7 @@ public class CustomerRepresentativeDAOImpl extends MYSQLImpl<CustomerRepresentat
             return false;
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
         return false;

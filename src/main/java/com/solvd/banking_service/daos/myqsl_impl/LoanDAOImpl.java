@@ -4,7 +4,7 @@ import com.solvd.banking_service.daos.ILoanDAO;
 import com.solvd.banking_service.models.account.Loan;
 import com.solvd.banking_service.models.account.enums.loan_enums.LoanStatus;
 import com.solvd.banking_service.models.account.enums.loan_enums.LoanType;
-import com.solvd.banking_service.daos.myqsl_impl.database_connection.MyConnectionPool;
+import com.solvd.banking_service.utils.database_connection.MySQLConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,15 +31,15 @@ public class LoanDAOImpl extends MYSQLImpl<Loan,Long> implements ILoanDAO {
     public void createWithAccountId(Loan loan, Long accountId) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_ACCOUNT_ID)) {
                 stmt.setLong(1, accountId);
                 stmt.setString(2,loan.getLoanType().toString().toUpperCase());
                 stmt.setDouble(3,loan.getAmount());
                 stmt.setDouble(4, loan.getInterestRate());
                 stmt.setInt(5, loan.getTermMonths());
-                stmt.setDate(6, new java.sql.Date(loan.getStartDate().getTime()));
-                stmt.setDate(7, new java.sql.Date(loan.getPaymentDate().getTime()));
+                stmt.setDate(6,  java.sql.Date.valueOf(loan.getStartDate()));
+                stmt.setDate(7,  java.sql.Date.valueOf(loan.getPaymentDate()));
                 stmt.setString(8, loan.getLoanStatus().toString().toUpperCase());
                 stmt.executeUpdate();
                 log.info("Loan was created/inserted successfully.");
@@ -48,7 +48,7 @@ public class LoanDAOImpl extends MYSQLImpl<Loan,Long> implements ILoanDAO {
             log.error(e);
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }
@@ -62,14 +62,14 @@ public class LoanDAOImpl extends MYSQLImpl<Loan,Long> implements ILoanDAO {
     public void update(Loan loan) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
                 stmt.setString(1,loan.getLoanType().toString().toUpperCase());
                 stmt.setDouble(2,loan.getAmount());
                 stmt.setDouble(3, loan.getInterestRate());
                 stmt.setInt(4, loan.getTermMonths());
-                stmt.setDate(5, new java.sql.Date(loan.getStartDate().getTime()));
-                stmt.setDate(6, new java.sql.Date(loan.getPaymentDate().getTime()));
+                stmt.setDate(5,  java.sql.Date.valueOf(loan.getStartDate()));
+                stmt.setDate(6,  java.sql.Date.valueOf(loan.getPaymentDate()));
                 stmt.setString(7, loan.getLoanStatus().toString().toUpperCase());
                 stmt.setLong(8, loan.getId());
                 stmt.executeUpdate();
@@ -79,7 +79,7 @@ public class LoanDAOImpl extends MYSQLImpl<Loan,Long> implements ILoanDAO {
             log.error(e);
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }
@@ -107,8 +107,8 @@ public class LoanDAOImpl extends MYSQLImpl<Loan,Long> implements ILoanDAO {
             loan.setAmount(rs.getDouble("amount"));
             loan.setInterestRate(rs.getDouble("interest_rate"));
             loan.setTermMonths(rs.getInt("term_months"));
-            loan.setStartDate(rs.getDate("start_date"));
-            loan.setPaymentDate(rs.getDate("payment_date"));
+            loan.setStartDate(rs.getDate("start_date").toLocalDate());
+            loan.setPaymentDate(rs.getDate("payment_date").toLocalDate());
 
             LoanType loanType = LoanType.valueOf(rs.getString("loan_type").toUpperCase());
             LoanStatus loanStatus = LoanStatus.valueOf(rs.getString("status").toUpperCase());

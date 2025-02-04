@@ -3,7 +3,7 @@ package com.solvd.banking_service.daos.myqsl_impl;
 import com.solvd.banking_service.daos.ICardDAO;
 import com.solvd.banking_service.models.account.Card;
 import com.solvd.banking_service.models.account.enums.CardType;
-import com.solvd.banking_service.daos.myqsl_impl.database_connection.MyConnectionPool;
+import com.solvd.banking_service.utils.database_connection.MySQLConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,12 +31,12 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
     public void createWithAccountId(Card card, Long accountId) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_ACCOUNT_ID)) {
                 stmt.setLong(1, accountId);
                 stmt.setString(2, card.getCardNumber());
                 stmt.setString(3, card.getCardType().toString().toUpperCase());
-                stmt.setDate(4, new java.sql.Date(card.getExpiryDate().getTime()));
+                stmt.setDate(4, java.sql.Date.valueOf(card.getExpiryDate()));
                 stmt.setString(5, card.getCvv());
                 stmt.setInt(6, card.isActive() ? 1 : 0);
                 stmt.executeUpdate();
@@ -46,7 +46,7 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
             log.error(e);
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }
@@ -60,11 +60,11 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
     public void update(Card card) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
                 stmt.setString(1, card.getCardNumber());
                 stmt.setString(2, card.getCardType().toString().toUpperCase());
-                stmt.setDate(3, new java.sql.Date(card.getExpiryDate().getTime()));
+                stmt.setDate(3,  java.sql.Date.valueOf(card.getExpiryDate()));
                 stmt.setString(4, card.getCvv());
                 stmt.setInt(5, card.isActive() ? 1 : 0);
                 stmt.setLong(6,card.getId());
@@ -75,7 +75,7 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
             log.error(e);
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }
@@ -89,7 +89,7 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
     public boolean checkCardNumberExists(String cardNumber) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement statement = connection.prepareStatement(CHECK_CARD_NUMBER_EXISTS)) {
                 statement.setString(1, cardNumber);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -102,7 +102,7 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
             log.error(e);
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
         return false;
@@ -124,7 +124,7 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
         try {
             card.setId(rs.getLong("Id"));
             card.setCardNumber(rs.getString("card_number"));
-            card.setExpiryDate(rs.getDate("expiry_date"));
+            card.setExpiryDate(rs.getDate("expiry_date").toLocalDate());
             card.setCvv(rs.getString("cvv"));
             card.setActive(rs.getBoolean("is_active"));
 

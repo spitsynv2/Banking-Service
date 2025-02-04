@@ -1,24 +1,42 @@
 package com.solvd.banking_service.models.account;
 
 import com.solvd.banking_service.models.account.enums.CardType;
+import com.solvd.banking_service.utils.LocalDateAdapter;
 
-import java.util.Date;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.time.LocalDate;
 
 /**
  * @author Vadym Spitsyn
  * @created 2025-01-27
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Card {
+
+    @XmlElement
     private Long id;
+
+    @XmlElement
     private String cardNumber;
+
+    @XmlElement(name = "cardType")
     private CardType cardType;
-    private Date expiryDate;
+
+    @XmlElement
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    private LocalDate expiryDate;
+
+    @XmlElement
     private String cvv;
+
+    @XmlElement
     private Boolean isActive;
 
     public Card() {}
 
-    public Card(Long id, String cardNumber, CardType cardType, Date expiryDate, String cvv, Boolean isActive) {
+    public Card(Long id, String cardNumber, CardType cardType, LocalDate expiryDate, String cvv, Boolean isActive) {
         this.id = id;
         this.cardNumber = cardNumber;
         this.cardType = cardType;
@@ -30,7 +48,6 @@ public class Card {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -38,7 +55,6 @@ public class Card {
     public String getCardNumber() {
         return cardNumber;
     }
-
     public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
     }
@@ -46,23 +62,20 @@ public class Card {
     public CardType getCardType() {
         return cardType;
     }
-
     public void setCardType(CardType cardType) {
         this.cardType = cardType;
     }
 
-    public Date getExpiryDate() {
+    public LocalDate getExpiryDate() {
         return expiryDate;
     }
-
-    public void setExpiryDate(Date expiryDate) {
+    public void setExpiryDate(LocalDate expiryDate) {
         this.expiryDate = expiryDate;
     }
 
     public String getCvv() {
         return cvv;
     }
-
     public void setCvv(String cvv) {
         this.cvv = cvv;
     }
@@ -70,7 +83,6 @@ public class Card {
     public Boolean isActive() {
         return isActive;
     }
-
     public void setActive(Boolean active) {
         isActive = active;
     }

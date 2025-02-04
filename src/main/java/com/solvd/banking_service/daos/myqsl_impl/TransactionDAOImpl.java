@@ -4,7 +4,7 @@ import com.solvd.banking_service.daos.ITransactionDAO;
 import com.solvd.banking_service.models.account.Transaction;
 import com.solvd.banking_service.models.account.enums.transaction_enums.TransactionStatus;
 import com.solvd.banking_service.models.account.enums.transaction_enums.TransactionType;
-import com.solvd.banking_service.daos.myqsl_impl.database_connection.MyConnectionPool;
+import com.solvd.banking_service.utils.database_connection.MySQLConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,7 +36,7 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
         List<Transaction> transactionList = new ArrayList<>();
 
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(READ_ALL_BY_FOREIGN_KEY_ID)) {
                 stmt.setLong(1, foreignKeyId);
                 stmt.setLong(2, foreignKeyId);
@@ -51,7 +51,7 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
             return null;
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
 
@@ -68,7 +68,7 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
     public void createWithAccountId(Transaction transaction, Long accountId) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_ACCOUNT_ID)) {
                 //stmt.setLong(1, accountId);
                 stmt.setLong(1,transaction.getFromAccountId());
@@ -85,7 +85,7 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
             log.error(e);
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }
@@ -99,7 +99,7 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
     public void update(Transaction transaction) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
                 stmt.setLong(1, transaction.getFromAccountId());
                 stmt.setLong(2, transaction.getToAccountId());
@@ -116,7 +116,7 @@ public class TransactionDAOImpl extends MYSQLImpl<Transaction,Long> implements I
             log.error(e);
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }

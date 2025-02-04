@@ -2,25 +2,46 @@ package com.solvd.banking_service.models.account;
 
 import com.solvd.banking_service.models.account.enums.transaction_enums.TransactionStatus;
 import com.solvd.banking_service.models.account.enums.transaction_enums.TransactionType;
+import com.solvd.banking_service.utils.LocalDateTimeAdapter;
 
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDateTime;
 
 /**
  * @author Vadym Spitsyn
  * @created 2025-01-27
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Transaction {
+
+    @XmlElement
     private Long id;
+
+    @XmlElement
     private Long fromAccountId;
+
+    @XmlElement
     private Long toAccountId;
+
+    @XmlElement
     private TransactionType transactionType;
+
+    @XmlElement
     private Double amount;
+
+    @XmlElement
+    @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
     private LocalDateTime transactionDate;
+
+    @XmlElement
     private String description;
+
+    @XmlElement
     private TransactionStatus transactionStatus;
 
-    public Transaction() {
-    }
+    public Transaction() {}
 
     public Transaction(Long id, Long fromAccountId, Long toAccountId, TransactionType transactionType,
                        Double amount, LocalDateTime transactionDate, String description, TransactionStatus transactionStatus) {
@@ -37,7 +58,6 @@ public class Transaction {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -45,7 +65,6 @@ public class Transaction {
     public Long getFromAccountId() {
         return fromAccountId;
     }
-
     public void setFromAccountId(Long fromAccountId) {
         this.fromAccountId = fromAccountId;
     }
@@ -53,7 +72,6 @@ public class Transaction {
     public Long getToAccountId() {
         return toAccountId;
     }
-
     public void setToAccountId(Long toAccountId) {
         this.toAccountId = toAccountId;
     }
@@ -61,7 +79,6 @@ public class Transaction {
     public TransactionType getTransactionType() {
         return transactionType;
     }
-
     public void setTransactionType(TransactionType transactionType) {
         this.transactionType = transactionType;
     }
@@ -69,7 +86,6 @@ public class Transaction {
     public Double getAmount() {
         return amount;
     }
-
     public void setAmount(Double amount) {
         this.amount = amount;
     }
@@ -77,7 +93,6 @@ public class Transaction {
     public LocalDateTime getTransactionDate() {
         return transactionDate;
     }
-
     public void setTransactionDate(LocalDateTime transactionDate) {
         this.transactionDate = transactionDate;
     }
@@ -85,7 +100,6 @@ public class Transaction {
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
@@ -93,7 +107,6 @@ public class Transaction {
     public TransactionStatus getTransactionStatus() {
         return transactionStatus;
     }
-
     public void setTransactionStatus(TransactionStatus transactionStatus) {
         this.transactionStatus = transactionStatus;
     }

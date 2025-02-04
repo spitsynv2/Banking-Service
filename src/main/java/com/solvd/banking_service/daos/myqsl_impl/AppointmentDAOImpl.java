@@ -3,7 +3,7 @@ package com.solvd.banking_service.daos.myqsl_impl;
 import com.solvd.banking_service.daos.IAppointmentDAO;
 import com.solvd.banking_service.models.Appointment;
 import com.solvd.banking_service.models.enums.AppointmentStatus;
-import com.solvd.banking_service.daos.myqsl_impl.database_connection.MyConnectionPool;
+import com.solvd.banking_service.utils.database_connection.MySQLConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,7 +26,7 @@ public class AppointmentDAOImpl extends MYSQLImpl<Appointment,Long> implements I
     public void createWithServiceRequestId(Appointment appointment, Long serviceRequestId) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_SERVICE_REQUEST_ID)) {
                 stmt.setLong(1, serviceRequestId);
                 stmt.setTimestamp(2, Timestamp.valueOf(appointment.getAppointmentDate()));
@@ -40,7 +40,7 @@ public class AppointmentDAOImpl extends MYSQLImpl<Appointment,Long> implements I
             log.error(e);
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }
@@ -54,7 +54,7 @@ public class AppointmentDAOImpl extends MYSQLImpl<Appointment,Long> implements I
     public void update(Appointment appointment) {
         Connection connection = null;
         try {
-            connection = MyConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
                 stmt.setTimestamp(1, Timestamp.valueOf(appointment.getAppointmentDate()));
                 stmt.setString(2,appointment.getAppointmentStatus().toString().toUpperCase());
@@ -68,7 +68,7 @@ public class AppointmentDAOImpl extends MYSQLImpl<Appointment,Long> implements I
             log.error(e);
         }finally {
             if (connection != null) {
-                MyConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.releaseConnection(connection);
             }
         }
     }

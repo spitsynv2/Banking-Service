@@ -1,21 +1,34 @@
 package com.solvd.banking_service.models;
 
 import com.solvd.banking_service.models.enums.AppointmentStatus;
+import com.solvd.banking_service.utils.LocalDateTimeAdapter;
 
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDateTime;
 
 /**
  * @author Vadym Spitsyn
  * @created 2025-01-27
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Appointment {
+
+    @XmlElement
     private Long id;
+
+    @XmlElement
+    @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
     private LocalDateTime appointmentDate;
+
+    @XmlElement
     private AppointmentStatus appointmentStatus;
+
+    @XmlElement
     private String notes;
 
-    public Appointment() {
-    }
+    public Appointment() {}
 
     public Appointment(Long id, LocalDateTime appointmentDate, AppointmentStatus appointmentStatus, String notes) {
         this.id = id;
@@ -27,7 +40,6 @@ public class Appointment {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -35,7 +47,6 @@ public class Appointment {
     public LocalDateTime getAppointmentDate() {
         return appointmentDate;
     }
-
     public void setAppointmentDate(LocalDateTime appointmentDate) {
         this.appointmentDate = appointmentDate;
     }
@@ -43,7 +54,6 @@ public class Appointment {
     public AppointmentStatus getAppointmentStatus() {
         return appointmentStatus;
     }
-
     public void setAppointmentStatus(AppointmentStatus appointmentStatus) {
         this.appointmentStatus = appointmentStatus;
     }
@@ -51,7 +61,6 @@ public class Appointment {
     public String getNotes() {
         return notes;
     }
-
     public void setNotes(String notes) {
         this.notes = notes;
     }
