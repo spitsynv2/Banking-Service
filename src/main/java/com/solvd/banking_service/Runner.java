@@ -23,7 +23,7 @@ public class Runner
     private static final ServiceRequestService serviceRequestService = new ServiceRequestService();
     private static final AuditLogService auditLogService = new AuditLogService();
 
-    public static void main(String[] args )
+    public static void main(String[] args)
     {
         //Customer customer = customerAccountService.getAllCustomerDataById(2L);
 
