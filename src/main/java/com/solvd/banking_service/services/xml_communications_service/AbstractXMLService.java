@@ -1,8 +1,6 @@
 package com.solvd.banking_service.services.xml_communications_service;
 
-import com.solvd.banking_service.models.account.Card;
 import com.solvd.banking_service.services.xml_communications_service.wrappers.AbstractWrapper;
-import com.solvd.banking_service.services.xml_communications_service.wrappers.CardsWrapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
