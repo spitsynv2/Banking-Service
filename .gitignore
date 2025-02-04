@@ -37,5 +37,5 @@ build/
 ### Mac OS ###
 .DS_Store
 
-src/main/resources/sql_resources/database_config.env
+src/main/resources/sql/database_config.env
 src/main/notes.txt
