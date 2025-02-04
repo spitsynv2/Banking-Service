@@ -1,6 +1,7 @@
 package com.solvd.banking_service.services;
 
 import com.solvd.banking_service.daos.myqsl_impl.*;
+import com.solvd.banking_service.models.AuditLog;
 import com.solvd.banking_service.models.account.Account;
 import com.solvd.banking_service.models.account.Card;
 import com.solvd.banking_service.models.customer.Customer;
@@ -29,6 +30,7 @@ public class CustomerAccountService {
         LoanDAOImpl loanDAO = new LoanDAOImpl();
         DepositDAO depositDAO = new DepositDAO();
         CardDAOImpl cardDAO = new CardDAOImpl();
+        AuditLogDAOImpl auditLogDAO = new AuditLogDAOImpl();
 
         customer = customerDAO.readById(customerId);
         customer.setAddresses(addressDAO.readAllByForeignKeyId(customerId));
@@ -41,6 +43,10 @@ public class CustomerAccountService {
             customerAccount.setCards(cardDAO.readAllByForeignKeyId(customerAccount.getId()));
         }
         customer.setAccounts(customerAccounts);
+
+        List<AuditLog> auditLogs = auditLogDAO.readAllByForeignKeyId(customerId);
+
+        customer.setAuditLogs(auditLogs);
 
         return customer;
     }

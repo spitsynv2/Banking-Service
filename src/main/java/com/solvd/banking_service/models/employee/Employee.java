@@ -15,12 +15,12 @@ public class Employee {
     private String phoneNumber;
     private String jobTitle;
     private Date hireDate;
-    private Branch branch;
+    private List<Branch> branches;
     private List<EmployeeRole> roles;
 
     public Employee() {}
 
-    public Employee(Long id, String firstName, String lastName, String email, String phoneNumber, String jobTitle, Date hireDate, Branch branch) {
+    public Employee(Long id, String firstName, String lastName, String email, String phoneNumber, String jobTitle, Date hireDate, List<Branch> branches) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -28,11 +28,11 @@ public class Employee {
         this.phoneNumber = phoneNumber;
         this.jobTitle = jobTitle;
         this.hireDate = hireDate;
-        this.branch = branch;
+        this.branches = branches;
     }
 
     public Employee(Long id, String firstName, String lastName, String email, String phoneNumber, String jobTitle,
-                    Date hireDate, Branch branch, List<EmployeeRole> roles) {
+                    Date hireDate, List<Branch> branches, List<EmployeeRole> roles) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -40,7 +40,7 @@ public class Employee {
         this.phoneNumber = phoneNumber;
         this.jobTitle = jobTitle;
         this.hireDate = hireDate;
-        this.branch = branch;
+        this.branches = branches;
         this.roles = roles;
     }
 
@@ -100,12 +100,12 @@ public class Employee {
         this.hireDate = hireDate;
     }
 
-    public Branch getBranch() {
-        return branch;
+    public List<Branch> getBranch() {
+        return branches;
     }
 
-    public void setBranch(Branch branch) {
-        this.branch = branch;
+    public void setBranch(List<Branch> branches) {
+        this.branches = branches;
     }
 
     public List<EmployeeRole> getRoles() {

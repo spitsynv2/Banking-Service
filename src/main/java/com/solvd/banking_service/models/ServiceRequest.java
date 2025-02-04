@@ -13,6 +13,7 @@ import java.util.List;
 public class ServiceRequest {
     private Long id;
     private Long employeeId;
+    private Long customerId;
     private ServiceRequestType serviceRequestType;
     private ServiceRequestStatus serviceRequestStatus;
     private LocalDateTime createdAt;
@@ -20,31 +21,7 @@ public class ServiceRequest {
     private String notes;
     private List<Appointment> appointments;
 
-    public ServiceRequest() {
-    }
-
-    public ServiceRequest(Long id, Long employeeId, ServiceRequestType serviceRequestType,
-                          ServiceRequestStatus serviceRequestStatus, LocalDateTime createdAt, LocalDateTime resolvedAt, String notes) {
-        this.id = id;
-        this.employeeId = employeeId;
-        this.serviceRequestType = serviceRequestType;
-        this.serviceRequestStatus = serviceRequestStatus;
-        this.createdAt = createdAt;
-        this.resolvedAt = resolvedAt;
-        this.notes = notes;
-    }
-
-    public ServiceRequest(Long id, Long employeeId, ServiceRequestType serviceRequestType,
-                          ServiceRequestStatus serviceRequestStatus, LocalDateTime createdAt, LocalDateTime resolvedAt, String notes, List<Appointment> appointments) {
-        this.id = id;
-        this.employeeId = employeeId;
-        this.serviceRequestType = serviceRequestType;
-        this.serviceRequestStatus = serviceRequestStatus;
-        this.createdAt = createdAt;
-        this.resolvedAt = resolvedAt;
-        this.notes = notes;
-        this.appointments = appointments;
-    }
+    public ServiceRequest() {}
 
     public Long getId() {
         return id;
@@ -108,5 +85,13 @@ public class ServiceRequest {
 
     public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 }

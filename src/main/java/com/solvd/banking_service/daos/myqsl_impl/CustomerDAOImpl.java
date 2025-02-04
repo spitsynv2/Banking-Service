@@ -20,17 +20,17 @@ public class CustomerDAOImpl extends MYSQLImpl<Customer, Long> implements ICusto
 
     private static final Logger log = LogManager.getLogger(CustomerDAOImpl.class);
 
-    private static final String READ_BY_ID = "SELECT * FROM " + "customers" + " WHERE id = ?";
+    private static final String READ_BY_ID = "SELECT * FROM " + "customers" + " WHERE Id = ?";
     private static final String READ_BY_EMAIL = "SELECT * FROM " + "customers" + " WHERE email = ?";
-    private static final String DELETE = "DELETE FROM " + "customers" + " WHERE id = ?";
+    private static final String DELETE = "DELETE FROM " + "customers" + " WHERE Id = ?";
     private static final String CREATE_INDIVIDUAL_CUSTOMER = "INSERT INTO " + "customers" + " (customer_type, " +
             "first_name, last_name, email, phone_number, date_of_birth) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String CREATE_COMPANY_CUSTOMER = "INSERT INTO " + "customers" + " (customer_type, " +
             "company_name, tax_id, email, phone_number, industry, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_INDIVIDUAL_CUSTOMER = "UPDATE " + "customers"+ " SET first_name = ?, last_name = ?, " +
-            "email = ?, phone_number = ?, date_of_birth = ? WHERE id = ?";
+            "email = ?, phone_number = ?, date_of_birth = ? WHERE Id = ?";
     private static final String UPDATE_COMPANY_CUSTOMER = "UPDATE " + "customers" + " SET company_name = ?, tax_id = ?, " +
-            "email = ?, phone_number = ?, industry = ?, registration_date = ? WHERE id = ?";
+            "email = ?, phone_number = ?, industry = ?, registration_date = ? WHERE Id = ?";
     private static final String CHECK_TAX_ID_EXISTS = "SELECT COUNT(*) FROM " + "customers" + " WHERE tax_id = ?";
     private static final String CHECK_EMAIL_EXISTS = "SELECT COUNT(*) FROM " + "customers" + " WHERE email = ?";
 

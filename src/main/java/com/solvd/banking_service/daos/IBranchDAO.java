@@ -8,4 +8,5 @@ import com.solvd.banking_service.models.employee.Branch;
  */
 public interface IBranchDAO extends IDAO<Branch,Long> {
     void createWithEmployeeId(Branch branch, Long employeeId);
+    void updateWithEmployeeId(Branch branch, Long employeeId);
 }

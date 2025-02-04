@@ -19,12 +19,14 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
 
     private static final Logger log = LogManager.getLogger(BranchDAOImpl.class);
 
-    private static final String INSERT=
+    private static final String INSERT =
             "INSERT INTO branches (branch_name, location, phone_number, open_date) VALUES (?, ?, ?, ?)";
     private static final String CREATE_WITH_EMPLOYEE_ID =
             "INSERT INTO branches (employee_id, branch_name, location, phone_number, open_date) VALUES (?, ?, ?, ?, ?)";
-    private static final String UPDATE=
-            "UPDATE branches SET branch_name = ?, location = ?, phone_number = ?, open_date = ? WHERE id = ?";
+    private static final String UPDATE =
+            "UPDATE branches SET branch_name = ?, location = ?, phone_number = ?, open_date = ? WHERE Id = ?";
+    private static final String UPDATE_WITH_EMPLOYEE_ID =
+            "UPDATE branches SET employee_id = ?, branch_name = ?, location = ?, phone_number = ?, open_date = ? WHERE Id = ?";
 
     @Override
     public void createWithEmployeeId(Branch branch, Long employeeId) {
@@ -43,6 +45,31 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
             }
         } catch (SQLException | InterruptedException e) {
             log.error("Error inserting branch {}, with employee_id {}", branch, employeeId, e);
+        } finally {
+            if (connection != null) {
+                MyConnectionPool.releaseConnection(connection);
+            }
+        }
+    }
+
+    @Override
+    public void updateWithEmployeeId(Branch branch, Long employeeId) {
+        Connection connection = null;
+        try {
+            connection = MyConnectionPool.getConnection();
+            try (PreparedStatement stmt = connection.prepareStatement(UPDATE_WITH_EMPLOYEE_ID)) {
+                stmt.setLong(1,employeeId);
+                stmt.setString(2, branch.getBranchName());
+                stmt.setString(3, branch.getLocation());
+                stmt.setString(4, branch.getPhoneNumber());
+                stmt.setDate(5, new java.sql.Date(branch.getOpenDate().getTime()));
+                stmt.setLong(6, branch.getId());
+
+                stmt.executeUpdate();
+                log.info("Branch {} was updated successfully WithEmployeeId.", branch);
+            }
+        } catch (SQLException | InterruptedException e) {
+            log.error("Error updating branch WithEmployeeId {}", branch, e);
         } finally {
             if (connection != null) {
                 MyConnectionPool.releaseConnection(connection);
@@ -113,7 +140,7 @@ public class BranchDAOImpl extends MYSQLImpl<Branch,Long> implements IBranchDAO 
     }
 
     @Override
-    protected Branch mapResultSetToEntity(ResultSet rs) throws SQLException {
+    protected Branch mapResultSetToEntity(ResultSet rs){
         Branch branch = new Branch();
         try {
             branch.setId(rs.getLong("Id"));

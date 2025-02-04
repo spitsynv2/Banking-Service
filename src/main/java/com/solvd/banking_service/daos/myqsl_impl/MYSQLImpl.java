@@ -17,7 +17,7 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
     public T readById(ID id) {
         Connection connection = null;
         T entity = null;
-        String READ_BY_ID = "SELECT * FROM " + getTableName() + " WHERE id = ?";
+        String READ_BY_ID = "SELECT * FROM " + getTableName() + " WHERE Id = ?";
 
         try {
             connection = MyConnectionPool.getConnection();
@@ -80,7 +80,7 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
     @Override
     public void deleteById(ID id){
         Connection connection = null;
-        String DELETE_BY_ID = "DELETE FROM "+ getTableName() + " WHERE id = ?";
+        String DELETE_BY_ID = "DELETE FROM "+ getTableName() + " WHERE Id = ?";
 
         try {
             connection = MyConnectionPool.getConnection();

@@ -49,7 +49,7 @@ public class AccountDAOImpl extends MYSQLImpl<Account,Long> implements IAccountD
 
     @Override
     public void create(Account entity) {
-        log.error("Method is not implemented in AddressDAOImpl, Use ---> createWithCustomerId");
+        log.error("Method is not implemented in AccountDAOImpl, Use ---> createWithCustomerId");
     }
 
     @Override
@@ -78,7 +78,7 @@ public class AccountDAOImpl extends MYSQLImpl<Account,Long> implements IAccountD
 
     @Override
     public void delete(Account entity) {
-        log.error("Method is not implemented in AddressDAOImpl, Use ---> deleteById(ID id)");
+        log.error("Method is not implemented in AccountDAOImpl, Use ---> deleteById(ID id)");
     }
 
     @Override

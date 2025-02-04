@@ -11,21 +11,13 @@ import java.time.LocalDateTime;
  */
 public class AuditLog {
     private Long logId;
-    private Employee auditor;
+    private Long auditorId;
+    private Long customerId;
     private LogActionType logActionType;
     private String actionDescription;
     private LocalDateTime date;
 
-    public AuditLog() {
-    }
-
-    public AuditLog(Long logId, Employee auditor, LogActionType logActionType, String actionDescription, LocalDateTime date) {
-        this.logId = logId;
-        this.auditor = auditor;
-        this.logActionType = logActionType;
-        this.actionDescription = actionDescription;
-        this.date = date;
-    }
+    public AuditLog() {}
 
     public Long getLogId() {
         return logId;
@@ -35,12 +27,12 @@ public class AuditLog {
         this.logId = logId;
     }
 
-    public Employee getAuditor() {
-        return auditor;
+    public Long getAuditorId() {
+        return auditorId;
     }
 
-    public void setAuditor(Employee auditor) {
-        this.auditor = auditor;
+    public void setAuditorId(Long auditorId) {
+        this.auditorId = auditorId;
     }
 
     public LogActionType getLogActionType() {
@@ -65,5 +57,25 @@ public class AuditLog {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
+
+    @Override
+    public String toString() {
+        return "AuditLog{" +
+                "logId=" + logId +
+                ", auditorId=" + auditorId +
+                ", customerId=" + customerId +
+                ", logActionType=" + logActionType +
+                ", actionDescription='" + actionDescription + '\'' +
+                ", date=" + date +
+                '}';
     }
 }
