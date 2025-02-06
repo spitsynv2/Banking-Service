@@ -1,4 +1,4 @@
-package com.solvd.bankingservice.daos.impl.xml.jaxb.wrappers;
+package com.solvd.bankingservice.daos.impl.xml.wrappers;
 
 import com.solvd.bankingservice.models.account.Deposit;
 

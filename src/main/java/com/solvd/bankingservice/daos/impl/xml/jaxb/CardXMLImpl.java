@@ -1,8 +1,8 @@
 package com.solvd.bankingservice.daos.impl.xml.jaxb;
 
 import com.solvd.bankingservice.models.account.Card;
-import com.solvd.bankingservice.daos.impl.xml.jaxb.wrappers.AbstractWrapper;
-import com.solvd.bankingservice.daos.impl.xml.jaxb.wrappers.CardsWrapper;
+import com.solvd.bankingservice.daos.impl.xml.wrappers.AbstractWrapper;
+import com.solvd.bankingservice.daos.impl.xml.wrappers.CardsWrapper;
 
 /**
   * @author Vadym Spitsyn

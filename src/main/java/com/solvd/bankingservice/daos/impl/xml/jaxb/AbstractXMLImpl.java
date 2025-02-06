@@ -1,6 +1,6 @@
 package com.solvd.bankingservice.daos.impl.xml.jaxb;
 
-import com.solvd.bankingservice.daos.impl.xml.jaxb.wrappers.AbstractWrapper;
+import com.solvd.bankingservice.daos.impl.xml.wrappers.AbstractWrapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

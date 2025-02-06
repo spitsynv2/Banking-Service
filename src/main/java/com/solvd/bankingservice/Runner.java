@@ -1,6 +1,8 @@
 package com.solvd.bankingservice;
 
+import com.solvd.bankingservice.daos.impl.xml.dom.BankingXMLImplDom;
 import com.solvd.bankingservice.daos.impl.xml.jaxb.*;
+import com.solvd.bankingservice.daos.impl.xml.wrappers.BankingServiceWrapper;
 import com.solvd.bankingservice.models.customer.Customer;
 import com.solvd.bankingservice.services.ICustomerAccountService;
 import com.solvd.bankingservice.services.IEmployeeService;
@@ -8,7 +10,8 @@ import com.solvd.bankingservice.services.mysql.AuditLogService;
 import com.solvd.bankingservice.services.mysql.CustomerAccountService;
 import com.solvd.bankingservice.services.mysql.EmployeeService;
 import com.solvd.bankingservice.services.mysql.ServiceRequestService;
-import com.solvd.bankingservice.daos.impl.xml.jaxb.wrappers.BankingServiceWrapper;
+import com.solvd.bankingservice.services.xml.dom.BankingProcessingServiceDom;
+import com.solvd.bankingservice.services.xml.jaxb.BankingProcessingServiceJaxB;
 import com.solvd.bankingservice.utils.MySQLConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,40 +31,36 @@ public class Runner
     private static final LoanXMLImpl loanXMLservice = new LoanXMLImpl();
     private static final TransactionXMLImpl transactionXMLservice = new TransactionXMLImpl();
 
-    private static final BankingXMLImpl BANKING_XML_IMPL = new BankingXMLImpl();
+    private static final BankingProcessingServiceJaxB bankingProcessingServiceJaxB = new BankingProcessingServiceJaxB();
+    private static final BankingProcessingServiceDom bankingProcessingServiceDom = new BankingProcessingServiceDom();
 
 
-    public static void main(String[] args)
-    {
-        Customer customer = customerAccountService.getAllCustomerDataById(2L);
+    public static void main(String[] args) {
 
+        //MYSQL
+        //Customer customer = customerAccountService.getAllCustomerDataById(2L);
         //Employee employee = employeeService.getAllEmployeeDataById(1L);
-
         //AuditLog auditLog = auditLogService.readById(3L);
-
         //ServiceRequest serviceRequest = serviceRequestService.readById(2L);
+        //MySQLConnectionPool.closeAllConnections();
 
-        MySQLConnectionPool.closeAllConnections();
+        //JAXB
+        //log.info(appointmentXMLservice.getAllEntitys());
+        //log.info(cardXMLservice.getAllEntitys());
+        //log.info(depositXMLservice.getAllEntitys());
+        //log.info(loanXMLservice.getAllEntitys());
+        //log.info(transactionXMLservice.getAllEntitys());
 
-        log.info(appointmentXMLservice.getAllEntitys());
-        log.info(cardXMLservice.getAllEntitys());
-        log.info(depositXMLservice.getAllEntitys());
-        log.info(loanXMLservice.getAllEntitys());
-        log.info(transactionXMLservice.getAllEntitys());
+        //JAXB
+        //BankingServiceWrapper bankingServiceWrapper = bankingProcessingServiceJaxB.readAllFromXml();
+        //log.info(bankingServiceWrapper);
+        //log.info(bankingProcessingServiceJaxB.readAllCardsFromXml());
+        //bankingProcessingServiceJaxB.writeAllToXML(bankingServiceWrapper,"output.xml");
 
-        /*
-        cardXMLservice.writeEntitiesToXML(
-                List.of(new Card(2L, "555666612234", CardType.CREDIT_MASTERCARD,
-                        LocalDate.parse("2027-12-31"), "124", true)),
-                "cards.xml");
-         */
+        //DOM
+        //log.info(bankingProcessingServiceDom.readAllFromXml());
+        //log.info(bankingProcessingServiceDom.readAllCardsFromXml());
 
-        BankingServiceWrapper bankingServiceWrapper = BANKING_XML_IMPL.unmarshalAll();
-        log.info(bankingServiceWrapper);
-        BANKING_XML_IMPL.marshalAll(bankingServiceWrapper,"output.xml");
-
-        //TODO create some services for xml, not call directly
-        //TODO DOM parser
         //TODO json
     }
 }

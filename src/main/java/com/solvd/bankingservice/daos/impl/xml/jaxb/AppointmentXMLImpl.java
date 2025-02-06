@@ -1,8 +1,8 @@
 package com.solvd.bankingservice.daos.impl.xml.jaxb;
 
 import com.solvd.bankingservice.models.Appointment;
-import com.solvd.bankingservice.daos.impl.xml.jaxb.wrappers.AbstractWrapper;
-import com.solvd.bankingservice.daos.impl.xml.jaxb.wrappers.AppointmentWrapper;
+import com.solvd.bankingservice.daos.impl.xml.wrappers.AbstractWrapper;
+import com.solvd.bankingservice.daos.impl.xml.wrappers.AppointmentWrapper;
 
 /**
  * @author Vadym Spitsyn
