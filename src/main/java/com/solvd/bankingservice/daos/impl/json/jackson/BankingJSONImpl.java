@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 public class BankingJSONImpl {
     private static final Logger log = LogManager.getLogger(BankingJSONImpl.class);
-    private static final Dotenv dotenv = Dotenv.configure().directory("src/main/resources/sql").filename("database_config.env").load();
+    private static final Dotenv dotenv = Dotenv.configure().directory("src/main/resources").filename("config.env").load();
     private static final File READ_FROM_FILE = new File(dotenv.get("JSON_FILE_LOCATION"));
 
     public void writeAllToJson(BankingWrapper banking, String outputFilePath){

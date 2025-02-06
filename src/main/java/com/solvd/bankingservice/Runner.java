@@ -3,6 +3,7 @@ package com.solvd.bankingservice;
 import com.solvd.bankingservice.daos.impl.json.jackson.BankingJSONImpl;
 import com.solvd.bankingservice.daos.impl.xml.jaxb.*;
 import com.solvd.bankingservice.daos.impl.xml.wrappers.BankingWrapper;
+import com.solvd.bankingservice.models.customer.Customer;
 import com.solvd.bankingservice.services.ICustomerAccountService;
 import com.solvd.bankingservice.services.IEmployeeService;
 import com.solvd.bankingservice.services.json.jackson.BankingServiceJACKSON;
@@ -32,7 +33,7 @@ public class Runner
     public static void main(String[] args) {
 
         //MYSQL
-        //Customer customer = customerAccountService.getAllCustomerDataById(2L);
+        Customer customer = customerAccountService.getAllCustomerDataById(2L);
         //Employee employee = employeeService.getAllEmployeeDataById(1L);
         //AuditLog auditLog = auditLogService.readById(3L);
         //ServiceRequest serviceRequest = serviceRequestService.readById(2L);

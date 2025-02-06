@@ -15,7 +15,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 
 public class MySQLConnectionPool {
-    private static final Dotenv dotenv = Dotenv.configure().directory("src/main/resources/sql").filename("database_config.env").load();
+    private static final Dotenv dotenv = Dotenv.configure().directory("src/main/resources").filename("config.env").load();
     private static final Logger logger = LogManager.getLogger(MySQLConnectionPool.class);
     private static final String URL = dotenv.get("DB_URL");
     private static final String USER = dotenv.get("DB_USER");

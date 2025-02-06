@@ -44,7 +44,7 @@ import java.util.List;
  */
 public class BankingXMLImplDOM {
 
-    private static final Dotenv dotenv = Dotenv.configure().directory("src/main/resources/sql").filename("database_config.env").load();
+    private static final Dotenv dotenv = Dotenv.configure().directory("src/main/resources").filename("config.env").load();
     private static final Logger log = LogManager.getLogger(BankingXMLImplDOM.class);
     private static final File READ_FROM_FILE = new File(dotenv.get("XML_FILE_LOCATION"));
     private static final String SCHEMA_FILE_LOCATION = dotenv.get("SCHEMA_FILE_LOCATION");
