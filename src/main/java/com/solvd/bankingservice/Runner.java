@@ -1,18 +1,18 @@
 package com.solvd.bankingservice;
 
-import com.solvd.bankingservice.daos.impl.xml.dom.BankingXMLImplDom;
+import com.solvd.bankingservice.daos.impl.json.jackson.BankingJSONImpl;
 import com.solvd.bankingservice.daos.impl.xml.jaxb.*;
-import com.solvd.bankingservice.daos.impl.xml.wrappers.BankingServiceWrapper;
-import com.solvd.bankingservice.models.customer.Customer;
+import com.solvd.bankingservice.daos.impl.xml.wrappers.BankingWrapper;
 import com.solvd.bankingservice.services.ICustomerAccountService;
 import com.solvd.bankingservice.services.IEmployeeService;
+import com.solvd.bankingservice.services.json.jackson.BankingServiceJACKSON;
 import com.solvd.bankingservice.services.mysql.AuditLogService;
 import com.solvd.bankingservice.services.mysql.CustomerAccountService;
 import com.solvd.bankingservice.services.mysql.EmployeeService;
 import com.solvd.bankingservice.services.mysql.ServiceRequestService;
-import com.solvd.bankingservice.services.xml.dom.BankingProcessingServiceDom;
-import com.solvd.bankingservice.services.xml.jaxb.BankingProcessingServiceJaxB;
-import com.solvd.bankingservice.utils.MySQLConnectionPool;
+import com.solvd.bankingservice.services.xml.IBankingProcessingService;
+import com.solvd.bankingservice.services.xml.dom.BankingServiceDOM;
+import com.solvd.bankingservice.services.xml.jaxb.BankingServiceJAXB;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,15 +25,9 @@ public class Runner
     private static final ServiceRequestService serviceRequestService = new ServiceRequestService();
     private static final AuditLogService auditLogService = new AuditLogService();
 
-    private static final AppointmentXMLImpl appointmentXMLservice = new AppointmentXMLImpl();
-    private static final CardXMLImpl cardXMLservice = new CardXMLImpl();
-    private static final DepositXMLImpl depositXMLservice = new DepositXMLImpl();
-    private static final LoanXMLImpl loanXMLservice = new LoanXMLImpl();
-    private static final TransactionXMLImpl transactionXMLservice = new TransactionXMLImpl();
-
-    private static final BankingProcessingServiceJaxB bankingProcessingServiceJaxB = new BankingProcessingServiceJaxB();
-    private static final BankingProcessingServiceDom bankingProcessingServiceDom = new BankingProcessingServiceDom();
-
+    private static final IBankingProcessingService bankingServiceJAXB = new BankingServiceJAXB();
+    private static final IBankingProcessingService bankingServiceDOM = new BankingServiceDOM();
+    private static final IBankingProcessingService bankingServiceJACKSON = new BankingServiceJACKSON();
 
     public static void main(String[] args) {
 
@@ -45,22 +39,18 @@ public class Runner
         //MySQLConnectionPool.closeAllConnections();
 
         //JAXB
-        //log.info(appointmentXMLservice.getAllEntitys());
-        //log.info(cardXMLservice.getAllEntitys());
-        //log.info(depositXMLservice.getAllEntitys());
-        //log.info(loanXMLservice.getAllEntitys());
-        //log.info(transactionXMLservice.getAllEntitys());
-
-        //JAXB
-        //BankingServiceWrapper bankingServiceWrapper = bankingProcessingServiceJaxB.readAllFromXml();
-        //log.info(bankingServiceWrapper);
-        //log.info(bankingProcessingServiceJaxB.readAllCardsFromXml());
-        //bankingProcessingServiceJaxB.writeAllToXML(bankingServiceWrapper,"output.xml");
+        BankingWrapper bankingWrapper = bankingServiceJAXB.readAllFromFile();
+        log.info(bankingWrapper);
+        log.info(bankingServiceJAXB.readAllCardsFromFile());
+        bankingServiceJAXB.writeAllToFile(bankingWrapper,"output.xml");
 
         //DOM
-        //log.info(bankingProcessingServiceDom.readAllFromXml());
-        //log.info(bankingProcessingServiceDom.readAllCardsFromXml());
+        log.info(bankingServiceDOM.readAllFromFile());
+        log.info(bankingServiceDOM.readAllCardsFromFile());
 
-        //TODO json
+        //JSON
+        log.info(bankingServiceJACKSON.readAllFromFile());
+        log.info(bankingServiceJACKSON.readAllCardsFromFile());
+        bankingServiceJACKSON.writeAllToFile(bankingWrapper,"output.json");
     }
 }

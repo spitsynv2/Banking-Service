@@ -1,5 +1,8 @@
 package com.solvd.bankingservice.daos.impl.xml.wrappers;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.solvd.bankingservice.models.Appointment;
 import com.solvd.bankingservice.models.account.Card;
 import com.solvd.bankingservice.models.account.Deposit;
@@ -16,26 +19,32 @@ import java.util.List;
 @XmlRootElement(name = "banking_service")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = {"transactions", "loans", "deposits", "cards", "appointments"})
-public class BankingServiceWrapper {
+@JsonRootName("banking_service")
+public class BankingWrapper {
 
     @XmlElementWrapper(name = "transactions")
     @XmlElement(name = "transaction")
+    @JsonProperty("transactions")
     private List<Transaction> transactions;
 
     @XmlElementWrapper(name = "loans")
     @XmlElement(name = "loan")
+    @JsonProperty("loans")
     private List<Loan> loans;
 
     @XmlElementWrapper(name = "deposits")
     @XmlElement(name = "deposit")
+    @JsonProperty("deposits")
     private List<Deposit> deposits;
 
     @XmlElementWrapper(name = "cards")
     @XmlElement(name = "card")
+    @JsonProperty("cards")
     private List<Card> cards;
 
     @XmlElementWrapper(name = "appointments")
     @XmlElement(name = "appointment")
+    @JsonProperty("appointments")
     private List<Appointment> appointments;
 
     // Getters and Setters

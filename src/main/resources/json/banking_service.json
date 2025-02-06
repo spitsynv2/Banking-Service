@@ -1,0 +1,48 @@
+{
+  "banking_service" : {
+    "transactions" : [ {
+      "id" : 1,
+      "fromAccountId" : 1,
+      "toAccountId" : 2,
+      "transactionType" : "TRANSFER",
+      "amount" : 1000.0,
+      "transactionDate" : "2025-02-04T10:30:00",
+      "description" : "Transfer to friend",
+      "transactionStatus" : "COMPLETED"
+    } ],
+    "loans" : [ {
+      "id" : 1,
+      "loanType" : "MORTGAGE",
+      "amount" : 25000.0,
+      "interestRate" : 3.5,
+      "termMonths" : 36,
+      "startDate" : "2025-01-01",
+      "paymentDate" : "2025-02-01",
+      "loanStatus" : "ACTIVE"
+    } ],
+    "deposits" : [ {
+      "id" : 1,
+      "depositType" : "FIXED",
+      "amount" : 50000.0,
+      "interestRate" : 2.0,
+      "termMonths" : 24,
+      "startDate" : "2025-02-01",
+      "maturityDate" : "2027-02-01",
+      "depositStatus" : "ACTIVE"
+    } ],
+    "cards" : [ {
+      "id" : 1,
+      "cardNumber" : "555666612233",
+      "cardType" : "CREDIT_MASTERCARD",
+      "expiryDate" : "2026-12-31",
+      "cvv" : "123",
+      "active" : true
+    } ],
+    "appointments" : [ {
+      "id" : 1,
+      "appointmentDate" : "2025-02-10T15:00:00",
+      "appointmentStatus" : "SCHEDULED",
+      "notes" : "Meeting to discuss mortgage options"
+    } ]
+  }
+}

@@ -1,6 +1,6 @@
 package com.solvd.bankingservice.daos.impl.xml.dom;
 
-import com.solvd.bankingservice.daos.impl.xml.wrappers.BankingServiceWrapper;
+import com.solvd.bankingservice.daos.impl.xml.wrappers.BankingWrapper;
 import com.solvd.bankingservice.models.Appointment;
 import com.solvd.bankingservice.models.account.Card;
 import com.solvd.bankingservice.models.account.Deposit;
@@ -42,16 +42,16 @@ import java.util.List;
  * @author Vadym Spitsyn
  * @created 2025-02-06
  */
-public class BankingXMLImplDom {
+public class BankingXMLImplDOM {
 
     private static final Dotenv dotenv = Dotenv.configure().directory("src/main/resources/sql").filename("database_config.env").load();
-    private static final Logger log = LogManager.getLogger(BankingXMLImplDom.class);
-    private static final File READ_FROM_FILE = new File(dotenv.get("XM_FILE_LOCATION"));
+    private static final Logger log = LogManager.getLogger(BankingXMLImplDOM.class);
+    private static final File READ_FROM_FILE = new File(dotenv.get("XML_FILE_LOCATION"));
     private static final String SCHEMA_FILE_LOCATION = dotenv.get("SCHEMA_FILE_LOCATION");
 
-    public BankingServiceWrapper readAllFromXmlViaDom() {
+    public BankingWrapper readAllFromXmlViaDom() {
 
-        BankingServiceWrapper wrapper = new BankingServiceWrapper();
+        BankingWrapper wrapper = new BankingWrapper();
 
         List<Transaction> transactions = new ArrayList<>();
         List<Loan> loans = new ArrayList<>();
@@ -190,7 +190,7 @@ public class BankingXMLImplDom {
             Schema schema = factory.newSchema(xsdFile);
 
             Validator validator = schema.newValidator();
-            validator.validate(new StreamSource(BankingXMLImplDom.READ_FROM_FILE));
+            validator.validate(new StreamSource(BankingXMLImplDOM.READ_FROM_FILE));
             return true;
         } catch (SAXException | IOException e) {
             log.error("XML validation failed: {}", e.getMessage(), e);

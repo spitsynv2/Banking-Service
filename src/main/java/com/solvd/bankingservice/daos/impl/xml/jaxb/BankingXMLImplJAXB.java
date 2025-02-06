@@ -1,6 +1,6 @@
 package com.solvd.bankingservice.daos.impl.xml.jaxb;
 
-import com.solvd.bankingservice.daos.impl.xml.wrappers.BankingServiceWrapper;
+import com.solvd.bankingservice.daos.impl.xml.wrappers.BankingWrapper;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,27 +15,27 @@ import java.io.File;
  * @author Vadym Spitsyn
  * @created 2025-02-04
  */
-public class BankingXMLImplJaxB {
+public class BankingXMLImplJAXB {
     private static final Dotenv dotenv = Dotenv.configure().directory("src/main/resources/sql").filename("database_config.env").load();
-    private static final Logger log = LogManager.getLogger(BankingXMLImplJaxB.class);
-    private static final File READ_FROM_FILE = new File(dotenv.get("XM_FILE_LOCATION"));
+    private static final Logger log = LogManager.getLogger(BankingXMLImplJAXB.class);
+    private static final File READ_FROM_FILE = new File(dotenv.get("XML_FILE_LOCATION"));
     private static final String SCHEMA_FILE_LOCATION = dotenv.get("SCHEMA_FILE_LOCATION");
 
-    public BankingServiceWrapper unmarshalAll() {
-        BankingServiceWrapper banking = null;
+    public BankingWrapper unmarshalAll() {
+        BankingWrapper banking = null;
         try {
-            JAXBContext context = JAXBContext.newInstance(BankingServiceWrapper.class);
+            JAXBContext context = JAXBContext.newInstance(BankingWrapper.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
-            banking = (BankingServiceWrapper) unmarshaller.unmarshal(READ_FROM_FILE);
+            banking = (BankingWrapper) unmarshaller.unmarshal(READ_FROM_FILE);
         } catch (JAXBException e) {
             log.error(e);
         }
         return banking;
     }
 
-    public void marshalAll(BankingServiceWrapper banking, String outputFilePath) {
+    public void marshalAll(BankingWrapper banking, String outputFilePath) {
         try {
-            JAXBContext context = JAXBContext.newInstance(BankingServiceWrapper.class);
+            JAXBContext context = JAXBContext.newInstance(BankingWrapper.class);
             Marshaller marshaller = context.createMarshaller();
 
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
