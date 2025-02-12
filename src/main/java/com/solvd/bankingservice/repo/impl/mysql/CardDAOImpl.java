@@ -31,7 +31,7 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
     public void createWithAccountId(Card card, Long accountId) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_ACCOUNT_ID)) {
                 stmt.setLong(1, accountId);
                 stmt.setString(2, card.getCardNumber());
@@ -46,7 +46,7 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
             log.error(e);
         }finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }
@@ -60,7 +60,7 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
     public void update(Card card) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
                 stmt.setString(1, card.getCardNumber());
                 stmt.setString(2, card.getCardType().toString().toUpperCase());
@@ -75,7 +75,7 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
             log.error(e);
         }finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }
@@ -84,7 +84,7 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
     public boolean checkCardNumberExists(String cardNumber) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement statement = connection.prepareStatement(CHECK_CARD_NUMBER_EXISTS)) {
                 statement.setString(1, cardNumber);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -97,7 +97,7 @@ public class CardDAOImpl extends MYSQLImpl<Card,Long> implements ICardDAO {
             log.error(e);
         }finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
         return false;

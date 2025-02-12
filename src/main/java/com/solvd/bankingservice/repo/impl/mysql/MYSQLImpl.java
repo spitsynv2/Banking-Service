@@ -20,7 +20,7 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
         String READ_BY_ID = "SELECT * FROM " + getTableName() + " WHERE Id = ?";
 
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(READ_BY_ID)) {
                 stmt.setObject(1, id);
                 try (ResultSet rs = stmt.executeQuery()) {
@@ -35,7 +35,7 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
             return null;
         }finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
 
@@ -49,7 +49,7 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
         String READ_ALL_BY_FOREIGN_KEY_ID = "SELECT * FROM " + getTableName() + " WHERE " + getForeignKeyColumnLabel() + " = ?";
 
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(READ_ALL_BY_FOREIGN_KEY_ID)) {
                 stmt.setObject(1, foreignKeyId);
                 try (ResultSet rs = stmt.executeQuery()) {
@@ -64,7 +64,7 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
             return null;
         }finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
 
@@ -83,7 +83,7 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
         String DELETE_BY_ID = "DELETE FROM "+ getTableName() + " WHERE Id = ?";
 
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(DELETE_BY_ID)) {
                 stmt.setObject(1, id);
                 stmt.executeUpdate();
@@ -92,7 +92,7 @@ public abstract class MYSQLImpl<T, ID> implements IDAO<T, ID> {
             log.error("Error in deleting by id {}, from table: {}",id,getTableName(), e);
         }finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
         log.info("Entity with id: {} was deleted from database table: {}", id, getTableName());

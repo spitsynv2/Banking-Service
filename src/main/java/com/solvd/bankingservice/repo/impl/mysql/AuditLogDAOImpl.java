@@ -26,7 +26,7 @@ public class AuditLogDAOImpl extends MYSQLImpl<AuditLog,Long> implements IAuditL
         String READ_BY_ID = "SELECT * FROM " + getTableName() + " WHERE log_id = ?";
 
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(READ_BY_ID)) {
                 stmt.setObject(1, id);
                 try (ResultSet rs = stmt.executeQuery()) {
@@ -41,7 +41,7 @@ public class AuditLogDAOImpl extends MYSQLImpl<AuditLog,Long> implements IAuditL
             return null;
         }finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
 
@@ -53,7 +53,7 @@ public class AuditLogDAOImpl extends MYSQLImpl<AuditLog,Long> implements IAuditL
     public void createWithCustomerId(AuditLog auditLog, Long customerId) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_CUSTOMER_ID)) {
                 stmt.setLong(1,customerId);
                 stmt.setLong(2,auditLog.getAuditorId());
@@ -68,7 +68,7 @@ public class AuditLogDAOImpl extends MYSQLImpl<AuditLog,Long> implements IAuditL
             log.error(e);
         }finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }

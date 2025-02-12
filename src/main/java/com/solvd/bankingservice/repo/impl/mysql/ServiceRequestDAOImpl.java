@@ -27,7 +27,7 @@ public class ServiceRequestDAOImpl extends MYSQLImpl<ServiceRequest,Long> implem
     public void createWithCustomerId(ServiceRequest serviceRequest, Long customerId) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_CUSTOMER_ID)) {
                 stmt.setLong(1, customerId);
                 stmt.setLong(2,serviceRequest.getEmployeeId());
@@ -44,7 +44,7 @@ public class ServiceRequestDAOImpl extends MYSQLImpl<ServiceRequest,Long> implem
             log.error(e);
         }finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }
@@ -58,7 +58,7 @@ public class ServiceRequestDAOImpl extends MYSQLImpl<ServiceRequest,Long> implem
     public void update(ServiceRequest serviceRequest) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
                 stmt.setString(1,serviceRequest.getServiceRequestType().toString().toUpperCase());
                 stmt.setString(2,serviceRequest.getServiceRequestStatus().toString().toUpperCase());
@@ -73,7 +73,7 @@ public class ServiceRequestDAOImpl extends MYSQLImpl<ServiceRequest,Long> implem
             log.error(e);
         }finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }

@@ -31,7 +31,7 @@ public class LoanDAOImpl extends MYSQLImpl<Loan,Long> implements ILoanDAO {
     public void createWithAccountId(Loan loan, Long accountId) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_ACCOUNT_ID)) {
                 stmt.setLong(1, accountId);
                 stmt.setString(2,loan.getLoanType().toString().toUpperCase());
@@ -48,7 +48,7 @@ public class LoanDAOImpl extends MYSQLImpl<Loan,Long> implements ILoanDAO {
             log.error(e);
         }finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }
@@ -62,7 +62,7 @@ public class LoanDAOImpl extends MYSQLImpl<Loan,Long> implements ILoanDAO {
     public void update(Loan loan) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
                 stmt.setString(1,loan.getLoanType().toString().toUpperCase());
                 stmt.setDouble(2,loan.getAmount());
@@ -79,7 +79,7 @@ public class LoanDAOImpl extends MYSQLImpl<Loan,Long> implements ILoanDAO {
             log.error(e);
         }finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }

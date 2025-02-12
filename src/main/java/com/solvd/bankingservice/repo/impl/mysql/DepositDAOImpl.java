@@ -30,7 +30,7 @@ public class DepositDAOImpl extends MYSQLImpl<Deposit,Long> implements IDepositD
     public void createWithAccountId(Deposit deposit, Long accountId) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_ACCOUNT_ID)) {
                 stmt.setLong(1, accountId);
                 stmt.setString(2,deposit.getDepositType().toString().toUpperCase());
@@ -47,7 +47,7 @@ public class DepositDAOImpl extends MYSQLImpl<Deposit,Long> implements IDepositD
             log.error(e);
         }finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }
@@ -61,7 +61,7 @@ public class DepositDAOImpl extends MYSQLImpl<Deposit,Long> implements IDepositD
     public void update(Deposit deposit) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
                 stmt.setString(1,deposit.getDepositType().toString().toUpperCase());
                 stmt.setDouble(2,deposit.getAmount());
@@ -78,7 +78,7 @@ public class DepositDAOImpl extends MYSQLImpl<Deposit,Long> implements IDepositD
             log.error(e);
         }finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }

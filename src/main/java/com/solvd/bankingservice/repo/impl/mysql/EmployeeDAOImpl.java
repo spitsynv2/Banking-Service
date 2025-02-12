@@ -32,7 +32,7 @@ public class EmployeeDAOImpl extends MYSQLImpl<Employee,Long> implements IEmploy
     public void create(Employee employee) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE)) {
                 stmt.setString(1,employee.getFirstName());
                 stmt.setString(2, employee.getLastName());
@@ -48,7 +48,7 @@ public class EmployeeDAOImpl extends MYSQLImpl<Employee,Long> implements IEmploy
             log.error("Error in inserting Employee {}", employee, e);
         } finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }
@@ -57,7 +57,7 @@ public class EmployeeDAOImpl extends MYSQLImpl<Employee,Long> implements IEmploy
     public void update(Employee employee) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
                 stmt.setString(1,employee.getFirstName());
                 stmt.setString(2, employee.getLastName());
@@ -74,7 +74,7 @@ public class EmployeeDAOImpl extends MYSQLImpl<Employee,Long> implements IEmploy
             log.error("Error in updating Employee {}", employee, e);
         } finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }
@@ -84,7 +84,7 @@ public class EmployeeDAOImpl extends MYSQLImpl<Employee,Long> implements IEmploy
         Connection connection = null;
 
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement statement = connection.prepareStatement(CHECK_PHONE_NUMBER_EXISTS)) {
                 statement.setString(1, phoneNumber);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -98,7 +98,7 @@ public class EmployeeDAOImpl extends MYSQLImpl<Employee,Long> implements IEmploy
             return false;
         } finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
 
@@ -110,7 +110,7 @@ public class EmployeeDAOImpl extends MYSQLImpl<Employee,Long> implements IEmploy
         Connection connection = null;
 
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement statement = connection.prepareStatement(CHECK_EMAIL_EXISTS)) {
                 statement.setString(1, email);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -124,7 +124,7 @@ public class EmployeeDAOImpl extends MYSQLImpl<Employee,Long> implements IEmploy
             return false;
         } finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
 

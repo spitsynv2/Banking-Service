@@ -29,7 +29,7 @@ public class AddressDAOImpl extends MYSQLImpl<Address,Long> implements IAddressD
     public void createWithCustomerId(Address address, Long customerId) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_CUSTOMER_ID)) {
                 stmt.setLong(1, customerId);
                 stmt.setString(2, address.getAddressType().toString().toUpperCase());
@@ -44,7 +44,7 @@ public class AddressDAOImpl extends MYSQLImpl<Address,Long> implements IAddressD
             log.error(e);
         }finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }
@@ -58,7 +58,7 @@ public class AddressDAOImpl extends MYSQLImpl<Address,Long> implements IAddressD
     public void update(Address address) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
                 stmt.setString(1, address.getAddressType().toString().toUpperCase());
                 stmt.setString(2, address.getStreet());
@@ -73,7 +73,7 @@ public class AddressDAOImpl extends MYSQLImpl<Address,Long> implements IAddressD
             log.error(e);
         }finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }

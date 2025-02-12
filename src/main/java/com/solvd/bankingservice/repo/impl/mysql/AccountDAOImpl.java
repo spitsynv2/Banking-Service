@@ -27,7 +27,7 @@ public class AccountDAOImpl extends MYSQLImpl<Account,Long> implements IAccountD
     public void createWithCustomerId(Account account, Long customerId) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_CUSTOMER_ID)) {
                 stmt.setLong(1, customerId);
                 stmt.setString(2, account.getAccountType().toString().toUpperCase());
@@ -42,7 +42,7 @@ public class AccountDAOImpl extends MYSQLImpl<Account,Long> implements IAccountD
             log.error(e);
         }finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }
@@ -56,7 +56,7 @@ public class AccountDAOImpl extends MYSQLImpl<Account,Long> implements IAccountD
     public void update(Account account) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
                 stmt.setString(1, account.getAccountType().toString().toUpperCase());
                 stmt.setDouble(2, account.getBalance());
@@ -71,7 +71,7 @@ public class AccountDAOImpl extends MYSQLImpl<Account,Long> implements IAccountD
             log.error(e);
         }finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }

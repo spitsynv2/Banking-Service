@@ -16,13 +16,11 @@ public class MySQLConnectionPool {
     private static final String URL = ConfigLoader.getProperty("DB_URL");
     private static final String USER = ConfigLoader.getProperty("DB_USER");
     private static final String PASSWORD = ConfigLoader.getProperty("DB_PASSWORD");
-    private static final int SIZE = Integer.parseInt(ConfigLoader.getProperty("DB_POOL_SIZE"));
-
+    private static final Integer SIZE = Integer.parseInt(ConfigLoader.getProperty("DB_POOL_SIZE"));
     private static final ArrayBlockingQueue<Connection> connections = new ArrayBlockingQueue<>(SIZE);
+    private static final MySQLConnectionPool instance = new MySQLConnectionPool();
 
-    private MySQLConnectionPool() {}
-
-    static {
+    private MySQLConnectionPool() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             for (int i = 0; i < SIZE; i++) {
@@ -34,17 +32,32 @@ public class MySQLConnectionPool {
         }
     }
 
-    public static Connection getConnection() throws InterruptedException {
+    public static MySQLConnectionPool getInstance() {
+        return instance;
+    }
+
+    public Connection getConnection() throws InterruptedException {
         return connections.take();
     }
 
-    public static void releaseConnection(Connection connection) {
+    public void releaseConnection(Connection connection) {
         if (connection != null) {
             connections.offer(connection);
         }
     }
 
-    public static void closeAllConnections() {
+    public void closeAllConnections() {
+
+        while (connections.size() < SIZE) {
+            try {
+                logger.info("Waiting for all connections to be returned to the pool...");
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                logger.warn("Thread was interrupted during wait. Skipping closeAllConnections.");
+                return;
+            }
+        }
+
         for (Connection connection : connections) {
             try {
                 connection.close();
@@ -52,6 +65,7 @@ public class MySQLConnectionPool {
                 logger.error("Error closing connection", e);
             }
         }
+
         logger.info("Closed all connections");
     }
 }

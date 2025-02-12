@@ -36,7 +36,7 @@ public class Runner
         //Employee employee = employeeService.getAllEmployeeDataById(1L);
         //AuditLog auditLog = auditLogService.readById(3L);
         //ServiceRequest serviceRequest = serviceRequestService.readById(2L);
-        MySQLConnectionPool.closeAllConnections();
+        MySQLConnectionPool.getInstance().closeAllConnections();
 
         //JAXB
         BankingWrapper bankingWrapper = bankingServiceJAXB.readAllFromFile();

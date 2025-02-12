@@ -32,7 +32,7 @@ public class EmployeeRoleDAOImpl extends MYSQLImpl<EmployeeRole,Long> implements
     public void createWithEmployeeId(EmployeeRole employeeRole, Long employeeId) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE_WITH_EMPLOYEE_ID)) {
                 stmt.setLong(1, employeeId);
                 stmt.setString(2,employeeRole.getRoleName());
@@ -45,7 +45,7 @@ public class EmployeeRoleDAOImpl extends MYSQLImpl<EmployeeRole,Long> implements
             log.error("Error inserting employeeRole {}, with employee_id {}", employeeRole, employeeId, e);
         } finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }
@@ -54,7 +54,7 @@ public class EmployeeRoleDAOImpl extends MYSQLImpl<EmployeeRole,Long> implements
     public void updateWithEmployeeId(EmployeeRole employeeRole, Long employeeId) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE_WITH_EMPLOYEE_ID)) {
                 stmt.setLong(1,employeeId);
                 stmt.setString(2,employeeRole.getRoleName());
@@ -68,7 +68,7 @@ public class EmployeeRoleDAOImpl extends MYSQLImpl<EmployeeRole,Long> implements
             log.error("Error updating EmployeeRole WithEmployeeId {}", employeeRole, e);
         } finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }
@@ -77,7 +77,7 @@ public class EmployeeRoleDAOImpl extends MYSQLImpl<EmployeeRole,Long> implements
     public void create(EmployeeRole employeeRole) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(CREATE)) {
                 stmt.setString(1,employeeRole.getRoleName());
                 stmt.setString(2,employeeRole.getResponsibilities());
@@ -89,7 +89,7 @@ public class EmployeeRoleDAOImpl extends MYSQLImpl<EmployeeRole,Long> implements
             log.error("Error in inserting employeeRole {}", employeeRole, e);
         } finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }
@@ -98,7 +98,7 @@ public class EmployeeRoleDAOImpl extends MYSQLImpl<EmployeeRole,Long> implements
     public void update(EmployeeRole employeeRole) {
         Connection connection = null;
         try {
-            connection = MySQLConnectionPool.getConnection();
+            connection = MySQLConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
                 stmt.setString(1,employeeRole.getRoleName());
                 stmt.setString(2,employeeRole.getResponsibilities());
@@ -110,7 +110,7 @@ public class EmployeeRoleDAOImpl extends MYSQLImpl<EmployeeRole,Long> implements
             log.error("Error in updating EmployeeRole {}", employeeRole, e);
         } finally {
             if (connection != null) {
-                MySQLConnectionPool.releaseConnection(connection);
+                MySQLConnectionPool.getInstance().releaseConnection(connection);
             }
         }
     }
