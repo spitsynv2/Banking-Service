@@ -14,7 +14,7 @@ import com.solvd.bankingservice.models.account.enums.loan_enums.LoanType;
 import com.solvd.bankingservice.models.account.enums.transaction_enums.TransactionStatus;
 import com.solvd.bankingservice.models.account.enums.transaction_enums.TransactionType;
 import com.solvd.bankingservice.models.enums.AppointmentStatus;
-import io.github.cdimascio.dotenv.Dotenv;
+import com.solvd.bankingservice.utils.ConfigLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -43,11 +43,9 @@ import java.util.List;
  * @created 2025-02-06
  */
 public class BankingXMLImplDOM {
-
-    private static final Dotenv dotenv = Dotenv.configure().directory("src/main/resources").filename("config.env").load();
     private static final Logger log = LogManager.getLogger(BankingXMLImplDOM.class);
-    private static final File READ_FROM_FILE = new File(dotenv.get("XML_FILE_LOCATION"));
-    private static final String SCHEMA_FILE_LOCATION = dotenv.get("SCHEMA_FILE_LOCATION");
+    private static final File READ_FROM_FILE = new File(ConfigLoader.getProperty("XML_FILE_LOCATION"));
+    private static final String SCHEMA_FILE_LOCATION = ConfigLoader.getProperty("SCHEMA_FILE_LOCATION");
 
     public BankingWrapper readAllFromXmlViaDom() {
 

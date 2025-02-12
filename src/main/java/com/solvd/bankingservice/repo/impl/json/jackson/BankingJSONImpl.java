@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.solvd.bankingservice.repo.impl.xml.wrappers.BankingWrapper;
-import io.github.cdimascio.dotenv.Dotenv;
+import com.solvd.bankingservice.utils.ConfigLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,8 +18,7 @@ import java.io.IOException;
  */
 public class BankingJSONImpl {
     private static final Logger log = LogManager.getLogger(BankingJSONImpl.class);
-    private static final Dotenv dotenv = Dotenv.configure().directory("src/main/resources").filename("config.env").load();
-    private static final File READ_FROM_FILE = new File(dotenv.get("JSON_FILE_LOCATION"));
+    private static final File READ_FROM_FILE = new File(ConfigLoader.getProperty("JSON_FILE_LOCATION"));
 
     public void writeAllToJson(BankingWrapper banking, String outputFilePath){
         try {

@@ -1,6 +1,5 @@
 package com.solvd.bankingservice.utils;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,11 +14,10 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 
 public class MySQLConnectionPool {
-    private static final Dotenv dotenv = Dotenv.configure().directory("src/main/resources").filename("config.env").load();
     private static final Logger logger = LogManager.getLogger(MySQLConnectionPool.class);
-    private static final String URL = dotenv.get("DB_URL");
-    private static final String USER = dotenv.get("DB_USER");
-    private static final String PASSWORD = dotenv.get("DB_PASSWORD");
+    private static final String URL = ConfigLoader.getProperty("DB_URL");
+    private static final String USER = ConfigLoader.getProperty("DB_USER");
+    private static final String PASSWORD = ConfigLoader.getProperty("DB_PASSWORD");
     private static final int SIZE = 1;
     private static final MySQLConnectionPool instance = new MySQLConnectionPool();
     private static ArrayBlockingQueue<Connection> connections ;
