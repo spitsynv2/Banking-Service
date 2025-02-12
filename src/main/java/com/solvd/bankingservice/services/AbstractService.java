@@ -1,6 +1,6 @@
 package com.solvd.bankingservice.services;
 
-import com.solvd.bankingservice.daos.IDAO;
+import com.solvd.bankingservice.repo.IDAO;
 
 /**
  * @author Vadym Spitsyn

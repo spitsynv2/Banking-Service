@@ -1,8 +1,6 @@
 package com.solvd.bankingservice;
 
-import com.solvd.bankingservice.daos.impl.json.jackson.BankingJSONImpl;
-import com.solvd.bankingservice.daos.impl.xml.jaxb.*;
-import com.solvd.bankingservice.daos.impl.xml.wrappers.BankingWrapper;
+import com.solvd.bankingservice.repo.impl.xml.wrappers.BankingWrapper;
 import com.solvd.bankingservice.models.customer.Customer;
 import com.solvd.bankingservice.services.ICustomerAccountService;
 import com.solvd.bankingservice.services.IEmployeeService;
@@ -14,6 +12,7 @@ import com.solvd.bankingservice.services.mysql.ServiceRequestService;
 import com.solvd.bankingservice.services.xml.IBankingProcessingService;
 import com.solvd.bankingservice.services.xml.dom.BankingServiceDOM;
 import com.solvd.bankingservice.services.xml.jaxb.BankingServiceJAXB;
+import com.solvd.bankingservice.utils.MySQLConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,7 +36,7 @@ public class Runner
         //Employee employee = employeeService.getAllEmployeeDataById(1L);
         //AuditLog auditLog = auditLogService.readById(3L);
         //ServiceRequest serviceRequest = serviceRequestService.readById(2L);
-        //MySQLConnectionPool.closeAllConnections();
+        MySQLConnectionPool.closeAllConnections();
 
         //JAXB
         BankingWrapper bankingWrapper = bankingServiceJAXB.readAllFromFile();

@@ -1,7 +1,7 @@
 package com.solvd.bankingservice.services.mysql;
 
-import com.solvd.bankingservice.daos.*;
-import com.solvd.bankingservice.daos.impl.mysql.*;
+import com.solvd.bankingservice.repo.*;
+import com.solvd.bankingservice.repo.impl.mysql.*;
 import com.solvd.bankingservice.models.AuditLog;
 import com.solvd.bankingservice.models.ServiceRequest;
 import com.solvd.bankingservice.models.account.*;

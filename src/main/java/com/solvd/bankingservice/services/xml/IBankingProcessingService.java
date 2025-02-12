@@ -1,6 +1,6 @@
 package com.solvd.bankingservice.services.xml;
 
-import com.solvd.bankingservice.daos.impl.xml.wrappers.BankingWrapper;
+import com.solvd.bankingservice.repo.impl.xml.wrappers.BankingWrapper;
 import com.solvd.bankingservice.models.account.Card;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.solvd.bankingservice.services.xml.dom;
 
-import com.solvd.bankingservice.daos.impl.xml.dom.BankingXMLImplDOM;
-import com.solvd.bankingservice.daos.impl.xml.wrappers.BankingWrapper;
+import com.solvd.bankingservice.repo.impl.xml.dom.BankingXMLImplDOM;
+import com.solvd.bankingservice.repo.impl.xml.wrappers.BankingWrapper;
 import com.solvd.bankingservice.models.account.Card;
 import com.solvd.bankingservice.services.xml.IBankingProcessingService;
 import org.apache.logging.log4j.LogManager;

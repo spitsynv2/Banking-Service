@@ -1,10 +1,10 @@
 package com.solvd.bankingservice.services.mysql;
 
-import com.solvd.bankingservice.daos.IAppointmentDAO;
-import com.solvd.bankingservice.daos.IDAO;
-import com.solvd.bankingservice.daos.IServiceRequestDAO;
-import com.solvd.bankingservice.daos.impl.mysql.AppointmentDAOImpl;
-import com.solvd.bankingservice.daos.impl.mysql.ServiceRequestDAOImpl;
+import com.solvd.bankingservice.repo.IAppointmentDAO;
+import com.solvd.bankingservice.repo.IDAO;
+import com.solvd.bankingservice.repo.IServiceRequestDAO;
+import com.solvd.bankingservice.repo.impl.mysql.AppointmentDAOImpl;
+import com.solvd.bankingservice.repo.impl.mysql.ServiceRequestDAOImpl;
 import com.solvd.bankingservice.models.ServiceRequest;
 import com.solvd.bankingservice.services.AbstractService;
 import org.apache.logging.log4j.LogManager;

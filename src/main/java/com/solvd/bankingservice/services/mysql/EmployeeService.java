@@ -1,9 +1,9 @@
 package com.solvd.bankingservice.services.mysql;
 
-import com.solvd.bankingservice.daos.*;
-import com.solvd.bankingservice.daos.impl.mysql.BranchDAOImpl;
-import com.solvd.bankingservice.daos.impl.mysql.EmployeeDAOImpl;
-import com.solvd.bankingservice.daos.impl.mysql.EmployeeRoleDAOImpl;
+import com.solvd.bankingservice.repo.*;
+import com.solvd.bankingservice.repo.impl.mysql.BranchDAOImpl;
+import com.solvd.bankingservice.repo.impl.mysql.EmployeeDAOImpl;
+import com.solvd.bankingservice.repo.impl.mysql.EmployeeRoleDAOImpl;
 import com.solvd.bankingservice.models.employee.Employee;
 import com.solvd.bankingservice.services.AbstractService;
 import com.solvd.bankingservice.services.IEmployeeService;

@@ -1,8 +1,8 @@
 package com.solvd.bankingservice.services.mysql;
 
-import com.solvd.bankingservice.daos.IAuditLogDAO;
-import com.solvd.bankingservice.daos.IDAO;
-import com.solvd.bankingservice.daos.impl.mysql.AuditLogDAOImpl;
+import com.solvd.bankingservice.repo.IAuditLogDAO;
+import com.solvd.bankingservice.repo.IDAO;
+import com.solvd.bankingservice.repo.impl.mysql.AuditLogDAOImpl;
 import com.solvd.bankingservice.models.AuditLog;
 import com.solvd.bankingservice.services.AbstractService;
 import com.solvd.bankingservice.services.IAuditLogService;
