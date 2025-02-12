@@ -19,12 +19,12 @@ public class ConfigLoader {
     private ConfigLoader() {}
 
     static {
-        try (InputStream input = ConfigLoader.class.getClassLoader().getResourceAsStream("config.properties.example")) {
-            if (input == null) {
+        try (InputStream inputStream = ConfigLoader.class.getClassLoader().getResourceAsStream("config.properties.example")) {
+            if (inputStream == null) {
                 log.error("config.properties file not found.");
                 throw new RuntimeException("config.properties file not found.");
             }
-            properties.load(input);
+            properties.load(inputStream);
         } catch (IOException e) {
             log.error("Error loading config.properties", e);
             throw new RuntimeException("Error loading config.properties", e);
