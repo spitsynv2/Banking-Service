@@ -112,5 +112,11 @@
       <version>2.18.2</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis</artifactId>
+      <version>3.5.19</version>
+    </dependency>
+
   </dependencies>
 </project>

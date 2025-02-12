@@ -9,6 +9,5 @@ import java.util.List;
  * @created 2025-02-04
  */
 public interface IAuditLogService extends IService<AuditLog,Long>{
-
     List<AuditLog> getAllAuditLogDataByCustomerId(Long customerId);
 }

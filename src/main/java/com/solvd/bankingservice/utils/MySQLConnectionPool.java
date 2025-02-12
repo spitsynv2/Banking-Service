@@ -2,41 +2,36 @@ package com.solvd.bankingservice.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-/**
- * @author Vadym Spitsyn
- * @created 2025-01-02
- */
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.concurrent.ArrayBlockingQueue;
 
-
+/**
+ * @author Vadym Spitsyn
+ * @created 2025-01-02
+ */
 public class MySQLConnectionPool {
     private static final Logger logger = LogManager.getLogger(MySQLConnectionPool.class);
     private static final String URL = ConfigLoader.getProperty("DB_URL");
     private static final String USER = ConfigLoader.getProperty("DB_USER");
     private static final String PASSWORD = ConfigLoader.getProperty("DB_PASSWORD");
-    private static final int SIZE = 1;
-    private static final MySQLConnectionPool instance = new MySQLConnectionPool();
-    private static ArrayBlockingQueue<Connection> connections ;
+    private static final int SIZE = Integer.parseInt(ConfigLoader.getProperty("DB_POOL_SIZE"));
 
-    private MySQLConnectionPool(){
+    private static final ArrayBlockingQueue<Connection> connections = new ArrayBlockingQueue<>(SIZE);
+
+    private MySQLConnectionPool() {}
+
+    static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connections = new ArrayBlockingQueue<>(SIZE);
-
             for (int i = 0; i < SIZE; i++) {
                 connections.offer(DriverManager.getConnection(URL, USER, PASSWORD));
             }
         } catch (ClassNotFoundException | SQLException e) {
+            logger.error("Error in initialization of MySQLConnectionPool", e);
             throw new RuntimeException("Failed to initialize connection pool", e);
         }
-    }
-
-    public static MySQLConnectionPool getInstance() {
-        return instance;
     }
 
     public static Connection getConnection() throws InterruptedException {
@@ -54,9 +49,9 @@ public class MySQLConnectionPool {
             try {
                 connection.close();
             } catch (SQLException e) {
-                logger.error(e);
+                logger.error("Error closing connection", e);
             }
         }
-        logger.info("Closing all connections");
+        logger.info("Closed all connections");
     }
 }

@@ -16,19 +16,19 @@ public class ConfigLoader {
     private static final Logger log = LogManager.getLogger(ConfigLoader.class);
     private static final Properties properties = new Properties();
 
-    private ConfigLoader() {
-        try (InputStream input = ConfigLoader.class.getClassLoader().getResourceAsStream("config.properties")) {
-            if (input == null) {
-                log.error("config.properties file not found.");
-            }
-            properties.load(input);
-        } catch (IOException ex) {
-            log.error("Error loading config.properties", ex);
-        }
-    }
+    private ConfigLoader() {}
 
     static {
-        new ConfigLoader();
+        try (InputStream input = ConfigLoader.class.getClassLoader().getResourceAsStream("config.properties.example")) {
+            if (input == null) {
+                log.error("config.properties file not found.");
+                throw new RuntimeException("config.properties file not found.");
+            }
+            properties.load(input);
+        } catch (IOException e) {
+            log.error("Error loading config.properties", e);
+            throw new RuntimeException("Error loading config.properties", e);
+        }
     }
 
     public static String getProperty(String key) {

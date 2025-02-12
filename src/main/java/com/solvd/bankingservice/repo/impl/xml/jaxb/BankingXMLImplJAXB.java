@@ -18,7 +18,7 @@ import java.io.File;
 public class BankingXMLImplJAXB {
     private static final Logger log = LogManager.getLogger(BankingXMLImplJAXB.class);
     private static final File READ_FROM_FILE = new File(ConfigLoader.getProperty("XML_FILE_LOCATION"));
-    private static final String SCHEMA_FILE_LOCATION = ConfigLoader.getProperty("SCHEMA_FILE_LOCATION");
+    private static final String SCHEMA_FILE_LOCATION = ConfigLoader.getProperty("XML_SCHEMA_FILE_LOCATION");
 
     public BankingWrapper unmarshalAll() {
         BankingWrapper banking = null;
