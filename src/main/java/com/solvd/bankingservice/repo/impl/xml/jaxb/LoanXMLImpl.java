@@ -1,6 +1,6 @@
 package com.solvd.bankingservice.repo.impl.xml.jaxb;
 
-import com.solvd.bankingservice.models.account.Loan;
+import com.solvd.bankingservice.model.account.Loan;
 import com.solvd.bankingservice.repo.impl.xml.wrappers.AbstractWrapper;
 import com.solvd.bankingservice.repo.impl.xml.wrappers.LoanWrapper;
 

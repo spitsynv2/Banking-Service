@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.bankingservice.repo.IAppointmentDAO">
+
+    <select id="readById" resultType="com.solvd.bankingservice.model.Appointment">
+        SELECT id, appointment_date AS appointmentDate, status AS appointmentStatus, notes
+        FROM appointments
+        WHERE id = #{id}
+    </select>
+
+    <select id="readAllByForeignKeyId" resultType="com.solvd.bankingservice.model.Appointment">
+        SELECT id, appointment_date AS appointmentDate, status AS appointmentStatus, notes
+        FROM appointments
+        WHERE service_request_id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM appointments
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update">
+        UPDATE appointments
+        SET appointment_date = #{appointmentDate},
+        status = #{appointmentStatus},
+        notes = #{notes}
+        WHERE id = #{id}
+    </update>
+
+    <insert id="createWithServiceRequestId">
+        INSERT INTO appointments (appointment_date, status, notes, service_request_id)
+        VALUES (#{appointment.appointmentDate}, #{appointment.appointmentStatus}, #{appointment.notes}, #{serviceRequestId})
+    </insert>
+
+</mapper>

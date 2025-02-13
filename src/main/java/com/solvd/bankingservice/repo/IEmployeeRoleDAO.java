@@ -1,6 +1,6 @@
 package com.solvd.bankingservice.repo;
 
-import com.solvd.bankingservice.models.employee.EmployeeRole;
+import com.solvd.bankingservice.model.employee.EmployeeRole;
 
 import java.util.List;
 

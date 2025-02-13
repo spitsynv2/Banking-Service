@@ -1,18 +1,21 @@
 package com.solvd.bankingservice;
 
+import com.solvd.bankingservice.model.Appointment;
+import com.solvd.bankingservice.repo.impl.mybatis.impl.AppointmentMyBatisImpl;
+import com.solvd.bankingservice.repo.impl.mysql.AppointmentMySQLJdbcImpl;
 import com.solvd.bankingservice.repo.impl.xml.wrappers.BankingWrapper;
-import com.solvd.bankingservice.models.customer.Customer;
-import com.solvd.bankingservice.services.ICustomerAccountService;
-import com.solvd.bankingservice.services.IEmployeeService;
-import com.solvd.bankingservice.services.json.jackson.BankingServiceJACKSON;
-import com.solvd.bankingservice.services.mysql.AuditLogService;
-import com.solvd.bankingservice.services.mysql.CustomerAccountService;
-import com.solvd.bankingservice.services.mysql.EmployeeService;
-import com.solvd.bankingservice.services.mysql.ServiceRequestService;
-import com.solvd.bankingservice.services.xml.IBankingProcessingService;
-import com.solvd.bankingservice.services.xml.dom.BankingServiceDOM;
-import com.solvd.bankingservice.services.xml.jaxb.BankingServiceJAXB;
-import com.solvd.bankingservice.utils.MySQLConnectionPool;
+import com.solvd.bankingservice.model.customer.Customer;
+import com.solvd.bankingservice.service.ICustomerAccountService;
+import com.solvd.bankingservice.service.IEmployeeService;
+import com.solvd.bankingservice.service.json.jackson.BankingServiceJACKSON;
+import com.solvd.bankingservice.service.mysql.AuditLogService;
+import com.solvd.bankingservice.service.mysql.CustomerAccountService;
+import com.solvd.bankingservice.service.mysql.EmployeeService;
+import com.solvd.bankingservice.service.mysql.ServiceRequestService;
+import com.solvd.bankingservice.service.xml.IBankingProcessingService;
+import com.solvd.bankingservice.service.xml.dom.BankingServiceDOM;
+import com.solvd.bankingservice.service.xml.jaxb.BankingServiceJAXB;
+import com.solvd.bankingservice.util.MySQLConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,25 +35,32 @@ public class Runner
     public static void main(String[] args) {
 
         //MYSQL
-        Customer customer = customerAccountService.getAllCustomerDataById(2L);
+        //Customer customer = customerAccountService.getAllCustomerDataById(2L);
         //Employee employee = employeeService.getAllEmployeeDataById(1L);
         //AuditLog auditLog = auditLogService.readById(3L);
         //ServiceRequest serviceRequest = serviceRequestService.readById(2L);
-        MySQLConnectionPool.getInstance().closeAllConnections();
+        //MySQLConnectionPool.getInstance().closeAllConnections();
 
         //JAXB
-        BankingWrapper bankingWrapper = bankingServiceJAXB.readAllFromFile();
-        log.info(bankingWrapper);
-        log.info(bankingServiceJAXB.readAllCardsFromFile());
-        bankingServiceJAXB.writeAllToFile(bankingWrapper,"output.xml");
+        //BankingWrapper bankingWrapper = bankingServiceJAXB.readAllFromFile();
+        //log.info(bankingWrapper);
+        //log.info(bankingServiceJAXB.readAllCardsFromFile());
+        //bankingServiceJAXB.writeAllToFile(bankingWrapper,"output.xml");
 
         //DOM
-        log.info(bankingServiceDOM.readAllFromFile());
-        log.info(bankingServiceDOM.readAllCardsFromFile());
+        //log.info(bankingServiceDOM.readAllFromFile());
+        //log.info(bankingServiceDOM.readAllCardsFromFile());
 
         //JSON
-        log.info(bankingServiceJACKSON.readAllFromFile());
-        log.info(bankingServiceJACKSON.readAllCardsFromFile());
-        bankingServiceJACKSON.writeAllToFile(bankingWrapper,"output.json");
+        //log.info(bankingServiceJACKSON.readAllFromFile());
+        //log.info(bankingServiceJACKSON.readAllCardsFromFile());
+        //bankingServiceJACKSON.writeAllToFile(bankingWrapper,"output.json");
+
+        AppointmentMyBatisImpl appointmentDAO = new AppointmentMyBatisImpl();
+        //Appointment appointment = appointmentDAO.readById(1L);
+
+        //log.info(appointment);
+        //log.info(appointmentDAO.readAllByForeignKeyId(1L));
+        appointmentDAO.deleteById(8L);
     }
 }

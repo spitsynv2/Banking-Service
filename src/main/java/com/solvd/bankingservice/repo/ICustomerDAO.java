@@ -1,6 +1,6 @@
 package com.solvd.bankingservice.repo;
 
-import com.solvd.bankingservice.models.customer.Customer;
+import com.solvd.bankingservice.model.customer.Customer;
 
 /**
  * @author Vadym Spitsyn

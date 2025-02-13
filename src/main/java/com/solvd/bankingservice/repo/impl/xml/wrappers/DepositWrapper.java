@@ -1,6 +1,6 @@
 package com.solvd.bankingservice.repo.impl.xml.wrappers;
 
-import com.solvd.bankingservice.models.account.Deposit;
+import com.solvd.bankingservice.model.account.Deposit;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package com.solvd.bankingservice.repo;
 
-import com.solvd.bankingservice.models.ServiceRequest;
+import com.solvd.bankingservice.model.ServiceRequest;
 
 import java.util.List;
 

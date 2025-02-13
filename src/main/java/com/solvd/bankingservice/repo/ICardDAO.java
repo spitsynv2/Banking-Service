@@ -1,6 +1,6 @@
 package com.solvd.bankingservice.repo;
 
-import com.solvd.bankingservice.models.account.Card;
+import com.solvd.bankingservice.model.account.Card;
 
 import java.util.List;
 

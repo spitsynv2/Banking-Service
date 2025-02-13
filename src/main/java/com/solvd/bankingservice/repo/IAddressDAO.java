@@ -1,6 +1,6 @@
 package com.solvd.bankingservice.repo;
 
-import com.solvd.bankingservice.models.customer.Address;
+import com.solvd.bankingservice.model.customer.Address;
 
 import java.util.List;
 

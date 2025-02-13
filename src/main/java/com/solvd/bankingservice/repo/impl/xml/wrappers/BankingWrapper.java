@@ -2,11 +2,11 @@ package com.solvd.bankingservice.repo.impl.xml.wrappers;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.solvd.bankingservice.models.Appointment;
-import com.solvd.bankingservice.models.account.Card;
-import com.solvd.bankingservice.models.account.Deposit;
-import com.solvd.bankingservice.models.account.Loan;
-import com.solvd.bankingservice.models.account.Transaction;
+import com.solvd.bankingservice.model.Appointment;
+import com.solvd.bankingservice.model.account.Card;
+import com.solvd.bankingservice.model.account.Deposit;
+import com.solvd.bankingservice.model.account.Loan;
+import com.solvd.bankingservice.model.account.Transaction;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;

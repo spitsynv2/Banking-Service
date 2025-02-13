@@ -2,6 +2,7 @@ DB_URL=jdbc:mysql://localhost:3306/banking_service
 DB_USER=root
 DB_PASSWORD=root
 DB_POOL_SIZE=5
+DB_DRIVER=com.mysql.cj.jdbc.Driver
 XML_FILE_LOCATION=src/main/resources/xml/banking_service.xml
 XML_SCHEMA_FILE_LOCATION=src/main/resources/xml/banking_service.xsd
 JSON_FILE_LOCATION=src/main/resources/json/banking_service.json

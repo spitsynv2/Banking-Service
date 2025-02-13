@@ -1,6 +1,6 @@
 package com.solvd.bankingservice.repo;
 
-import com.solvd.bankingservice.models.customer.CustomerRepresentative;
+import com.solvd.bankingservice.model.customer.CustomerRepresentative;
 
 
 /**

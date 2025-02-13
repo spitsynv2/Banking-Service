@@ -1,7 +1,7 @@
 package com.solvd.bankingservice.repo.impl.xml.jaxb;
 
 import com.solvd.bankingservice.repo.impl.xml.wrappers.BankingWrapper;
-import com.solvd.bankingservice.utils.ConfigLoader;
+import com.solvd.bankingservice.util.ConfigLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
