@@ -74,8 +74,8 @@ public class Runner
         //log.info(serviceRequestServiceMySQL.readAllByForeignKeyId(2L));
         //log.info(serviceRequestServiceMyBatis.readAllByForeignKeyId(2L));
 
-        ServiceRequest serviceRequest = serviceRequestServiceMyBatis.readById(1L);
-        log.info(serviceRequest);
+        //ServiceRequest serviceRequest = serviceRequestServiceMyBatis.readById(1L);
+        //log.info(serviceRequest);
         //serviceRequest.setNotes("TEST! 1");
         //serviceRequestServiceMyBatis.update(serviceRequest);
         //serviceRequest.setNotes("TEST CREATE! 1");

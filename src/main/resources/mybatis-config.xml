@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
-    <properties resource="config.properties.example" />
+    <properties resource="config.properties" />
 
     <typeAliases>
         <package name="com.solvd.model" />
