@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.bankingservice.repo.IServiceRequestDAO">
+
+    <select id="readById" resultType="com.solvd.bankingservice.model.ServiceRequest">
+        SELECT id,
+        customer_id AS customerId,
+        employee_id AS employeeId,
+        request_type AS serviceRequestType,
+        status AS serviceRequestStatus,
+        created_at AS createdAt,
+        resolved_at AS resolvedAt,
+        notes
+        FROM service_requests
+        WHERE id = #{id}
+    </select>
+
+    <select id="readAllByForeignKeyId" resultType="com.solvd.bankingservice.model.ServiceRequest">
+        SELECT id,
+        customer_id AS customerId,
+        employee_id AS employeeId,
+        request_type AS serviceRequestType,
+        status AS serviceRequestStatus,
+        created_at AS createdAt,
+        resolved_at AS resolvedAt,
+        notes
+        FROM service_requests
+        WHERE customer_id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM service_requests
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update">
+        UPDATE service_requests
+        SET
+        customer_id = #{customerId},
+        employee_id = #{employeeId},
+        request_type = #{serviceRequestType},
+        status = #{serviceRequestStatus},
+        created_at = #{createdAt},
+        resolved_at = #{resolvedAt},
+        notes = #{notes}
+        WHERE id = #{id}
+    </update>
+
+    <insert id="createWithCustomerId">
+        INSERT INTO service_requests ( employee_id, request_type, status, created_at, resolved_at, notes, customer_id )
+        VALUES ( #{serviceRequest.employeeId},
+        #{serviceRequest.serviceRequestType},
+        #{serviceRequest.serviceRequestStatus},
+        #{serviceRequest.createdAt},
+        #{serviceRequest.resolvedAt},
+        #{serviceRequest.notes},
+        #{customerId})
+    </insert>
+
+</mapper>

@@ -14,7 +14,6 @@ import org.apache.logging.log4j.Logger;
 public class AppointmentMyBatisImpl extends AbstractMyBatisImpl<Appointment,Long> implements IAppointmentDAO {
     private static final Logger log = LogManager.getLogger(AppointmentMyBatisImpl.class);
 
-
     @Override
     public void create(Appointment appointment) {
         log.error("Method is not implemented in AppointmentMyBatisImpl, Use ---> createWithServiceRequestId");

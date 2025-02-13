@@ -24,5 +24,6 @@
 
     <mappers>
         <mapper resource="sql/mybatis/mappers/AppointmentMapper.xml" />
+        <mapper resource="sql/mybatis/mappers/ServiceRequestMapper.xml" />
     </mappers>
 </configuration>

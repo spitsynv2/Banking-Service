@@ -96,7 +96,8 @@ public class ServiceRequestMySQLJdbcImpl extends AbstractMySQLJdbcImpl<ServiceRe
             serviceRequest.setCustomerId(rs.getLong("customer_id"));
             serviceRequest.setEmployeeId(rs.getLong("employee_id"));
             serviceRequest.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-            serviceRequest.setResolvedAt(rs.getTimestamp("resolved_at").toLocalDateTime());
+            Timestamp resolvedAtTimestamp = rs.getTimestamp("resolved_at");
+            serviceRequest.setResolvedAt(resolvedAtTimestamp != null ? resolvedAtTimestamp.toLocalDateTime() : null);
             serviceRequest.setNotes(rs.getString("notes"));
 
             ServiceRequestType serviceRequestType = ServiceRequestType.valueOf(rs.getString("request_type").toUpperCase());
