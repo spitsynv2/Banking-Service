@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
-    <properties resource="config.properties" />
+    <properties resource="config.properties.example" />
 
     <typeAliases>
         <package name="com.solvd.model" />
@@ -25,5 +25,8 @@
     <mappers>
         <mapper resource="sql/mybatis/mappers/AppointmentMapper.xml" />
         <mapper resource="sql/mybatis/mappers/ServiceRequestMapper.xml" />
+        <mapper resource="sql/mybatis/mappers/DepositMapper.xml" />
+        <mapper resource="sql/mybatis/mappers/LoanMapper.xml" />
+        <mapper resource="sql/mybatis/mappers/TransactionMapper.xml" />
     </mappers>
 </configuration>

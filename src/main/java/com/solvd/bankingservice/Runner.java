@@ -12,6 +12,9 @@ import com.solvd.bankingservice.service.xml.IBankingProcessingService;
 import com.solvd.bankingservice.service.xml.dom.BankingServiceDOM;
 import com.solvd.bankingservice.service.xml.jaxb.BankingServiceJAXB;
 import com.solvd.bankingservice.util.patterns.DAOType;
+import com.solvd.bankingservice.util.patterns.DepositDAOFactory;
+import com.solvd.bankingservice.util.patterns.LoanDAOFactory;
+import com.solvd.bankingservice.util.patterns.TransactionDAOFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -80,7 +83,13 @@ public class Runner
         //serviceRequestServiceMyBatis.update(serviceRequest);
         //serviceRequest.setNotes("TEST CREATE! 1");
         //serviceRequestServiceMyBatis.createWithCustomerId(serviceRequest, 2L);
-        log.info(serviceRequestServiceMyBatis.readAllByForeignKeyId(2L));
+        //log.info(serviceRequestServiceMyBatis.readAllByForeignKeyId(2L));
         //serviceRequestServiceMyBatis.deleteById(5L);
+
+        log.info(serviceRequestServiceMyBatis.readById(1L));
+        log.info(appointmentServiceMyBatis.readById(3L));
+        log.info(DepositDAOFactory.getDAO(DAOType.MYBATIS).readById(1L));
+        log.info(LoanDAOFactory.getDAO(DAOType.MYBATIS).readById(1L));
+        log.info(TransactionDAOFactory.getDAO(DAOType.MYBATIS).readById(1L));
     }
 }

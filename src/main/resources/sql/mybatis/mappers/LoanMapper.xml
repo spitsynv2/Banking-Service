@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.bankingservice.repo.ILoanDAO">
+
+    <resultMap id="LoanResultMap" type="com.solvd.bankingservice.model.account.Loan">
+        <id property="id" column="Id"/>
+        <result property="loanType" column="loan_type"/>
+        <result property="amount" column="amount"/>
+        <result property="interestRate" column="interest_rate"/>
+        <result property="termMonths" column="term_months"/>
+        <result property="startDate" column="start_date" javaType="java.time.LocalDate"/>
+        <result property="paymentDate" column="payment_date" javaType="java.time.LocalDate"/>
+        <result property="loanStatus" column="status"/>
+    </resultMap>
+
+    <select id="readById" resultMap="LoanResultMap">
+        SELECT Id, loan_type, amount, interest_rate, term_months, start_date, payment_date, status
+        FROM loans
+        WHERE Id = #{id}
+    </select>
+
+    <select id="readAllByForeignKeyId" resultMap="LoanResultMap">
+        SELECT Id, loan_type, amount, interest_rate, term_months, start_date, payment_date, status
+        FROM loans
+        WHERE account_id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM loans
+        WHERE Id = #{id}
+    </delete>
+
+    <update id="update">
+        UPDATE loans
+        SET
+        loan_type = #{loan.loanType},
+        amount = #{loan.amount},
+        interest_rate = #{loan.interestRate},
+        term_months = #{loan.termMonths},
+        start_date = #{loan.startDate},
+        payment_date = #{loan.paymentDate},
+        status = #{loan.loanStatus}
+        WHERE Id = #{loan.id}
+    </update>
+
+    <insert id="createWithAccountId">
+        INSERT INTO loans ( account_id, loan_type, amount, interest_rate, term_months, start_date, payment_date, status )
+        VALUES (
+        #{accountId},
+        #{loan.loanType},
+        #{loan.amount},
+        #{loan.interestRate},
+        #{loan.termMonths},
+        #{loan.startDate},
+        #{loan.paymentDate},
+        #{loan.loanStatus}
+        )
+    </insert>
+
+</mapper>

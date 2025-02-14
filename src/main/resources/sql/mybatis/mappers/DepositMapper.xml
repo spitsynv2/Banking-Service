@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.bankingservice.repo.IDepositDAO">
+
+    <resultMap id="DepositResultMap" type="com.solvd.bankingservice.model.account.Deposit">
+        <id property="id" column="Id"/>
+        <result property="depositType" column="deposit_type"/>
+        <result property="amount" column="amount"/>
+        <result property="interestRate" column="interest_rate"/>
+        <result property="termMonths" column="term_months"/>
+        <result property="startDate" column="start_date" javaType="java.time.LocalDate"/>
+        <result property="maturityDate" column="maturity_date" javaType="java.time.LocalDate"/>
+        <result property="depositStatus" column="status"/>
+    </resultMap>
+
+    <select id="readById" resultMap="DepositResultMap">
+        SELECT Id, deposit_type, amount, interest_rate, term_months, start_date, maturity_date, status
+        FROM deposits
+        WHERE Id = #{id}
+    </select>
+
+    <select id="readAllByForeignKeyId" resultMap="DepositResultMap">
+        SELECT Id, deposit_type, amount, interest_rate, term_months, start_date, maturity_date, status
+        FROM deposits
+        WHERE account_id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM deposits
+        WHERE Id = #{id}
+    </delete>
+
+    <update id="update">
+        UPDATE deposits
+        SET
+        deposit_type = #{depositType},
+        amount = #{amount},
+        interest_rate = #{interestRate},
+        term_months = #{termMonths},
+        start_date = #{startDate},
+        maturity_date = #{maturityDate},
+        status = #{depositStatus}
+        WHERE Id = #{id}
+    </update>
+
+    <insert id="createWithAccountId">
+        INSERT INTO deposits ( account_id, deposit_type, amount, interest_rate, term_months, start_date, maturity_date, status )
+        VALUES (
+        #{accountId},
+        #{deposit.depositType},
+        #{deposit.amount},
+        #{deposit.interestRate},
+        #{deposit.termMonths},
+        #{deposit.startDate},
+        #{deposit.maturityDate},
+        #{deposit.depositStatus}
+        )
+    </insert>
+
+</mapper>

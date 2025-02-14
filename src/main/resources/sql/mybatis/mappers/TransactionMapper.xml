@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.bankingservice.repo.ITransactionDAO">
+
+    <resultMap id="TransactionResultMap" type="com.solvd.bankingservice.model.account.Transaction">
+        <id property="id" column="Id"/>
+        <result property="fromAccountId" column="from_account_id"/>
+        <result property="toAccountId" column="to_account_id"/>
+        <result property="transactionType" column="transaction_type"/>
+        <result property="amount" column="amount"/>
+        <result property="transactionDate" column="transaction_date" javaType="java.time.LocalDateTime"/>
+        <result property="description" column="description"/>
+        <result property="transactionStatus" column="status"/>
+    </resultMap>
+
+    <select id="readById" resultMap="TransactionResultMap">
+        SELECT Id, from_account_id, to_account_id, transaction_type, amount, transaction_date, description, status
+        FROM transactions
+        WHERE Id = #{id}
+    </select>
+
+    <select id="readAllByForeignKeyId" resultMap="TransactionResultMap">
+        SELECT Id, from_account_id, to_account_id, transaction_type, amount, transaction_date, description, status
+        FROM transactions
+        WHERE from_account_id = #{id} OR to_account_id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM transactions
+        WHERE Id = #{id}
+    </delete>
+
+    <update id="update">
+        UPDATE transactions
+        SET
+        from_account_id = #{transaction.fromAccountId},
+        to_account_id = #{transaction.toAccountId},
+        transaction_type = #{transaction.transactionType},
+        amount = #{transaction.amount},
+        transaction_date = #{transaction.transactionDate},
+        description = #{transaction.description},
+        status = #{transaction.transactionStatus}
+        WHERE Id = #{transaction.id}
+    </update>
+
+    <insert id="createWithAccountIds">
+        INSERT INTO transactions ( from_account_id, to_account_id, transaction_type, amount, transaction_date, description, status )
+        VALUES (
+        #{fromAccountId},
+        #{transaction.toAccountId},
+        #{transaction.transactionType},
+        #{transaction.amount},
+        #{transaction.transactionDate},
+        #{transaction.description},
+        #{transaction.transactionStatus}
+        )
+    </insert>
+
+</mapper>
