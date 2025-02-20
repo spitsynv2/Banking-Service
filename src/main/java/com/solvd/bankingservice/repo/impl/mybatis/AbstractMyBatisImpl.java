@@ -1,4 +1,4 @@
-package com.solvd.bankingservice.repo.impl.mybatis.impl;
+package com.solvd.bankingservice.repo.impl.mybatis;
 
 import com.solvd.bankingservice.repo.IDAO;
 import com.solvd.bankingservice.repo.IDAOCommonUtility;

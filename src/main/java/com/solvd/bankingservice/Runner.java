@@ -1,11 +1,7 @@
 package com.solvd.bankingservice;
 
-import com.solvd.bankingservice.model.Appointment;
-import com.solvd.bankingservice.model.ServiceRequest;
-import com.solvd.bankingservice.repo.impl.mybatis.impl.AppointmentMyBatisImpl;
 import com.solvd.bankingservice.service.*;
 import com.solvd.bankingservice.service.json.jackson.BankingServiceJACKSON;
-import com.solvd.bankingservice.service.mysql.AuditLogService;
 import com.solvd.bankingservice.service.mysql.CustomerAccountService;
 import com.solvd.bankingservice.service.mysql.EmployeeService;
 import com.solvd.bankingservice.service.xml.IBankingProcessingService;
@@ -17,9 +13,6 @@ import com.solvd.bankingservice.util.patterns.LoanDAOFactory;
 import com.solvd.bankingservice.util.patterns.TransactionDAOFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.time.LocalDate;
-import java.util.Date;
 
 public class Runner
 {

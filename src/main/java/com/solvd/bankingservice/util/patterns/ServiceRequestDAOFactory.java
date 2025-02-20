@@ -1,10 +1,7 @@
 package com.solvd.bankingservice.util.patterns;
 
-import com.solvd.bankingservice.repo.IAppointmentDAO;
 import com.solvd.bankingservice.repo.IServiceRequestDAO;
-import com.solvd.bankingservice.repo.impl.mybatis.impl.AppointmentMyBatisImpl;
-import com.solvd.bankingservice.repo.impl.mybatis.impl.ServiceRequestMyBatisImpl;
-import com.solvd.bankingservice.repo.impl.mysql.AppointmentMySQLJdbcImpl;
+import com.solvd.bankingservice.repo.impl.mybatis.ServiceRequestMyBatisImpl;
 import com.solvd.bankingservice.repo.impl.mysql.ServiceRequestMySQLJdbcImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

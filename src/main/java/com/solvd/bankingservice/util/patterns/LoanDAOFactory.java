@@ -1,7 +1,7 @@
 package com.solvd.bankingservice.util.patterns;
 
 import com.solvd.bankingservice.repo.ILoanDAO;
-import com.solvd.bankingservice.repo.impl.mybatis.impl.LoanMyBatisImpl;
+import com.solvd.bankingservice.repo.impl.mybatis.LoanMyBatisImpl;
 import com.solvd.bankingservice.repo.impl.mysql.LoanMySQLJdbcImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
