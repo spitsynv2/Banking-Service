@@ -3,7 +3,7 @@ package com.solvd.bankingservice.service;
 import com.solvd.bankingservice.model.Appointment;
 import com.solvd.bankingservice.repo.IAppointmentDAO;
 import com.solvd.bankingservice.repo.IDAO;
-import com.solvd.bankingservice.util.patterns.AppointmentDAOFactory;
+import com.solvd.bankingservice.util.patterns.DAOFactory;
 import com.solvd.bankingservice.util.patterns.DAOType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +17,7 @@ public class AppointmentService extends AbstractService<Appointment,Long> implem
     private final IAppointmentDAO appointmentDAO;
 
     public AppointmentService(DAOType daoType){
-        appointmentDAO = AppointmentDAOFactory.getDAO(daoType);
+        appointmentDAO = DAOFactory.createDao(IAppointmentDAO.class,daoType);
     }
 
     @Override

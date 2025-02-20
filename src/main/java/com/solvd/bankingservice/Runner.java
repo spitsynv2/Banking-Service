@@ -1,5 +1,8 @@
 package com.solvd.bankingservice;
 
+import com.solvd.bankingservice.repo.IAppointmentDAO;
+import com.solvd.bankingservice.repo.ICustomerDAO;
+import com.solvd.bankingservice.repo.ITransactionDAO;
 import com.solvd.bankingservice.service.*;
 import com.solvd.bankingservice.service.json.jackson.BankingServiceJACKSON;
 import com.solvd.bankingservice.service.mysql.CustomerAccountService;
@@ -7,10 +10,7 @@ import com.solvd.bankingservice.service.mysql.EmployeeService;
 import com.solvd.bankingservice.service.xml.IBankingProcessingService;
 import com.solvd.bankingservice.service.xml.dom.BankingServiceDOM;
 import com.solvd.bankingservice.service.xml.jaxb.BankingServiceJAXB;
-import com.solvd.bankingservice.util.patterns.DAOType;
-import com.solvd.bankingservice.util.patterns.DepositDAOFactory;
-import com.solvd.bankingservice.util.patterns.LoanDAOFactory;
-import com.solvd.bankingservice.util.patterns.TransactionDAOFactory;
+import com.solvd.bankingservice.util.patterns.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,7 +25,7 @@ public class Runner
     private static final IBankingProcessingService bankingServiceDOM = new BankingServiceDOM();
     private static final IBankingProcessingService bankingServiceJACKSON = new BankingServiceJACKSON();
 
-    private static final IServiceRequestService serviceRequestServiceMySQL = new ServiceRequestService(DAOType.JDBC);
+    private static final IServiceRequestService serviceRequestServiceMySQL = new ServiceRequestService(DAOType.MYSQL);
     private static final IAppointmentService appointmentServiceMyBatis = new AppointmentService(DAOType.MYBATIS);
     private static final IServiceRequestService serviceRequestServiceMyBatis = new ServiceRequestService(DAOType.MYBATIS);
 
@@ -79,10 +79,14 @@ public class Runner
         //log.info(serviceRequestServiceMyBatis.readAllByForeignKeyId(2L));
         //serviceRequestServiceMyBatis.deleteById(5L);
 
-        log.info(serviceRequestServiceMyBatis.readById(1L));
-        log.info(appointmentServiceMyBatis.readById(3L));
-        log.info(DepositDAOFactory.getDAO(DAOType.MYBATIS).readById(1L));
-        log.info(LoanDAOFactory.getDAO(DAOType.MYBATIS).readById(1L));
-        log.info(TransactionDAOFactory.getDAO(DAOType.MYBATIS).readById(1L));
+        //log.info(serviceRequestServiceMyBatis.readById(1L));
+        //log.info(appointmentServiceMyBatis.readById(3L));
+        //log.info(DAOFactory.createDao(ITransactionDAO.class,DAOType.MYBATIS).readById(1L));
+
+        //Testing Factory
+        log.info("MYSQL:");
+        log.info(DAOFactory.createDao(ITransactionDAO.class,DAOType.MYSQL).readById(1L));
+        log.info("MYBATIS:");
+        log.info(DAOFactory.createDao(ITransactionDAO.class,DAOType.MYBATIS).readById(1L));
     }
 }

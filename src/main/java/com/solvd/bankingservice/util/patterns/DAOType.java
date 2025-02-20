@@ -5,5 +5,5 @@ package com.solvd.bankingservice.util.patterns;
  * @created 2025-02-13
  */
 public enum DAOType {
-    JDBC, MYBATIS
+    MYSQL, MYBATIS
 }

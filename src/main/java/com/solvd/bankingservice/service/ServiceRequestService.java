@@ -3,12 +3,9 @@ package com.solvd.bankingservice.service;
 import com.solvd.bankingservice.repo.IAppointmentDAO;
 import com.solvd.bankingservice.repo.IDAO;
 import com.solvd.bankingservice.repo.IServiceRequestDAO;
-import com.solvd.bankingservice.repo.impl.mysql.AppointmentMySQLJdbcImpl;
-import com.solvd.bankingservice.repo.impl.mysql.ServiceRequestMySQLJdbcImpl;
 import com.solvd.bankingservice.model.ServiceRequest;
-import com.solvd.bankingservice.util.patterns.AppointmentDAOFactory;
+import com.solvd.bankingservice.util.patterns.DAOFactory;
 import com.solvd.bankingservice.util.patterns.DAOType;
-import com.solvd.bankingservice.util.patterns.ServiceRequestDAOFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,8 +23,8 @@ public class ServiceRequestService extends AbstractService<ServiceRequest,Long> 
     private final IAppointmentDAO appointmentDAO;
 
     public ServiceRequestService(DAOType daoType){
-        serviceRequestDAO = ServiceRequestDAOFactory.getDAO(daoType);
-        appointmentDAO = AppointmentDAOFactory.getDAO(daoType);
+        serviceRequestDAO = DAOFactory.createDao(IServiceRequestDAO.class,daoType);
+        appointmentDAO = DAOFactory.createDao(IAppointmentDAO.class,daoType);
     }
 
     @Override
